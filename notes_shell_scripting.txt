@@ -1,0 +1,52 @@
+Shell scripting
+===============
+
+# comment
+
+- Shell script starts with shebang construct e.g.
+	 #!/bin/sh		(Bourne shell) or
+	 #!/bin/bash	(Bourne Again shel)
+
+- E.g.
+$ cat first.sh
+#!/bin/sh
+# Author : Sac
+echo "enter name"
+read NAME
+echo "hello $NAME"
+
+$ chmod +X first.sh			// make it executble
+$ ./first.sh				// to run
+
+Variables
+----------------
+- By convention all shell variables names are in UPPERCASE.
+
+$ cat var1.sh
+#!/bin/bash
+NAME="sac"
+echo "hi $NAME"
+readonly NAME	# After a variable is marked read-only, its value cannot be changed
+NAME="sac2"     # ERROR: NAME: readonly variable
+
+- Unsetting or deleting a variable directs the shell to remove the variable from the list of variables that it tracks
+- You cannot use the unset command to unset variables that are marked readonly.
+
+unset NAME			# unsets variable NAME
+echo "hello $NAME"	# will print- hello
+
+- Variable types
+1. Local Variables
+2. Environment Variables
+3. Shell Variables
+
+special variables
+-----------------
+$0		# filename of current script e.g. echo $0
+$n		# arguments with which a script was invoked. starting with $1
+$#		# number of arguments supplied to a script
+$*		# all the args
+$@		# all the args.
+$?		# exit status of the last command executed
+$$		# PID of the current shell.
+$!		# process number of the last background command

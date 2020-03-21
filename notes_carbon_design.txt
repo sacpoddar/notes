@@ -1,0 +1,58 @@
+Carbon design system
+====================
+
+https://www.carbondesignsystem.com/
+https://github.com/carbon-design-system
+
+- Carbon is IBM’s open-source design system
+- consists of working code, design tools and resources, human interface guidelines
+- The goals of the design system
+1. improving UI consistency and quality, 
+2. making the design and development process more efficient and focused, 
+3. establishing a shared vocabulary between designer and developer, and 
+4. providing clear, discoverable guidance around design and development best practices.
+5. ensure consistent, cohesive user experiences.
+
+- maintain a set of Sketch libraries containing Carbon components and patterns
+- Sketch Libraries are Sketch documents with components (Symbols, Text Styles and Layer Styles) that you can share across all of your other documents
+- Sketch is a vector graphics editor for macOS. $$PAID Software
+	- It is primarily used for user interface and user experience design of websites and mobile apps
+	- drag and drop interface 
+	- The files designed in Sketch are saved in its own .sketch file format
+	- Also supports prototyping and colllaboration
+	- Sketch is essentially a version of Photoshop built from the ground up to suit the workflow of web designers.
+
+- Carbon supports multiple code implementations. 
+1. React	- Carbon React library. https://react.carbondesignsystem.com/?path=/story/buttons--default
+2. CSS/Vanilla
+3. Angular - Carbon Angular library. https://angular.carbondesignsystem.com/?path=/story/components-button--basic  Collection of reusable Angular components
+4. Vue
+
+- Adopting the library enables developers to use consistent markup, styles, and behavior in prototype and production work.
+- Similar to primrfaces(for JSF). PrimeNG (for Angular)
+
+- Design Tools
+1. Sketch. Paid. https://www.sketch.com/
+2. Axure. Paid. https://www.axure.com/download
+3. Adobe XD. Paid.  https://www.adobe.com/in/products/xd.html
+
+Progressive web app
+-------------
+- PWA is a web application that has a set of capabilities (similar to native apps) which provide an app-like experience to users. 
+- Some other capabilities include full responsiveness and browser compatibility, connectivity independence and self-updates.
+
+
+Working with starter kit
+==========================
+git clone git@github.com:carbon-design-system/carbon-tutorial-angular.git
+cd carbon-tutorial-angular
+git checkout -b angular-step-1
+git remote add starter git@github.com:carbon-design-system/carbon-angular-starter.git
+git fetch starter
+git reset --hard starter/master
+git remote remove starter
+npm install
+npm start
+
+
+

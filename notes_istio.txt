@@ -1,0 +1,56 @@
+Istio
+=======
+
+- Istio is a service mesh
+- A service mesh is an  extra layer of software you deploy alongside your cluster ( e.g. kubernetis)
+- How istio implements a mesh
+	- It injects a proxy container in each of the microservice pod
+	- It manupulates the iptables so that all network calls are routed through these proxy containers
+	- Along with that it installs a set of pods e.g. Istio-telemetry, Istio-pilot, Istio-tracing 
+	
+	Microservice Pod1		Microservice Pod2		Microservice Pod3
+	-----------------		------------------		------------------
+	App Container			App Container			App Container
+			|					|						|
+	Proxy container	----->  Proxy container	------> Proxy container
+		___________________________________________________________________
+		| Istio-telemetry Pod		Istio-pilot pod		Istio-tracing Pod |
+		|_________________________________________________________________| Control Plane
+	- Proxies are collectively called "Data Plane" in Istio
+	- Everything else is called the "Control Plane" e.g. Istio-telemetry, Istio-pilot, Istio-tracing 
+- What change do we need to make in our existing app containers ?
+	- no change. 
+
+- Install minicube https://www.youtube.com/watch?v=5-LHcpkRA58
+- Src code https://github.com/DickChesterwood/istio-fleetman
+
+minikube delete
+minikube start --memory 4096
+
+kubectl  apply -f 1-istio-init.yaml
+kubectl  apply -f 2-istio-minikube-reduced.yaml
+kubectl  apply -f 3-kiali-secret.yaml
+kubectl  apply -f 4-application-full-stack.yaml
+
+kubectl get po -n istio-system
+kubectl get crd			// custom resource definition
+watch kubectl get po -n istio-system		// watch
+
+sidecar - an extra container doing an extra help in your pod. Its helper container
+
+- label the default namespace to inject istio proxies (or sidecar container) into your pod
+kubectl describe ns default
+kubectl label namespace default istio-injection-enabled
+kubectl get ns default -o yaml			// get o/p in yaml format
+
+- Proxy in istio comes from Envoy -another open source project
+- Istio simplifies envoy
+
+Telemetry
+------------
+1. Kiali - Graph
+2. Jaeger - Distributed tracing
+
+kubectl get vs		// virtualservices
+kubectl get dr		// destinationrules
+

@@ -1,0 +1,260 @@
+IBM Cloud Platform Application Development v2
+====================================
+
+http://www-03.ibm.com/certify/exam.html?id=C5050-384
+https://developer.ibm.com/courses/all/cloud-application-developer-certification-preparation-v2/
+https://courses.cognitiveclass.ai/
+
+Eclipse plugin:  IBM Eclipse Tools for IBM Cloud
+
+Bluemix cloud offerings
+-----------------------------
+
+Q: Marketplace portal for cloud services is the same as Bluemix portal as both sell the same services e.g., Cloudant
+A: False. Both sell the same services but both are different url. e.g. Marketplace portal charges differently.
+Q: Cloud foundry is an IBM proprietary platform for building applications on Bluemix
+A: False
+Q: Bluemix PaaS offering is built on
+A: Cloud foundry
+Q: Openstack open source software abstracts the underlying infrastructure (bare metal)
+A: true
+Q: The SaaS offering lets users browse, learn & buy services from the catalog available on the Bluemix portal
+A: true
+Q: Bluemix IaaS service management console interacts directly with the bare metal to provision servers and VMs
+A: False. It interacts with Openstack
+Q: Only IBM services are available on the IBM Cloud Marketplace
+A: False
+Q: IBM Bluemix, HP Stackato, GE Predix, Pivotal.io has something in common
+A: They are all commercial PaaS offering built on top of open source PaaS platform CloudFoundry
+
+Bluemix capabilities and deployment options
+--------------------------------
+
+Q1: IBM Bluemix PaaS is
+A: An open standard platform for building, running and managing cloud applications. (CloudFoundry)
+Q2: CloudFoundry is open source for 
+A: PaaS
+Q3: Goal of DevOps
+A: Continuous delivery
+Q4: Experimental services can be used for creating innovative solutions for your customers
+A: False.
+Q5: Bluemix Region
+A:	- Represents a an isolated geographic territory
+	- Application may be deployed to all regions
+	- Provides a way to build disaster recovery
+	- Improves application latency
+
+Organization, Spaces, Domains, Users, Quotas
+----------------------------------
+
+Account Types
+1. Lite	
+	- The account is free - no credit card required.
+	- The account never expires.
+	- You can use one org in one IBM Cloud region.
+	- Basic IBM Cloud support for free. 
+	- You receive email notifications about your account status and quota limits.
+	- Your Cloud Foundry apps can access up to 256 MB of free, instantaneous runtime memory.
+	- You can work with a Kubernetes cluster with 2 CPU and 4 GB RAM.
+	- You can provision one instance of any service in the IBM Cloud catalog External link icon that has a Lite plan.
+	- After 10 days of no development activity, your apps go to sleep. 
+		You can start working on new apps without having to worry about hitting memory quota limits.
+	- After 30 days of no development activity, your service instances with Lite plans are deleted. 
+		This way, you don't have to manage deleting inactive instances before you create new ones.
+2. Billable accounts
+	1. Pay-As-You-Go	- Charges are based on your use of IBM Cloud compute and services
+	2. Subscription	- You can get a monthly discount based on a minimum monthly spending commitment
+	3. IBM Cloud Dedicated -	Annual contract
+		- VPN connectivity back to your infrastructure
+		- All dedicated services that you have selected and all public IBM Cloud services
+	4. Bluemix Local	- Annual contract
+		- All local services that you have selected and access to all public IBM Cloud services
+3. Trial account
+	- free 30-day trial
+	- When your free trial expires 30 days after you sign up, the apps in your account are stopped
+	- Maximum 2 GB memory
+	- 10 services
+	- 1 SSL certificate
+		
+Q1: Which are Bluemix Account Type
+A: 	Lite, Pay-As-You-Go	, Subscription, Dedicated, Local, Trial
+Q2: Organization have
+A: Spaces, Users, Domains, Quota
+Q3: Spaces is a mechanism to group
+A: Applications, Services, Users
+Q4: Quota defines the number of spaces that can be created under and organizatoion
+A: False
+Q5: Which one are valid Organization role?
+A: Manager, Billing Manager, Auditor
+Q6: The default domain on Bluemix is
+A: mybluemix.net
+Q7: Quota is applied to the
+A: Organization
+Q8: Spaces can contain one or more organizations
+A: False
+Q9: To setup a custom domain, first step is to create a domain on Bluemix account, the second step is to
+A: Setup the DNS for your domain to point to Bluemix system domain
+Q10: Following provides a way for logical grouping of elements within the Bluemix account
+A: Organizations
+Q11: You want to invite your friend to join your Bluemix account organization but you don't see the invite option. What could be the reason?
+A: your role should be organization owner to invite users
+
+Starters, Runtimes and boilerplates
+---------------------------------
+
+Q1: Starters are of following type
+A: A)  Runtime
+	B) Boilerplate = Runtime + template for a solution
+runtime: The set of resources used to run the application. E.g. 
+boilerplate: A template that includes one application and its associated runtime environment and 
+	predefined services for a particular domain.
+buildpack: A collection of scripts that prepare your code to run on IBM Cloud. Buildpacks examine 
+	deployed applications, then download and configure any dependent applications. E.g. java_buildpack
+
+Q2: Starters lead to
+A: - Higher productivity
+	- Faster speed to market
+	- Consistency
+Q3: Build pack can be used to define new Boilerplates on Bluemix
+A: False
+Q4: Runtime example and boilerplate example
+Runtime - Java liberty, Node JS, Python
+boilerplate - Java DB web server
+Q5: Following provides a runtime and services as a template for a solution
+A: boilerplate
+	
+IBM Cloud CLI
+--------------
+- to manage applications, containers, infrastructures, services and other resources in IBM Cloud.
+bluemix api https://api.eu-gb.bluemix.net
+cd ~/dev/bluemix/cfbook
+bluemix api https://api.eu-gb.bluemix.net
+bluemix login -u sac.poddar@gmail.com -o org_name -s space_name
+bluemix app push cfbook
+
+git clone https://github.com/IBM-Bluemix/get-started-tomcat
+cd get-started-tomcat
+mvn clean install
+- test changes locally
+edit manifest.yml - comment out random-route and set host: 
+	---
+	applications:
+	 - name: GetStartedTomcat
+	#   random-route: true
+	   host: cfbook2
+	   path: target/GetStartedTomcat.war
+	   memory: 256M
+	   instances: 1
+	   buildpack: java_buildpack
+bluemix login
+bluemix cf api api.eu-gb.bluemix.net
+bluemix target -cf
+bluemix cf push
+bluemix cf apps	// list running apps
+
+- VCAP_SERVICES environment variable is used to share DB connection details and credentials.
+
+Introduction to cloud foundry
+-----------------------------
+
+Q1: Cloud Foundry is a open source software for managing applications and services on
+A: PaaS
+Q2: Cloud Foundry requires you to code application in Java, Node, PHP and Python only.
+A: False
+Q3: Droplet?
+A: Is an executable that is deployed as an application on the Cloud Foundry 
+Q4: Droplet execution Agent
+A: - Stages the application by selecting a Buildpack
+	- Manages the lifecycle of the Droplet/application
+	- Broadcasts the status of the application
+Q5: Cloud Controller receives REST calls for
+A: Managing applications
+Q6: What component creates the droplet?
+A: Buildpack
+
+Cloud foundry architecture
+------------------------
+
+Q1: Router receives calls from
+A) CLI Tool
+B) Application Client
+Q2: Cloud Foundry provides isolated environment for applications by way of
+A: Warden containers
+Q3: UAA component
+A: Provides the identity management service
+Q4: Cloud Foundry CLI invokes endpoints on
+A: Cloud Controller
+Q5: NATS messaging service cannot be used for applications
+A: true. Its internal to Cloud Foundry. Applications may use MQ Light or Message Hub service for messaging purposes.
+Q6: Service Broker API is implemented by
+A: Service owner/developer
+Q7: __ broadcasts the status of the application and __ subscribes to these messages to keep things in order for the application
+A: DEA, Health Manager
+
+Cloud Foundry CLI
+--------------------
+bluemix cf -h		// help
+bluemix cf -h -a		// all help
+bluemix cf -v		// version
+bluemix login -u sac.poddar@gmail.com -o org_name -s space_name
+bluemix target		// list target
+bluemix cf logout 
+bluemix cf passws	// change password
+bluemix cf domains	// list domains
+bluemix cf domain	
+cf apps	// list apps
+
+Q1: cf login -a option is needed to set the
+A: API endpoint
+Q2: Which cf cli command allows you to set the organization?
+A: target
+Q3: Orphaned routes are routes that are ____________ to any application
+A: not attached
+Q4: You just need to use cf create-domain to be able to create custom routes to your apps, no further action is needed
+A: False
+Q5: Which command is used for getting information about an app?
+A: cf app
+Q6: cf push command requires you to provide the ________ or/and __________
+A) Manifest file
+B) Application binaries (e.g., war file)
+C) Command line parameters
+D) API endpoint
+A: A and C
+Q7: You built an application that loads large amount of data at startup. You used the cf push command 
+and received a timeout error and a message indicating the 0 of 1 instance started. How would you address the issue?
+A: Mainfest file set a higher value for timeout; the default is 60 sec and that does not seem to be 
+enough for this application
+
+CF environment variables
+------------------------
+cf env app_name
+
+
+VCAP_SERVICES and User Provided Services (USP)
+------------------------
+- VCAP_SERVICES env variable holds connection information for the service instance bound to the app
+- User can define UPSI that populates VCAP_SERVICES with info on the external services such as DB, Messaging, logging
+- VCAP_SERVICES can be populated by
+	- Managed services
+	- UPS
+- NOT all managed services populate VCAP_SERVICES
+- value is delivered directly to the user
+
+- USP allow you to represent external assets as services 
+	- e.g. Databases, Messaging, Logging
+	- Populates VCAP_SERVICES env variable
+- Benefits 
+	- Manage the credentials for external services
+	- Consistency - all service properties available in VCAP_SERVICES
+
+- USPI Usage
+1. create user provided service instance using "cf cups" cmd
+2. bind app to the service using cli or GUI console
+3. In the code get UPSI from VCAP_SERVICES
+	e.g. in Java - env = System.getenv("VCAP_SERVICES");  
+	
+cf cups MyDB -p "url, user, pass"		// create user provided service. interactive
+cf cups MyDB -p "{\"jdbc-url\":\"jdbc://url\", \"user\":\"id\", \"pass\":\"pwd\"}"		// create using json
+cf services								// list user created services
+cf delete-service MyDB					// delete service
+

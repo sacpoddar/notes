@@ -1,0 +1,327 @@
+Advanced JavaScript Notes
+=========================
+
+Using Constructors to Define Types
+---------------------
+- A constructor is a function that get invoked when creating an Objects
+- You invoke a constructor with the "new" keyword.
+- The constructor returns a reference to the object it constructed.
+- Within constructor use "this" keyword to refer to current Objects properties
+- type of all objects created with a custom constructor is object. 
+- There are only six types in JavaScript: object, function, string, number, boolean, and undefined
+
+	function Emp(name, city) {
+		this.name = name;
+		this.city = city;
+	}
+	
+	var emp1 = new Emp('sac1', 'pune');
+	console.log(emp1.name);			// sac1
+
+Prototypes and Prototype Inheritance
+-------------------------
+- "prototype" is a property of functions and of objects that are created by constructor functions.
+- You can use the prototype property to add properties and methods to objects. This is also impact existing objects
+	Emp.prototype.phone = 12345;
+	console.log("phone: " + emp1.phone);	// 12345
+	
+- You can even add properties and methods to predefined objects.
+	// using prototypes to add prop on existing types
+	String.prototype.trim = function()  
+	{  
+		return this.replace(/(^\s*)|(\s*$)/g, "");  // trim leading and trailing spaces
+	}  
+	var s = "  spaces    ";  
+	console.log(s + " (" + s.length + ")");   //"    leading and trailing spaces     (35)"  
+	s = s.trim();  
+	console.log(s + " (" + s.length + ")");   // "leading and trailing spaces (27)" 
+	
+- You can derive One Object from another with Object.create() and prototype
+	var emp2 = Object.create( Object.getPrototypeOf(Emp), {
+		// add new properties
+		"pin" : { value : 411111} 
+	}); 
+	console.log("pin " + emp2.pin);		// 411111
+	
+- Changing an Object's Prototype-
+- you can replace the internal prototype of an object or function by using the _proto_ property.
+- That also inherits properties and methods of the new prototype along with other properties 
+	and methods in its prototype chain.
+
+	// prototype chaining
+	function Circle() {
+		this.name = "circle1";
+	}
+	function Square() {
+		this.name = "square1";
+	}
+	var circle = new Circle();
+	circle.radius = 2;
+	var square = new Square();
+	var shape = new Object();
+	shape.area = 123;
+	shape.__proto__ = circle;
+	console.log(shape.name );   // circle1
+	console.log(shape.area );   // 123
+	console.log(shape.radius );   // 2
+	shape.__proto__ = square;
+	console.log(shape.name );   // square1
+	console.log(shape.area );   // 123
+	console.log(shape.radius );   // undefined
+
+Data Properties
+----------------
+- A data property is a property that has a value.
+- You can add one or more data properties in an object
+- different ways to add data property
+	var emp1 = {        // 1. using object literal notation
+		name: "sac1"
+	};
+	
+	var emp2 = {};      // var emp2 = new Object();
+	emp2.name = "sac2"; // 2. using assignment operator
+	
+	function Emp(name) {    // 3. using construction function
+		this.name = name;
+	}
+	var emp3 = new Emp('sac3');
+	
+	// 4. creating data property using Object.defineProperty()
+	var emp4 = {};
+	Object.defineProperty(emp4, 'name', {
+		value: 'sac4'
+	});
+	
+- Object.defineProperty() adds a property to an object, or modifies attributes of an existing property.
+	syntax:
+	Object.defineProperty(object, PropertyKey, PropertyDescriptor)
+	
+- PropertyDescriptor is used to set data property attributes. Data property has four attributes
+	value - The current value of the property. default-	undefined
+	writable - true or false. If true, the property value can be modified. default- false
+	enumerable - true or false. If true, the property can be enumerated by a for...in statement.
+				default- false
+	configurable- true or false. If true, property attributes can be changed, 
+				and the property can be deleted. default- false
+
+- If you add data property using first three methods by default writable,enumerable,configurable will be set to true
+- If you add data property using Object.defineProperty(), Object.defineProperties() , Object.create()
+	by default writable,enumerable,configurable will be set to false
+- When you modify the property, attributes that are not specified in the descriptor remain the same.
+- You can get PropertyDescriptor by using Object.getOwnPropertyDescriptor()
+	console.log(Object.getOwnPropertyDescriptor(emp1, 'name'));
+	console.log(Object.getOwnPropertyDescriptor(emp2, 'name'));
+	console.log(Object.getOwnPropertyDescriptor(emp3, 'name'));
+	console.log(Object.getOwnPropertyDescriptor(emp4, 'name'));
+	
+	{ value: 'sac1',
+	  writable: true,
+	  enumerable: true,
+	  configurable: true }
+	{ value: 'sac2',
+	  writable: true,
+	  enumerable: true,
+	  configurable: true }
+	{ value: 'sac3',
+	  writable: true,
+	  enumerable: true,
+	  configurable: true }
+	{ value: 'sac4',
+	  writable: false,
+	  enumerable: false,
+	  configurable: false }
+  
+Accessor Properties
+------------------
+- Accessor property has get and set attributes which calls user defined functions when property is retrived or set
+- 	// 1. creating Accessor property using Object.defineProperty()
+	var emp1 = {};
+	Object.defineProperty(emp1, 'name', {
+		get : function() {
+			return this._name; 
+		},
+		set : function(value) {
+			this._name = value + "23";
+			// this.name = value; // will give RangeError: Maximum call stack size exceeded
+			// because it will invoke itself (set function)
+		}
+	});
+	emp1.name = 'sac1';     // this will call set function
+	console.log(emp1);      // { _name: 'sac123' }
+	console.log(Object.getOwnPropertyDescriptor(emp1)); // undefined
+	
+	emp1._name = 'sac2'; 
+	console.log(emp1);      // { _name: 'sac2' } NOTE: set function is not called
+
+- When a get accessor is undefined and you access the property value, the value undefined is returned. 
+- When a set accessor is undefined and you assign a value to the accessor property, nothing occurs.
+- PropertyDescriptor for Accessor property can have four attributes. 
+	get	- A function that returns the property value. The function has no parameters. Optional, default- undefined
+	set	- A function that sets the property value. 
+			It has one parameter that contains the value to be assigned. Optional, default- undefined
+	enumerable - true or false. If true, the property can be enumerated by a for...in statement. default- false
+	configurable - true or false. If true, property attributes can be changed, 
+				and the property can be deleted. default- false
+
+- You can modify getters and setters to perform other taks 
+	e.g. perform validation, execute a handler, or fire an event.
+- You can change a data property to an accessor property, and vice-versa. 
+	- If you do this, configurable and enumerable attributes that are not specified in the descriptor are preserved
+	in the property. Other attributes that are not specified in the descriptor are set to their default values.
+- You can incrementally define configurable accessor properties by using multiple calls to the Object.defineProperty(). 
+- Use Object.seal() and the Object.freeze() to prevent the modification of property attributes.
+
+	// 2. creating Accessor property using ES5 object literal notation
+	var emp2 = {
+		get name() {
+			return this._name;
+		},
+		set name(value) {
+			this._name = value + "23";
+		}
+	};
+	emp2.name = 'sac1';
+	console.log(emp2);          // { name: [Getter/Setter], _name: 'sac123' }
+	console.log(Object.getOwnPropertyDescriptor(emp2)); // undefined
+
+Using Closures to Create Private Variables
+-------------------------------
+
+	// Using Closures to Create Private Variables
+	function Emp() {
+		var _name;	// private 
+	
+		// returns an object literal with getter/setter
+		return {
+			get name() {
+				return this._name;
+			},
+			set name(value) {
+				this._name = value + "23";
+			}
+		}
+	};
+	emp3 = new Emp();
+	emp3.name = 'sac1';
+	console.log(emp3);          // { name: [Getter/Setter], _name: 'sac123' }
+	console.log(Object.getOwnPropertyDescriptor(emp3)); // undefined
+
+
+Variable Scope
+----------------
+global variable - declared outside function
+				- implicitly declared inside function i.e. without var
+local variable - declared inside function
+
+- A local variable can have the same name as global variable.  
+	var v1 = "global";
+	function f1(){
+		var v1 = "local"; 	// overrides global
+		console.log(v1);
+		g1 = "global g1";   // implicitly declared. global variable
+	}
+	f1();				// local
+	console.log(v1);	// global
+	console.log(g1);    // global g1
+
+- variables are evaluated as if they were declared at the beginning of the scope they exist in
+	var v2 = "global v2";
+	function f2(){
+		console.log(v2);		// JS knows that v2 is defined locally. It will set its default value- undefined
+		var v2 = "local v2";
+		console.log(v2);
+	}
+	f2();				// undefined
+						// local v2
+	console.log(v2);	// global v2
+	
+Closure
+-----------
+- an inner function stores references to the local variables of its enclosing scope, even after the function returns. 
+	// closure ex1
+	function fun1(name) {
+		return function f1() {
+			console.log(name);
+		}
+	}
+	var func = fun1("closure 1");
+	func();     // closure 1
+	
+	// closure ex2
+	function Emp(value) {
+	
+		// returns an object literal with getter/setter
+		return {
+			get name() {
+				return value;
+			},
+			set name(newVal) {
+				value = newVal + "23";
+			}
+		}
+	};
+	var emp3 = new Emp('sac');
+	console.log(emp3.name);     // sac
+	emp3.name = 'sac1';
+	console.log(emp3.name);     // sac123
+	
+By Value vs. By Reference
+---------------
+- Numbers and Boolean values (true and false) are copied, passed, and compared by value. 
+- Objects, arrays, and functions are copied, passed, and compared by reference. Like Java
+- strings are copied and passed by reference, but are compared by value.
+	Note that if you have two String objects (created with new operator), they are compared by reference, 
+	but if one or both of the values is a string value, they are compared by value.
+	
+Objects as Associative Arrays
+-------------------------
+- You can use index operator ([]) to access an object's properties.
+- In this case you are treating the object as an associative array in which data values are associated with strings.
+	var emp = {
+		name : "sac",
+		age : 32
+	}
+	// index is a string literal that represents the property name.
+	console.log(emp["name"]);		// sac
+
+Collections
+-----------
+- Set - to store unique values of any type. Use forEach to iterate collection.
+	- add(value : anyType)
+- Map - to store key/value pair. Use forEach to iterate collection.
+	- set(key : anyType, value : anyType)
+- WeakMap - to store key/value pair. forEach NOT supported. Use get() to retrieve elements. Useful for caching.
+	- set(key : object, value : anyType)
+	- useful where cached objects are very large and you don't want to hold objects in memory unnecessarily
+	
+	var s = new Set();
+	s.add("one");
+	s.add("two");
+	s.add("two");   // will ignore duplicate
+	s.add(3);
+	console.log("size = " + s.size);
+	s.forEach(function(value){
+		console.log(value);
+	});
+	// OR, using arrow function
+	s.forEach( (value) => console.log(value));  
+	
+	var map = new Map();
+	map.set("one", "ONE");
+	map.set("two", "TWO");
+	map.set("two", "TWO2"); // will ignore duplicate
+	map.set(3, "THREE");
+	console.log("size = " + map.size);
+	map.forEach(function(value, key, mapInner){
+		console.log(key + " " + value);
+	});
+
+	var weakmap = new WeakMap();
+	var one = new String("one");
+	var two = new String("two");
+	weakmap.set(one, "ONE");
+	weakmap.set(two, "TWO");
+	// weakmap.set("three", "THREE");	// ERROR: string literal cannot be used as key
+	console.log( weakmap.get(two));
+	
+- 

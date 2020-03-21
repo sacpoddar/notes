@@ -1,0 +1,455 @@
+Docker notes
+============
+
+https://github.com/StephenGrider/DockerCasts.git
+
+expressweb app
+==================
+$ pwd
+/c/dev/git/docker/expressweb
+$ ls
+Dockerfile  index.js  package.json
+$ cat package.json
+    {
+      "dependencies": {
+        "express": "*"
+      },
+      "scripts": {
+        "start": "node index.js"
+      }
+    }
+$ cat index.js
+    const express = require('express');
+
+    const app = express();
+
+    app.get('/', (req, res) => {
+      res.send('How are you doing');
+    });
+
+    app.listen(8080, () => {
+      console.log('Listening on port 8080');
+    });
+$ cat Dockerfile
+# specify a base image
+FROM node:alpine
+
+WORKDIR /usr/app
+COPY ./ ./
+# install dependencies
+RUN npm install
+
+# specify a command to run on container startup
+CMD ["npm", "start"]
+
+docker build -t sachinpoddar/expressweb .			// build image
+docker run -p 8000:8080 sachinpoddar/expressweb		// run
+localhost:8000										// to open app
+$ docker container ls							// get the container id
+	CONTAINER ID        IMAGE                    
+	43c02d6b44d3        sachinpoddar/expressweb
+winpty docker exec -it 43c02d6b44d3 sh			// attach to container shell
+
+docker system prune -a			// prune unused stuff
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all images without at least one container associated to them
+  - all build cache
+
+Docker compose
+===================
+docker-compose up			// run. Assuming docker-compose.yml exists in current dir
+docker-compose up -d		// run in background
+docker-compose up --build	// build and run
+docker-compose ps 			// list running containers
+docker-compose down			// stop and remove container
+
+Restart policies
+-----------------
+'no'
+always
+on-failure
+unless-stopped
+
+$ cat docker-compose.yml
+version: '3'
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+    restart: always
+    build: .
+    ports:
+      - "4001:8081"
+
+Create React App 
+================
+// npm install -g create-react-app			// old method to create
+// create-react-app client
+
+npx create-react-app frontend
+cd frontend
+rm -rf node_modules					// removing locally installed depndencies as we will install them in docker image
+
+- npm commands
+npm run start
+npm run test
+npm run build
+
+$ cat Dockerfile.dev
+FROM            node:alpine
+WORKDIR         '/app'
+COPY            package.json .
+RUN             npm install
+COPY            . .
+CMD             ["npm", "run", "start"]
+
+docker build -t sachinpoddar/frontend -f Dockerfile.dev .
+docker run -p 3000:3000 sachinpoddar/frontend
+
+- docker volumes
+docker run -p 3000:3000 -v ${pwd}:/app sachinpoddar/frontend
+			// ${pwd} on local is mapped to /app in container
+docker run -p 3000:3000 -v /app/node_modules -v ${pwd}:/app sachinpoddar/frontend
+			// "-v /app/node_modules" says "/app/node_modules" is not mapped
+- usage of --mount is recommended
+docker run -p 3000:3000 --mount type=bind,source="$(pwd)/src",target=/app/src sachinpoddar/frontend
+
+
+Executing tests
+---------------
+docker run sachinpoddar/frontend npm run test
+winpty docker run -it sachinpoddar/frontend npm run test
+
+Executing test using compose
+------------------
+$ cat docker-compose.yml
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+
+Kubernetis
+==========
+- Kubernetis is a system to deploy containerized apps
+- Nodes are individual machines (or VM's) that run containers
+- Masters are machines (or VM's) with a set of programs to manage nodes
+- Kubernetis do not build images - it get them from somewhere else
+- Kubernetis (master) decide where to run each container- each node can run a dissimilar set of containers
+- To deploy something, we update the desired state of the master with a config file
+- Master works constantly to meet your desired state
+ 
+- minikube - Used for managing VM itself
+- kubectl - used for managing containers in node (VM)
+
+- Object types
+Pods - run one or more closely related containers
+Services - set up networking in a Kubernetis cluster
+Deployment - maintains a set of identical pods, ensuring that they have the correct config and that the right number exists
+Secrets - Securely stores a piece of information in the cluster, such as a DB password
+
+- Node > Pod > Containers
+
+- Service types
+	- ClsuterIP	- exposes a set of pods to other objects in the cluster
+	- NodePort	- expose a container to the outside world (only good for dev purpose )
+	- LoadBalancer - Legacy way of getting n/w traffic into a cluster
+	- Ingress - Exposes a set of services to the outside world
+
+kubectl cluster-info		// get cluster info
+
+- Feed a config file to kubectl
+		kubectl apply -f <config-file>
+
+kubectl version --short
+kubectl apply -f client-pod.yaml	
+kubectl apply -f client-node-port.yaml
+kubectl get nodes			// get the status of all running nodes
+kubectl get pods			// get the status of all running pods
+kubectl get services		// get the status of all running services
+kubectl describe service client-node-port		// describe service
+kubectl logs <pod-name>				// print container logs
+winpty kubectl exec -it <pod-name> sh		// login to container shell
+
+- many docker commands are available with kubectl as well
+
+- To access application
+http://localhost:31515/		// if running docker desktop
+http://vm-ip:31515/			// if running minikube
+
+minikube ip					// print ip of VM running cluster
+
+- Kubernetis master uses "name" and "kind" in config file to uniquely identify and local an object (pod/service) in cluster
+
+- Apply config file updates on pod
+kubectl apply -f client-pod.yaml
+
+- config update limitation for Pod
+
+Pod Config			Can be updated?
+-----------			--------
+containers: 1			N
+name: client			N
+port: 3000				N
+image: multi-worker		Y
+
+- Get detailed info about an object 
+kubectl describe <object-type> <object-name>
+kubectl describe [nodes/pods/services]		// descrive all nodes or pods or services
+kubectl describe pod client-pod			// decribe specific pod
+
+Pods vs Deployment
+=================
+Pods
+- Runs a single set of containers
+- Good for one-off dev purposes
+- Rarely used directly in production ( becuse of limitation of its config updates)
+
+Deployment
+- Runs a set of identical pods (one or mode)
+- Moniters the state of each pod updating if necessary
+- Good for dev and prod
+
+- We can use Deployments or pods to run containers for our application
+- In prod, we do not directly create pods. We create deployments which in turn create pods
+- config update limitation does not apply on deployments.
+- Deployments can update an existing pod or recreate a new pod to match config requirements
+
+- Delete an object
+kubectl delete -f config-file		// delete object created by this config file
+
+kubectl get [nodes/pods/services/deployments]	// get status
+kubectl apply -f client-deployment.yaml	// create deployment
+kubectl get deployments						// get status
+kubectl get services
+kubectl apply -f client-deployment.yaml		// apply updates
+kubectl delete deployment <deployment-name>	// delete
+kubectl delete service <service-name>
+
+- Deployment uses selector label e.g. "component: web" to get handle of the pod
+
+kubectl get pods -o wide
+
+- Every pod inside a Node(or VM) get a unique IP address, internal to VM
+- If a pod is recreated it may get a new IP address
+- Service uses selector to find and manage pods
+
+docker build -t stephengrider/multi-client .
+docker push stephengrider/multi-client
+
+- To get the deployment to recreate our pods with the latest version of multi-client
+Sol 1 - Manually delete pods to get the deployment to recreate them with the latest version
+	Disadvantage- Manually deleting pods is error prone
+Sol 2 - Tag built images with a real version number and specify that version in the config file
+	Disadvantage- Adds extra step in the prod deployment process
+Sol 3 - Use an imperative command to update the image version the deployment should use
+	Disadvantage- Uses an imperative command 
+
+// update image, tag with a version number and push to docker hub
+docker build -t stephengrider/multi-client:v5 .
+docker push stephengrider/multi-client:v5
+
+// forcing the deployment to use the new image version
+kubectl set image <object_type>/<object_name> container_name=<new_ima_to_use>
+kubectl set image deployments/client-deployment client=stephengrider/multi-client:v5
+
+- Configure VM to use your docker server
+	eval $(minikube docker-env)			// only configures current terminal window
+
+Complex app
+=============
+cd complex
+docker-compose up --build
+
+$ pwd
+/c/dev/git/docker/complex
+$ ls k8s/
+client-cluster-ip-service.yaml  postgres-cluster-ip-service.yaml  redis-cluster-ip-service.yaml  server-cluster-ip-service.yaml  worker-deployment.yaml
+client-deployment.yaml          postgres-deployment.yaml          redis-deployment.yaml          server-deployment.yaml
+
+kubectl apply -f k8s			// apply all config files in dir
+kubectl get pods
+kubectl get services
+kubectl logs <pod-name>
+
+PVC (Persistent Volume Claim)
+=============================
+- Volume in container terminology
+	Some type of mechanism that allows a container to access a filesystem outside itself
+- Volume in kubernetis
+	An object that allows a container to store data at the pod level
+
+Kubernetis Volume	
+	- Disk space inside pod but outside containers	
+	- container recreation will not impact disk space.
+	- Gone if pod is recreated
+Persistent Volumne	
+	- Disk space outside pod
+	- always available. Container recreation or pod recreation will not impact it
+Persistent Volumne Claim
+	- Advertisement of various storage options
+	- Some of this could be readily available - Statically provisioned persistent volume
+	- Some of this is prepared in runtime - Dynamically provisioned persistent volume
+	
+Access Modes
+-----------
+ReadWriteOnce	- can be used by a single node
+ReadOnlyMany	- Multiple nodes can read from this
+ReadWriteMany	- can be read and written to by many nodes
+
+kubectl get storageclass			// lists different class available for creating PV
+kubectl describe storageclass
+kubectl get pv						// list pv. Actual instance of storage
+kubectl get pvc						// list pvc advertisement
+
+Secrets
+--------
+- Object to store sensitive info e.g. password in encrypted format in cluster
+- Run imperative command to create secret
+- When taking app to prod, we need to manually create secret obejcts in prod cluster as well
+
+kubectl create secret generic <secret-name> --from-literal key=value
+	- create- imperative command to create a new object
+	- secret- type of oject that we are going to create
+	- generic- type of secret. Other types are 'docker-registry' and 'tls'. Generic indicates key-val pairs
+	- <secret-name> - Name of secret for later reference in a pod config
+	- --from-literal - we are going to add the secret info into this command, as oppesed to from file
+	- key=value - key-value pair of secret information. We can provide multiple key-val pairs
+
+kubectl create secret generic pgpasswordsecret --from-literal PGPASS=1234abc
+kubectl get secrets
+
+-To read value in deployment.yaml
+
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpasswordsecret
+                  key: PGPASS
+				  
+- NOTE: Environment variale value has to be string e.g.
+            - name: REDIS_PORT
+              value: '6379'
+
+LoadBalancer
+================
+Legacy way of getting n/w traffic into a cluster
+
+Ingress
+=======
+- There are multiple implementation of ingress. 
+- We are using 'ingress-nginx'. a ngnix based implementation
+	https://github.com/kubernetes/ingress-nginx
+- There is also 'kubernetis-ingress'. not used here
+
+- setup of ingress-nginx changes depending on your environment(local, GC, AWS, Azure)
+- Ingress Config > kubctl > Ingress Controller
+
+- Setup ingress-nginx in our local machine
+1. mandatory step
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.29.0/deploy/static/mandatory.yaml
+2. On minikube
+	minikube addons enable ingress
+  On Docker desktop
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.29.0/deploy/static/provider/cloud-generic.yaml
+3. Confirm the nginx-ingress-controller deployment exists
+	kubectl get pods -n ingress-nginx
+	kubectl get services -n ingress-nginx		// Verify the service was enabled
+
+minikube dashboard			// to open kubernetis dashboard
+
+Travis
+======
+
+Travis config file
+-------------
+Install Google Cloud SDK CLI
+Configure the SDK with our GC auth info
+Login to Docker CLI
+Build the "test version" of multi-client
+Run tests
+If tests are successful, run a script to deploy newest images
+Build all our images, tag each one, push each to docker hub
+Apply all config in the 'k8s' folder
+Imperatively set latest images on each deployment
+
+Encrypt service-account.json by running travis in a cli container
+-----------------
+$ pwd
+/c/dev/git/docker/complex
+$ ls
+client/  k8s/  server/  service.account.json  worker/
+
+docker run -it -v ${pwd}:/app ruby:2.3 sh
+gem install travis --no-rdoc --no-ri
+travis login		// or travis login --pro
+cd /app
+travis encrypt-file service-account.json -r StephenGrider/multi-k8s
+	- travis encrypt-file service.json -r USERNAME/REPO --pro
+	- You will be presented with 'openssl aes-256-cbc -K....' command 
+		copy that command into your .travis.yml file
+exit		// exit container
+
+- You will also see a generate encrypted file service-account.json.enc
+- Commit service-account.json.enc in git
+- DELETE service-account.json
+
+
+Helm
+======
+- Helm is package manager for kubernetis cluster
+
+Install Helm v3
+-----------
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+
+Install Ingress-Nginx:
+--------------
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm install my-nginx stable/nginx-ingress --set rbac.create=true
+
+Role Based Access Control (RBAC)
+--------------------
+- Limits who can access and modify objects in our cluster
+- Enabled on GC by default
+
+User Accounts - Identifies a person administering our cluster
+Service Accounts - Identifies a pod administering a cluster
+ClusterRoleBinding - Authorizes an account to do a certain set of actions across the entire cluster
+RoleBinding - Authorizes an account to do a certain set of actions in a single namespace
+
+- User/Service account is about authentication
+- Role binding is all about authorization
+- we create RoleBinding and assign it to User/Service account
+
+kubectl get namespaces
+
+// create a service account named tiller
+kubectl create serviceaccount --namespace kube-system tiller
+
+// create a clusterrolebinding named tiller-cluster-rule and assign it to tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
+
+ingress-controller - deployment that manages the pod that runs the ingress-config file and setup ngnix appropriately
+ingress-default-backend - backend that has a series of health checks inside it

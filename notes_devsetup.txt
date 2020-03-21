@@ -1,0 +1,256 @@
+vim tips
+============================
+Go to file
+The following commands open the file name under the cursor:
+gf	 open in the same window ("goto file")
+<c-w>f	 open in a new window (Ctrl-w f)
+<c-w>gf	 open in a new tab (Ctrl-w gf)
+
+:n <file_to_load>	// jump to file
+:n#		// goto previous file
+:bd		
+:bf
+CTRL-6		
+
+:sh	// interactive shel. Ctrl+D to exit shell and resume vim
+Ctrl-z	// pause Vim. you can resume Vim with fg.
+:! pwd	// execute a command directly from the editor
+:! php5 -l %	// PHP script. checing syntax errors for current file (%)
+:!!	// rerun the last external command
+Ctrl+g	// display status line. FileName,Modified,NoOfLines etc
+:r file.txt	// read conent of text file into current buffer
+:r ! ls -l	// redirect the output of that command into the buffer
+:r ! ls -l | sort -r
+:wq new_name	// save file as
+:set shell ?	// query current shell used by vim
+:set option ? 	// query value of option
+:set option=value	// to set option
+
+===================.vimrc=============================================
+$ cat ~/.vimrc 
+set nocompatible                " choose no compatibility with legacy vi
+syntax enable
+set encoding=utf-8
+set showcmd                     " display incomplete commands
+filetype plugin indent on       " load file type plugins + indentation
+set history=50
+
+"" Highlight line and column
+"set cursorline
+"set cursorcolumn
+set colorcolumn=120
+
+"" Whitespace
+set nowrap                      " don't wrap lines
+set tabstop=4 shiftwidth=4      " a tab is four spaces , indent also with 4 spaces 
+set expandtab                   " use spaces, not tabs (optional)
+set backspace=indent,eol,start  " backspace through everything in insert mode
+"set autoindent                  " use indentation of previous line
+"set smartindent                 " use intelligent indentation for C
+set textwidth=120               " wrap lines at 120 chars
+
+
+"" Searching
+set hlsearch                    " highlight matches
+set incsearch                   " incremental searching
+set ignorecase                  " searches are case insensitive...
+set smartcase                   " ... unless they contain at least one capital letter
+
+set modeline			" always show status line at the bottom
+set ls=2
+set pastetoggle=<F10>
+
+===================ctags===========================================
+apt-get install exuberant-ctags		// install
+
+// cd to root of src dir then
+ctags -R	// to rebuild taglist
+
+// using ctags vim plugin
+:ta <tag>	// Find a tag. tag could be regex like ":ta /^get" - navigate through fn whose name starts with get,
+:ts <tag>	// Search a tag
+:tn	// Next tag
+:tp	// Previous tag
+:ts	// List all tags
+
+Ctrl-]	Jump to the tag underneath the cursor
+Ctrl-t	Jump back up in the tag stack
+
+:tf – Goto first tag
+:tl – Goto last tag
+
+C-W C-] - Open the definition in a horizontal split
+
+// ~/.vimrc
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+C-\ - Open the definition in a new tab
+A-] - Open the definition in a vertical split
+
+
+===============taglist==============
+cd ~/.vim
+wget -O taglist.zip http://www.vim.org/scripts/download_script.php?src_id=7701
+unzip taglist.zip
+
+$ vim ~/.vimrc
+filetype plugin on
+
+:TlistOpen	// Open window
+:TlistToggle
+
+===============cscope=================
+apt-get install cscope	// install
+
+// For small prj.
+// cd to root of src dir
+cscope -R	// build cscope database. it will include .c, .h, .y and .l files
+
+or 
+// For large prj.
+// generate cscope.files . Reqd to include .cpp .java files or exclude files
+find /home/sachin/dev/cpp/busybox-1.21.1/ -name '*.c' -o -name '*.h' > /home/sachin/dev/cpp/busybox-1.21.1/cscope.files
+// generate cscope database
+cd /home/sachin/dev/cpp/busybox-1.21.1/
+cscope -b -q	// b-just build the database, q-create 'inverted index' file
+		// 
+
+// using cscope browser
+cscope -d	// d-do not update database.
+		// use tab to switch betwen menu and search results and arrow keys to move up/down
+		// Ctrl-D to exit
+
+// using cscope vim plugin
+:version	// vim. check if cscope is in built
+:help cscope
+
+:cs add {file|dir}	// Add cscope database to vim. This establishes a cscope "connection" and makes it available for Vim to use
+:cs show		// Show cscope connections
+:cs find {querytype} {name} 
+		{querytype}
+                0 or s: Find this C symbol                                                                              
+                1 or g: Find this definition                                                                            
+                2 or d: Find functions called by this function                                                          
+                3 or c: Find functions calling this function                                                            
+                4 or t: Find this text string                                                                           
+                6 or e: Find this egrep pattern                                                                         
+                7 or f: Find this file                                                                                  
+                8 or i: Find files #including this file     
+:cs help
+:cs kill {num|partial_name}
+:cs reset	// Reinit all cscope connections. 
+
+:cscope find symbol foo
+:cs f s foo
+:scs 		// split
+
+vim -t tag	// jump to tag
+
+
+Try the same search, but this time via "CTRL-spacebar s". This time, your Vim window will split in two horizontally , and the Cscope search result will be put in the new window. [if you've never used multiple Vim windows before: move between windows via 'CTRL-W w' (or CTRL-W arrow key, or CTRL-W h/j/k/l for left/up/down/right), close a window via 'CTRL-W c' (or good old ':q'), make the current window the only one via 'CTRL-W o', split a window into two via 'CTRL-W s' (or 'CTRL-W v' for a vertical split), open a file in a new window via ':spl[it] filename']
+	
+
+$ vim ~/.vimrc
+
+"" cscope
+if has("cscope")                                                                                                
+        set csprg=/usr/bin/cscope                                                                         
+        set csto=0                                                                                              
+        set cst                                                                                                 
+        set nocsverb                                                                                            
+        " add any database in current directory                                                                 
+        if filereadable("cscope.out")                                                                           
+            cs add cscope.out                                                                                   
+        " else add database pointed to by environment                                                           
+        elseif $CSCOPE_DB != ""                                                                                 
+            cs add $CSCOPE_DB                                                                                   
+        endif                                                                                                   
+        set csverb    
+                                                                                          
+        nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>                                                          
+        nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>                                                          
+        nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>                                                          
+        nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>                                                          
+        nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>                                                          
+        nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>                                                          
+        nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>                                                        
+        nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>         
+
+        " Using 'CTRL-spacebar' then a search type makes the vim window                                                 
+        " split horizontally, with search result displayed in                                                           
+        " the new window.                                                                                               
+                                                                                                                        
+        nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>                                                     
+        nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>                                                     
+        nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>                                                     
+        nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>                                                     
+        nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>                                                     
+        nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>                                                     
+        nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>                                                   
+        nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR> 
+
+        " Hitting CTRL-space *twice* before the search type does a vertical                                             
+        " split instead of a horizontal one                                                                             
+                                                                                                                        
+        nmap <C-Space><C-Space>s                                                                                        
+                \:vert scs find s <C-R>=expand("<cword>")<CR><CR>                                                       
+        nmap <C-Space><C-Space>g                                                                                        
+                \:vert scs find g <C-R>=expand("<cword>")<CR><CR>                                                       
+        nmap <C-Space><C-Space>c                                                                                        
+                \:vert scs find c <C-R>=expand("<cword>")<CR><CR>                                                       
+        nmap <C-Space><C-Space>t                                                                                        
+                \:vert scs find t <C-R>=expand("<cword>")<CR><CR>                                                       
+        nmap <C-Space><C-Space>e                                                                                        
+                \:vert scs find e <C-R>=expand("<cword>")<CR><CR>                                                       
+        nmap <C-Space><C-Space>i                                                                                        
+                \:vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>                                                     
+        nmap <C-Space><C-Space>d                                                                                        
+                \:vert scs find d <C-R>=expand("<cword>")<CR><CR>     
+endif
+
+
+CRefVim : a C-reference manual 
+=====================================
+Downloda and extract http://www.vim.org/scripts/script.php?script_id=614
+
+cp plugin/crefvim.vim ~/.vim/plugin/
+cp doc/crefvimdoc.txt doc/crefvim.txt ~/.vim/doc/
+mkdir -p ~/.vim/after/syntax
+cp after/syntax/help.vim ~/.vim/after/syntax/
+
+\cr 	// get help for word under cursor
+\cw	// prompt for word CRefVim should search for 
+\cc	// table of contents of CRefVim
+:help crefvimdoc 	// To get help 
+:help crefvim		// To show the C-reference manual
+
+===========================================
+http://cscope.sourceforge.net/cscope_vim_tutorial.html
+
+code_complete
+http://www.vim.org/scripts/script.php?script_id=1764
+
+taglist.vim
+http://www.vim.org/scripts/script.php?script_id=273
+
+Using Cscope on large projects 
+http://cscope.sourceforge.net/large_projects.html
+
+Eclipse
+============================================
+- Increase system font size using Tinker Tool
+- Increase overall eclipse font size.
+	Delete following lines from Eclipse4.6.2.app/Contents/Eclipse/eclipse.ini 
+	- Dorg.eclipse.swt.internal.carbon.smallFonts
+	
+- Increase package explorer font
+	Edit and add following
+vim Eclipse4.6.2.app/Contents/Eclipse/plugins/org.eclipse.ui.themes_1.0.1.v20141126-1957/css/e4_default_mac.css
+
+#org-eclipse-jdt-ui-PackageExplorer Tree,
+#org-eclipse-ui-navigator-ProjectExplorer Tree {
+  font-size: 14px; /* <-- Desired font size */
+}
+
+

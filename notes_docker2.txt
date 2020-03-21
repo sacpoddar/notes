@@ -1,0 +1,195 @@
+Docker notes
+===============
+
+https://training.play-with-docker.com/
+https://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+
+Task 1: Run some simple Docker containers
+========================================
+
+
+There are different ways to use containers. These include:
+=================
+1. To run a single task: This could be a shell script or a custom app.
+2. Interactively: This connects you to the container similar to the way you SSH into a remote server.
+3. In the background: For long-running services like websites and databases.
+
+Run a single task in an Alpine Linux container
+============================
+- start a new container and tell it to run the hostname command. Container will then exit.
+	docker container run alpine hostname		// run the hostname command
+- Docker keeps a container running as long as the process it started inside the container is still running
+	docker container ls --all		// List all containers
+- You could build a Docker image that executes a script to configure something. Anyone can execute that task just by running the container
+
+Run an interactive Ubuntu container
+===========================
+- Run an Ubuntu Linux container on top of an Alpine Linux Docker host. 
+- Run a Docker container and access its shell
+	 docker container run --interactive --tty --rm ubuntu bash
+
+	--interactive - says you want an interactive session.
+	--tty - allocates a pseudo-tty.
+	--rm - tells Docker to go ahead and remove the container when it's done executing.
+	We're also telling the container to run bash as its main process (PID 1).
+	When the container starts you'll drop into the bash shell with the default prompt root@<container id>:/#
+- cat /etc/issue will show which Linux distro the container is running	
+- Type exit to leave the shell session. This will terminate the bash process, causing the container to exit
+- check the version of our host VM.
+	 cat /etc/issue
+	 
+- Distribution of Linux inside the container does not need to match the distribution of Linux running on the Docker host
+	- Alpine Linux host can run a Ubuntu container
+- Linux containers require the Docker host to be running a Linux kernel. 
+	Similarly, Windows containers need to run on a Docker host with a Windows kernel.
+- Interactive containers are useful when you are putting together your own image. 
+  You can run a container and verify all the steps you need to deploy your app, and capture them in a Dockerfile.
+- You can commit a container to make an image from it - but you should avoid that wherever possible. It's much better to use a repeatable Dockerfile to build your image.
+
+Run a background MySQL container
+=====================
+
+	docker container run \
+	 --detach \
+	 --name mydb \
+	 -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+	 mysql:latest
+ 
+	--detach will run the container in the background.
+	--name will name it mydb.
+	-e will use an environment variable to specify the root password (NOTE: This should never be done in production).
+
+- As long as the MySQL process is running, Docker will keep the container running in the background.
+- built-in Docker commands- logs and top
+	docker container logs mydb		// logs from the MySQL Docker container.
+	docker container top mydb		// look at the processes running inside the container.
+- Although MySQL is running, it is isolated within the container because no network ports have been published to the host. 
+  Network traffic cannot reach containers from the host unless ports are explicitly published.
+- List the MySQL version using- docker container exec.
+	 docker exec -it mydb \
+	 mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version
+- connect to a new shell process inside an already-running container. 
+	 docker exec -it mydb sh
+	 mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version		// check version
+	 exit				// leave the interactive shell session. 
+	 
+
+Task 2: Package and run a custom app using Docker
+============================================
+
+- Clone sample project
+	git clone https://github.com/dockersamples/linux_tweet_app
+	cd ~/linux_tweet_app
+	cat Dockerfile
+		FROM nginx:latest
+
+		COPY index.html /usr/share/nginx/html
+		COPY linux.png /usr/share/nginx/html
+
+		EXPOSE 80 443     
+
+		CMD ["nginx", "-g", "daemon off;"]
+
+FROM specifies the base image to use as the starting point for this new image you're creating. 
+		For this example we're starting from nginx:latest.
+COPY copies files from the Docker host into the image, at a known location. In this example, COPY is used to copy 
+		two files into the image: index.html. and a graphic that will be used on our webpage.
+EXPOSE documents which ports the application uses. NOTE: EXPOSE instruction does not actually publish the port.
+CMD specifies what command to run when a container is started from the image. 
+		Notice that we can specify the command, as well as run-time arguments.
+	
+- export an environment variable containing your DockerID	
+	export DOCKERID=<your docker id>
+	echo $DOCKERID
+- create a new Docker image
+	docker image build --tag $DOCKERID/linux_tweet_app:1.0 .
+	
+	--tag Image Name and optionally a tag in the 'name:tag' format
+		In this case it's comprised of our DockerID, the application name, and a version. 
+		Having the Docker ID attached to the name will allow us to store it on Docker Hub in a later step
+	. tells Docker to use the current directory as the build context
+- start a new container from the image you created
+	docker container run \
+	--detach \
+	--publish 80:80 \
+	--name linux_tweet_app \
+	$DOCKERID/linux_tweet_app:1.0
+	 
+	--publish - to publish port 80 inside the container onto port 80 on the host. Format is host_port:container_port
+
+- You can access website using http://<host_server>/
+- ungracefully shutdown the container and permanently remove it from the Docker host. Not recommended for prod.
+	docker container rm --force linux_tweet_app
+
+	docker container stop linux_tweet_app			// to gracefully stop the container
+	docker container rm	linux_tweet_app				// to permanently remove it
+
+
+Task 3: Modify a running website
+================================
+
+- mount the source code directory on the host machine into the running container
+- This will allow any changes made to the files on the host to be immediately reflected in the container.
+- We do this using something called a bind mount.
+
+	docker container run \
+	 --detach \
+	 --publish 80:80 \
+	 --name linux_tweet_app \
+	 --mount type=bind,source="$(pwd)",target=/usr/share/nginx/html \
+	 $DOCKERID/linux_tweet_app:1.0
+ 
+	it uses --mount flag to mount the current directory on the host into /usr/share/nginx/html inside the container.
+
+- now if you make changes to html and refresh web page it will show new changes
+	 cp index-new.html index.html
+- Note that this will not modify the docker image. 
+  i.e. if you remove the container and rerun without mount point it will show you old website
+	docker rm --force linux_tweet_app
+
+	docker container run \
+	--detach \
+	--publish 80:80 \
+	--name linux_tweet_app \
+	$DOCKERID/linux_tweet_app:1.0
+	
+Update the image
+================
+
+- To persist the changes you made to the index.html file into the image, you need to build a new version of the image.
+	docker image build --tag $DOCKERID/linux_tweet_app:2.0 .			// Build a new image and tag it as 2.0
+	docker image ls							// list images
+	
+- Run a new container from the new version of the image. To access http://host_name/
+	docker container run \
+	--detach \
+	--publish 80:80 \
+	--name linux_tweet_app \
+	$DOCKERID/linux_tweet_app:2.0
+
+- We can run both versions side by side
+- Run another new container, this time from the old version of the image. To access http://host_name:8080/
+	docker container run \
+	--detach \
+	--publish 8080:80 \
+	--name old_linux_tweet_app \
+	$DOCKERID/linux_tweet_app:1.0
+
+Push your images to Docker Hub
+=============================
+
+- You can push the images to a public repository so you can run them from any Linux machine with Docker.
+- You can build images locally and push them to a public or private registry, making them available to other users
+- Docker Hub is the default public registry for Docker images.
+
+	docker login										// log into Docker Hub
+	docker image push $DOCKERID/linux_tweet_app:1.0		// Push version 1.0 of your web app
+	docker image push $DOCKERID/linux_tweet_app:2.0		// push version 2.0
+	
+- browse to https://hub.docker.com/r/<your docker id>/ and see your newly-pushed Docker images
+- These are public repositories, so anyone can pull the image - you don't even need a Docker ID to pull public images. 
+- Docker Hub also supports private repositories.
+
+
+Application Containerization and Microservice Orchestration
+========================================

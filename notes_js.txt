@@ -1,0 +1,643 @@
+JavaScript Notes
+===================
+
+- JavaScript is a case-sensitive language
+- JavaScript does not consider a block to be a new scope; only functions create a new scope.
+- comments
+	// single line
+	/* 	multi
+		line
+	*/
+- write all your comments as blocks of single-line comments. 
+	This allows you to comment out large segments of code with a multiline comment later.
+
+Assignments and Equality
+-----------
+Lvalue = Rvalue
+
+Lvalues are: variables, array elements, object properties.
+Rvalues can be an arbitrary value of any type, including the value of an expression. 
+Ex-
+var anInteger = 3; 
+
+Expressions
+------------
+- A JavaScript expression value can be of any valid JavaScript type- a number, a string, an object, and so on. 
+The simplest expressions are literals. Ex-
+	3.9                       // numeric literal  
+	"Hello!"                  // string literal  
+	false                     // boolean literal  
+	null                      // literal null value  
+	{x:1, y:2}                // Object literal  
+	[1,2,3]                   // Array literal  
+	function(x){return x*x;}  // function literal  
+- You can combine expressions to create complex expressions using operatorsl like +, -, /, *
+
+Variables
+-----------
+	var count; 				// A single declaration.
+	str1 = "";				// implicit declaration
+	var count, amount, level;		// Multiple declarations      
+	var count = 0, amount = 100;	// declaration and initialization in one statement
+
+- The first character must be an ASCII letter or an _
+	Subsequent characters must be letters, numbers, or underscores (_).
+	variable name must not be a reserved word
+- default value of a variable is "undefined"
+- Better initilize variable with value "null"
+	var age1;
+	var age2 = null;
+	var newAge1 = age1 * 2;
+	var newAge2 = age2 * 2;
+	console.log(newAge1);       // NaN
+	console.log(newAge2);       // 0
+	if(age1 == undefined ) {    // true
+		console.log("age1 == undefined");
+	}
+	if(age1 == null ) {     // true
+		console.log("age1 == null");
+	}
+	if(age1 === null ) {    // false
+		console.log("age1 === null");
+	}
+	console.log(var1);		// ReferenceError: var1 is not defined
+	
+Coercion
+---------
+- JavaScript is a loosely typed language
+- variables have no predetermined type.
+- type of a variable is the type of its value
+- you can perform operations on values of different types
+- JavaScript interpreter implicitly converts, or coerces, one of the data types to that of the other,
+  then performs the operation
+	var x = 2;
+	var y = "sac";
+	var z = true;
+	console.log(x + y); // 2sac     number is coerced to a string
+	console.log(x + z); // 3        Boolean is coerced to a number.
+	console.log(y + z); // sactrue  Boolean is coerced to a string
+	var x1 = "2";
+	if(x == x1) {       // true
+		console.log("x==x1");     // string is automatically converted to number
+	}
+	if(x === x1) {       // false
+		console.log("x===x1");
+	}
+	parseInt(x1);   // To explicitly convert a string to an integer
+	parseFloat(x1); // To explicitly convert a string to a number
+
+Data Types
+-----------
+- Primary (primitive) Data Types
+	String
+	Number
+	Boolean
+
+- Composite (reference) Data Types
+	Object
+	Array
+
+- Special Data Types
+	null
+	undefined
+	
+- String literal example
+	"Hi; there I'm free!"  
+	'"Hi, there!" this is \n multi line.'   
+	"45"  
+	'c'  
+
+- Number data type example
+Integer Values : 8, -5, 0, 0x10F (hex), 012 (octal)
+Floating-point Values : 10.5, 0.5
+
+- In JavaScript, there is no distinction between integer and floating-point values
+- Internally, JavaScript represents all numbers as floating-point values
+- Integer values can be positive whole numbers, negative whole numbers, and 0
+- Floating-point values can be whole numbers with a decimal portion.
+
+Number		Description										Decimal Equivalent
+.0001, 	Four equivalent floating-point numbers.				0.0001
+0.0001, 
+1e-4, 
+1.0e-4	
+3.45e2	A floating-point number.							345
+45		An integer.	45
+0378	An integer. Although this looks like an octal 
+		number (it begins with a zero), 8 is not a valid
+		octal digit, so the number is treated as a decimal.	378
+0377	An octal integer. Notice that although it only 
+		appears to be one less than the number above, its 
+		actual value is quite different.					255
+0.0001	A floating point number. Even though this begins
+		with a zero, it is not an octal number because it
+		has a decimal point.								0.0001
+00.0001	This is an ERROR. The two leading zeros mark the 
+		number as an octal, but octals are not allowed a 
+		decimal component.	N/A (compiler ERROR)
+0Xff	A hexadecimal integer.	255
+0x37CF	A hexadecimal integer.	14287
+0x3e7	A hexadecimal integer. Notice that the 'e' is not 
+		treated as exponentiation.							999
+0x3.45e2	This is an ERROR. Hexadecimal numbers cannot
+		have decimal parts.	N/A (compiler error)
+
+- Additionally, JavaScript contains numbers with special values. These are:
+	- NaN (not a number). This is used when a mathematical operation is performed on inappropriate data, 
+		such as strings or the undefined value
+	- Positive Infinity. This is used when a positive number is too large to represent in JavaScript
+	- Negative Infinity. This is used when a negative number is too large to represent in JavaScript
+	- Positive and Negative 0. JavaScript differentiates between positive and negative zero.
+
+- Boolean type
+	- can have two literal values true or false
+	- Any expression that evaluates to 0, null, undefined, or an empty string is interpreted as false
+	- You can use any expression as a comparative expression.
+	Ex
+		var x=1,y=2,z=3;
+		if (x = y + z) 		// true
+	is different from 
+		if (x == y + z)
+
+- null data type
+	- The null data type has only one value in JavaScript: null
+	- You can erase the contents of a variable (without deleting the variable) by assigning it the null value
+	- null is not the same as 0
+	- typeof operator in JavaScript reports null values as being of type Object, not of type null. For backward comp.
+	
+- undefined data types
+	- The undefined value is returned when you use
+		- a variable that has been declared but not initilized
+		- an object property that does not exist
+	- you can check to see if a variable exists by comparing it to undefined
+	- you can check if type is undefined by comparing the type of the variable to the string "undefined".
+	
+	var x = null;
+	var y;
+	if(x == undefined) {    // true
+		console.log("x == undefined");
+	}
+	if(x === undefined) {   // false
+		console.log("x === undefined");
+	}
+	if(y == undefined) {    // true
+		console.log("y == undefined");
+	}
+	if(y === undefined) {   // true
+		console.log("y === undefined");
+	}
+	
+	if(typeof(y) == undefined ) {   // false NOTE
+		console.log("typeof(y) == undefined");
+	}
+	if(typeof(y) == "undefined" ) {   // true
+		console.log("typeof(y) == \"undefined\"");
+	}
+
+- To find out whether an object property exists, you can use the in operator:
+	if ("prop" in someObject)  
+		// someObject has the property 'prop' 
+
+- Note that some methods like valueOf(), toString() etc are available to all primitive types
+	var a = 2;
+	if( a.valueOf() == 2)    	// true
+		console.log("a.valueOf() == 2");
+	if( a.toString() == "2")    // true
+		console.log("a.toString() == \"2\"");s
+		
+Operators
+----------
+==		Equality. coerce values of different types before checking for equality
+		if("1" == 1)	// true
+===		Strict Equality. Does not coerce values
+		if("1" === 1)	// false
+!==		Strict Inequality
+?:		ternary operator
+delete
+typeof
+void
+instanceof
+new
+in
+
+- Primitive strings, numbers, and Booleans are compared by value. If they have the same value, they are equal.
+- Objects (including Array, Function, String, Number, Boolean, Error, Date and RegExp objects) compare by reference.
+ Even if two variables of these types have the same value, they are equal only if they refer to exactly the same object.
+
+	// Two strings with the same value.  
+	var string1 = "Hello";  
+	var string2 = "Hello";  
+	
+	// Two String objects with the same value.  
+	var StringObject1 = new String(string1);  
+	var StringObject2 = new String(string2);  
+	
+	if (string1 == string2)     // true
+		console.log("string1 == string2 ");  
+	if (string1 === string2)     // true
+		console.log("string1 === string2 ");  
+	
+	if (StringObject1 != StringObject2)     // true. NOTE  
+		console.log("StringObject1 != StringObject2 ");  
+	
+	// To compare the values of String objects, use the toString() or valueOf() methods.  
+	if (StringObject1.valueOf() == StringObject2.valueOf())  // true.
+		console.log("StringObject1.valueOf() == StringObject2.valueOf()");  
+	
+	if (string1 == StringObject1)               // true. NOTE
+		console.log("string1 == StringObject1");
+	if (string1 == StringObject1.valueOf())     // true
+		console.log("string1 == StringObject1.valueOf()");   
+	if (string1 === StringObject1.valueOf())     // true. NOTE
+		console.log("string1 === StringObject1.valueOf()");  
+		
+	if (string1.valueOf() == StringObject1.valueOf())     // true
+		console.log("string1.valueOf() == StringObject1.valueOf()");
+
+Conditional statements
+----------------
+- if()
+- if() else()
+- if() else if()
+- ?:		// ternary operator. var v1 = expr ? expr1 : expr2;
+- switch()
+
+Loops
+-----------
+- while()
+- do while()
+- for()
+- for/in		// to iterate through an array or properties of an object
+- break and continue
+
+	for(var i = 0; i < 5; i++) {    // simple for loop
+		console.log(i);
+	}
+	
+	var arr = [4,5,6];          // Iterate over an array
+	for(var i in arr) {         
+		console.log("i=" + i + " val=" + arr[i]);   // NOTE that i is index
+	}
+	// i=0 val=4
+	// i=1 val=5
+	// i=2 val=6
+	
+	// Create an object with some properties  
+	var emp = new Object();  
+	emp.name = "James";  
+	emp.age = "22";  
+	emp.phone = "1234";  
+	
+	for (var prop in emp)   // Iterate over properties
+	{  
+		// NOTE that prop contains properties e.g. name, age etc  
+		console.log( prop + " = " + emp[prop]);  
+	}
+	// name = James
+	// age = 22
+	// phone = 1234
+
+Functions
+----------
+Ex:
+	function add(a, b) {	// NOTE that parameters does not have a type
+		return a + b;
+	}
+	console.log(add(2, 3));
+	
+	var emp = {
+		name: "sac1",
+		getEmp() {
+			// return name;     // ERROR
+			return this.name;
+		}
+	}
+	console.log(emp.getEmp());	// sac1
+- "this" refers to enclosing scope only. 
+	That means you cannot refer to most outer members within a nested method. 
+- Workaround is to use "self=this"
+	var emp = {
+		name: "sac1",
+		getEmp() {
+			var self = this;    // workaround for accessing outer memberts within nested
+			function log() {
+				console.log("nested: "+ this.name);     // nested: undefined , NOTE this is not visible
+				console.log("nested: "+ self.name);		// nested: sac1
+			}
+			log();
+			return this.name;
+		}
+	}
+	console.log(emp.getEmp());
+
+- Default parameters
+
+	var val = 20;  
+	function f(x, y=10, z=val) {  
+	  return x + y + z;  
+	} 
+	console.log(f(3));          // 33
+	console.log(f(3, 3));       // 26
+	console.log(f(3, 3, 3));    // 9
+
+Arrow function
+-------------
+- a shorthand method of specifying an anonymous function
+- Syntax
+	([arg] [, arg]) => expr 
+	
+	([arg] [, arg]) => {  
+		statements  
+	} 
+- Parentheses are required if no arguments are passed in
+- A single argument to the function does not require parentheses.
+- RHS can be an expression or a block of statements
+- You cannot use the new operator with an arrow function.
+	var sum1 = a => a + 1;      // value of expr is returned
+	console.log("sum1 = " + sum1(1));		// sum1 = 2
+	
+	var sum2 = a =>  { 
+		a = a + 1;
+		return a;       // you may need a return stmt
+	}
+	console.log("sum2 = " + sum2(1));		// sum2 = 2
+	
+	var print = () => console.log("hi there");  // Parentheses are required
+	print();		// hi there
+	
+- Ex2
+	var evens = [2, 4, 6, 8];  
+	
+	// Using standard syntax.  
+	var odds = evens.map(function(v) { return v + 1; });  
+	
+	// Using arrow function syntax.  
+	// Add one to each value to produce output.  
+	var odds = evens.map(v => v + 1);  
+	
+	// The following line of code adds the index value to the passed  
+	// in value to produce output.  
+	// Note: the second argument to the callback function in the map   
+	// method is the index value (i).  
+	var nums = evens.map((v, i) => v + i);  
+	
+	console.log(evens);
+	console.log(odds);  
+	console.log(nums);  
+	
+	nums.forEach( v => {	// iterate through an array
+		console.log(v);
+	});
+	
+- Arrow functions share the same lexical argument object as the surrounding code. E.g. this
+	Eliminating need for "self=this" workaround.
+	
+	var bob = {  
+		_name: "Bob",  
+		_friends: ["Pete", "Joe", "Larry"],  
+		printFriends() {  
+		  this._friends.forEach(f =>  
+			console.log(this._name + " knows " + f));  
+		}  
+	}  
+	bob.printFriends();
+	
+Rest parameters
+---------------
+- Rest parameters allow you to turn consecutive arguments in a function call to an array.
+- Spread operator ... is used to specify rest parameters
+- rest parameter must be the last parameter of the function
+- rest parameter is an actual array instance and therefore supports operations that can be performed on an array.
+- rest parameter includes only the consecutive arguments that are not passed in as separate (named) arguments
+
+function f(x, ...y) {  
+    return x * y.length;  // y is an array. 
+}  
+console.log(f(3, "hello", true));  // 6
+
+
+Objects and Arrays 
+==================
+- JavaScript objects are collections of properties and methods.
+- JavaScript supports four kinds of objects:
+	1. Intrinsic objects, such as Array and String.
+	2. Objects you create.
+	3. Host objects, such as window and document.
+	4. ActiveX objects.
+
+Expando Properties and Methods
+----------------
+- All objects in JavaScript support expando properties and methods, which can be added and removed at run time. 
+- These properties and methods can have any name and can be identified by name or key.
+- You can use object.property to set and get values
+- names of all expando properties in JavaScript are converted to strings before being added to the object.
+	var myObj = new Object();
+	myObj.name = "Fred";
+	myObj.age = 42;
+	myObj.getAge = function () {
+		return this.age;
+	};
+	console.log(myObj.name);        // Fred
+	console.log(myObj.age);         // 42
+	console.log(myObj.getAge());    // 42
+	console.log(myObj);         // { name: 'Fred', age: 42, getAge: [Function] }
+
+- if property name is not a valid identifier( contains number, space or special char) use [] to specify property
+	var myObj2 = new Object();  
+	// cannot be written in the object.property syntax.
+	myObj2["not a valid identifier"] = "property value";  
+	// cannot be written in the object.property syntax.
+	myObj2[100] = "100"; 
+	
+	console.log(myObj2["not a valid identifier"]);		// property value
+	console.log(myObj2[100]);							// 100
+	console.log(myObj2);			// { '100': '100', 'not a valid identifier': 'property value' }
+
+Arrays as Objects
+------------
+- arrays are merely a special kind of object. 
+- Both objects and arrays can have properties and methods.
+- Arrays have a length property but objects do not. 
+- length property is automatically increased, if you assign a value at index higher than lengh
+	i.e. Arrays in JavaScript are sparse.
+- If you make the length property smaller, elements whose index is outside the length of the array are deleted.
+	var arr = new Array(2);  
+	arr[0] = "Hello";
+	arr[1] = 42;
+	console.log(arr.length + " : " + arr);    // 2 : Hello,42
+	arr[4] = "there";			// length property is automatically increased
+	console.log(arr.length + " : " + arr);    // 5 : Hello,42,,,there
+	arr.length = 3;				// elements outside the length are deleted
+	console.log(arr.length + " : " + arr);    // 3 : Hello,42,
+	
+	// iterate
+	arr.forEach(function(item){
+		console.log("item " + item);
+	});
+
+- JavaScript does not directly support multi-dimensional arrays
+- but you can get the behavior of multi-dimensional arrays by storing arrays within the elements of another array
+
+	// multidimentional array
+	var arr2d = new Array(2);
+	for(var i = 0; i< 2; i++) {
+		arr2d[i] = new Array(2);
+	}
+	for(var i = 0; i < 2; i++) {
+		for(var j = 0; j < 2; j++) {
+			arr2d[i][j] = i + j;
+		}
+	}
+	console.log(arr2d);			// [ [ 0, 1 ], [ 1, 2 ] ]
+
+Intrinsic Objects
+----------------
+- Following intrinsic (or "built-in") objects are supported
+	Array, Boolean, Date, Error, Function, Global, JSON, Math, Number, Object, RegExp, and String
+- Array Object
+	var arr = new Array("Jan","Feb","Mar");		// using new
+	arr[3]="Apr";
+	arr.forEach(function(item) {
+		console.log(item);
+	});
+	console.log(arr.length);	// 4 length property
+	
+	var arr2 = ["Apr","May","Jun"];				// using array literal notation
+	arr2[3]="Jul";
+	console.log(arr2.length);	// 4
+- String Object
+	var str = "012345";
+	console.log(str.substring(2,4));    
+	console.log(str.length );        // 6 length property
+- Math Object
+	var r = 3;
+	console.log(Math.pow(3,2));   // 9
+- Date Object
+	var date = new Date();					// current date and time in UTC
+	console.log(date);              // 2017-10-02T09:17:04.603Z		(ISO Date format)
+	console.log(date.toString());   // Mon Oct 02 2017 14:47:04 GMT+0530 (IST)
+	console.log("day " + date.getDay());        // day of the week  1	NOTE: Week starts at 0
+	console.log("date " + date.getDate());      // day-of-the-month 2
+	console.log("month " + date.getMonth());    // month    9			NOTE: Month starts at 0
+	console.log("year " + date.getFullYear());  // year     2017
+	console.log("time " + date.getTime());      // time in millisec
+	
+- You construct Date objects either with Date(dateStr) or with Date.parse(dateStr)
+- A string that contains an invalid date returns NaN
+- It first tries to parse a date string by using the ISO Date Format. YYYY-MM-DDTHH:mm:ss.sssZ
+	- T specifies the start of a time.
+	- JavaScript supports all standard time zones
+	- The ISO format does not support time zone names. 
+	- You can use the Z position to specify an offset from UTC time. 
+	- If you do not include a value in the Z position, UTC time is used.
+- If date is not in ISO format, it tries to parse the date by using other Other Date Formats.
+	var date = new Date();
+	console.log("Local date: " + date.toLocaleDateString());     // 10/2/2017
+	console.log("Local time: " + date.toLocaleTimeString());     // 2:47:04 PM
+	console.log("Local str: " + date.toLocaleString());          // 10/2/2017, 2:47:04 PM
+	
+	var dtInMilliSec = Date.parse("2017-09-24T13:15:39.913+05:30");	// NOTE: returned time is in millisec
+	var dt = new Date(dtInMilliSec);
+	console.log(dt);            // 2017-09-24T07:45:39.913Z
+	console.log(dt.toString()); // Sun Sep 24 2017 13:15:39 GMT+0530 (IST)
+	
+	var dt1 = new Date('8/24/2009');		// same as "8-24-2009", "August 24, 2009", or "24 Aug 2009"
+	console.log(dt1);               // 2009-08-23T18:30:00.000Z
+	console.log(dt1.toString());    // Mon Aug 24 2009 00:00:00 GMT+0530 (IST)
+	console.log(dt1.getDate());     // 24
+	
+	var dt2 = new Date('2017-09-24T13:15:39Z');	// 2017-09-24T13:15:39.000Z
+	var dt3 = new Date('8/24/2009 14:52:10');   // Mon Aug 24 2009 14:52:10 GMT+0530 (IST)
+	var dt4 = new Date(2009, 7, 24, 14, 52, 10); // Mon Aug 24 2009 14:52:10 GMT+0530 (IST)
+	
+	var dt5 = new Date();       
+	console.log(dt5);           // 2017-09-30T15:31:02.892Z
+	// there is not setDay()
+	dt5.setDate( 2);
+	dt5.setMonth( 2);
+	dt5.setFullYear(2012);
+	dt5.setHours(2,2,2,2);
+	console.log(dt5);           // 2012-03-01T20:32:02.002Z		// NOTE: Why date is 1?
+	console.log(dt5.getDate());	// 2
+	
+	// comparing dates
+	var d1 = new Date();
+	var d2 = new Date();
+	if( d1 == d2 ) {			// false, as d1 and d2 are Objects
+		console.log("d1 == d2");
+	}
+	if( d1.getTime() == d2.getTime() ) {	// true
+		console.log("d1.getTime() == d2.getTime()");
+	}
+	
+- Number Object
+	Number.MAX_VALUE	Largest possible number, about 1.79E+308; can be positive or negative. 
+						(Value varies slightly from system to system.)
+	Number.MIN_VALUE	Smallest possible number, about 5.00E-324; can be positive or negative. 
+						(Value varies slightly from system to system.)
+	Number.NaN			Special nonnumeric value, "not a number."
+	Number.POSITIVE_INFINITY	Any positive value larger than the largest positive number (Number.MAX_VALUE) 
+						is automatically converted to this value; represented as infinity.
+	Number.NEGATIVE_INFINITY	Any value more negative than the largest negative number (-Number.MAX_VALUE)
+						is automatically converted to this value; represented as -infinity.
+	
+- An attempt to parse a string that cannot be parsed as a number returns Number.NaN
+- NaN is not equal to any number
+- NaN is not equal to itself. if(Number.NaN == Number.NaN) will return false
+- To test for a NaN use Number.isNaN() function
+	var n1 = Number.parseInt("one");
+	if(Number.isNaN(n1)) {
+		console.log("n1 is not a number");
+	}
+	
+- JSON Object
+	JSON is a lightweight data-interchange format based on a subset of the object literal notation of 
+	the JavaScript language.
+	JSON.stringify() -  serializes objects and arrays into JSON text. 
+	JSON.parse() - de-serializes JSON text to produce in-memory objects.
+	
+	var empStr = '{ "name": "sac1", "age": 32}';
+	var obj = JSON.parse(empStr);           // string to JSON
+	console.log("name: " + obj.name);       // sac1
+	var emp = { name: "sac2", age: 32};
+	var empStr2 = JSON.stringify(emp);      // JSON to string
+	console.log(empStr2);					// {"name":"sac2","age":32}
+	
+Creating Objects
+----------------
+	// instantiate an Object
+	const emp = new Object();  
+	emp.name = "James";  
+	emp.age = "22";  
+	emp.getName = function() {
+		return this.name;
+	};
+	console.log(emp.getName() + " " + emp.age);
+	
+	// object literal notation 
+	const emp1 = {
+		name: "James", 
+		age: 22,
+		getName : function() {
+			return this.name;
+		},
+		setName : function(name) {
+			this.name = name;
+		},
+	}
+	emp1.setName("sac");
+	emp1.age = 32;
+	console.log(emp1.getName() + " " + emp1.age);
+	
+Displaying Text in a Webpage 
+-----------------
+- textContent property
+	- Recommended way to get/set text
+	- might include text content from the node's children.
+- innerText
+	- Setting these properties affects only the text in the element itself, not in its children. 
+	- doesn't work in all browsers. Avoid it for reasons of compatibility.
+- innerHTML
+	- Setting these properties affects only the text in the element itself, not in its children.
+	- gets and sets both nested nodes and text
+	- If it isn't secured, it could be used for script-injection attacks.

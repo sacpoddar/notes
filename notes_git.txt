@@ -1,0 +1,486 @@
+Git notes
+===========
+
+Tips on commit message
+----------------------
+- Closing issue on commit
+	By prefacing your commit message with "Fixes", "Fixed", "Fix", "Closes", "Closed", or "Close" 
+	when the commit is merged into master, it will also automatically close the issue.
+	e.g Fixed #7 Implemented DB service
+- Reference another issue in same repo
+	#<issue_number>
+- Reference another issue in different repo
+	<org>/<repo>#<issue_number>
+	sac-poddar/bookstore#6
+- Reference another commit in issue comment
+	commit-sha
+	<org>/<repo>@<commit-sha>
+	
+https://guides.github.com/features/issues/
+https://github.com/tiimgreen/github-cheat-sheet#closing-issues-via-commit-messages
+https://help.github.com/articles/closing-issues-using-keywords/
+
+git config --global http.proxy http://<proxy_server>:8080
+
+Advantage over svn
+1. distributed
+2. keeps all data locally. file history etc
+3. Can work offline. Most of operation are local
+
+Concepts
+- git repository is stored on local machine
+- must checkout from repository into working dir to edit
+- must commit from working dir into repository
+- files are stored in git repository in compressed format
+- 
+	working dir  <--> staging area  <-->  local git repository
+		  <-------checkout proj----------------<
+		  >----stage files--->
+							>-------commit----->
+
+Git configuration
+- git config -l		// list all config
+- git config --global user.name sachin
+- git config --global user.email spoddar@gmail.com
+
+Git init
+- initialize a new empty repository or
+- convert an existing, unversioned project to a Git repository
+- Most other Git commands are not available outside of an initialized repository.
+git init			// creates a fresh repository in the current directory
+
+Different ways to start project
+- create a new project from scratch or from existing code	// git init
+- clone an existing git project								// git clone
+
+create a new project from scratch/existing code
+------------------
+cd FirstProj
+echo "# First Project" >> README.md
+git init
+git add README.md		// add file to staging area. i.e. add file to index
+git commit -m "first commit"		// commit all staged files
+git remote add origin https://github.com/sac-poddar/repo2.git		// add remote repo. Assuming repo2 exists
+git push -u origin master					// push local changes in local-master to remote origin/master
+
+- "origin" is the repository you cloned your repository from 
+- "master" is just the name of the default branch
+- "master" means local master branch. "origin" or "origin/master" means remote master branch
+
+clone an existing git project
+------------------
+git clone https://github.com/sac-poddar/MyProj.git
+cd MyProj
+
+Git commands
+=============
+git status
+git add file1.java			// Add file contents to the index i.e. staging area
+git add . 					// add all files in staging area
+git commit -m "commit message" file1.java	// commit file in local repository. This will commit unstaged changes too
+git commit -m "commit message"		// commit all staged files
+git commit -am "commit message"		// add all "unstaged" files and commit. Does NOT commit "Untracked" files.
+git push -u origin master			// push "master" branch to remote repository "origin"
+git push --all origin				// push all branch to remote repository "origin"
+
+git log
+git log -n 3	// display last three commit
+git log --oneline		// display one line from each commit. "sha  commit-message"
+git log --graph --oneline	// Shows graph nodes
+git log --oneline 3
+git log --author="pattern"
+git log --grep="pattern"
+git log --since="20-04-2016"
+git log --until="20-04-2016"
+git log file	// commit history for specific file
+
+- Fig 1
+												master			origin/master
+												(local master)
+	working dir  <--> staging area  <-->  local git repository   <--->  remote repository
+		  <------------------------clone---------<-------------------------------<
+		  >----stage files--->
+							>-------commit----->
+												>----------Push----------------->
+												<----------fetch----------------<
+		  <------------------------pull (merge)---------<------------------------<
+		  <---checkout----<-----------------------<
+		  
+	clone - get all code from remote repo
+	fetch - fetch updates from remote repo
+	pull - fetch updates from remote and merge changes into local
+	push - push all changes committed in local repo (master or branch) into remote repo
+	checkout - overwrite local unstaged changes. This does NOT remove untracked files
+
+-Fig 2
+	working tree  <---------> index area  <-->  local git repository   <--->  remote repository
+	(working dir)			(staging area)		committed files/changes		visible to other developers
+	Untracked files
+	Unstaged changes
+
+git diff 			// diff between staging area and working dir
+git diff master		// diff between master and working dir. Same as- git diff HEAD
+git diff origin		// diff between origin/master and working dir. Same as- git diff origin/master 
+git diff origin master 	// diff between origin/master and master. Same as- git diff origin/master master
+git diff commitSHA^ commitSHA // difference between this commit and previous commit
+
+git show commitSHA		// shows what went into that commit
+
+git clean -df		// Remove untracked (new) files and dir from the working dir. Does NOT revert unstaged changes
+git checkout file1.java		// checkout index file. revert all unstaged changes (modified files).
+git checkout -- .			// checkout all index files. revert all unstaged changes. Does NOT remove untracked files 
+							// -- tells the following parameter is path
+
+git reset			// revert changes in staging area. Does NOT impacts working tree changes
+git reset --hard	// revert changes in staging area and working tree. Does NOT remove untracked files 
+git reset --hard origin/master		// revert all local commits, changes in staging area and working tree.
+									// Does NOT remove untracked files
+git reset --hard origin/repo1br1	// reset branch repo1br1
+
+git reset <sha>		// revert all changes till sha in local repo to remote repo. Leave the working dir unchanged
+					// reverts local commit history too
+git reset --hard <sha>			// revert all changes and reset worspace to commit <sha>
+
+git branch -v		// list all branches
+git remote -v		// list all remote
+
+git rm file1.txt	// remove file from working dir. Commit changes to remove it from staging
+git rm bin/ -r -f	// remove dir
+git checkout <sha>	// switch to specific commit
+git checkout master	// switch to master branch
+git revert <sha>	// revert committed snapshot. This will add a new commit in project history
+					// useful to revert a bug fix. 
+
+git mv file1.txt file2.txt	// rename file
+
+
+Git branching and rebasing
+===========
+- Branch is like a separate thread
+
+When to create branch
+- for fixing defect
+- For feature impl
+
+- All branch operation are local
+
+git checkout master		// we are on master
+git branch bug123		// create branch
+
+git checkout -b bug123	// switch to branch
+git commit				// commit bug fix in branch. local
+git rebase master		// take updates from master
+
+git checkout master 	// switch to master branch
+git merge bug123		// merge branch123 to master
+git branch -d bug123	// delete branch
+git branch 				// list all branches
+
+git branch -m bug123 bug456		// rename branch
+git checkout -b bug123	<sha>	// recover a deleted branch. You can get sha from master log
+
+Tagging
+=========
+tag is a
+- marker label indicating snapshot of branch(or master branch) at particular time.
+- used to mark release points (internal release and external GA etc)
+ 
+git tag					// list all tags
+git tag -l "v1.2*"		// list tag with specific pattern
+git tag v2.0 -m "Release 2.0"	// create tag with message
+git tag -a v2.0 		// create tag and opens default editor for longer message
+git checkout v2.0		// switch to tag v2.0
+
+Stashing
+=========
+- Provide a temporary storage to save half done work
+ E.g. you are working on a feature branch and you got a high priority defect
+
+git stash			// saves working dir to stash
+git stash list		// show all stash
+git stash apply		// reapply recent stash
+git stash apply	<stash_name>	// apply given stash on current working dir
+
+Git server
+==========
+Remote git repository 
+- hosted on a server
+- allows you to share code with others
+- runs same git software + additional collaboration software
+
+why to use central git repository server?
+- Makes it easier to share code with others
+
+- GitHub is a code hosting platform for version control and collaboration
+
+git clone https://github.com/sacp/MyProj.git			// get a copy of remote repo and create local-master
+
+pull and push process-
+====================
+git checkout master		// switch to local-master
+git fetch origin		// updates origin/master from remote
+git pull origin			// merges updates from origin/master into local-master
+git checkout bug123		// switch to branch
+git rebase master		// take updates from local-master into branch
+git checkout master		// switch to local-masters
+git merge bug123		// merge into local-master
+git push -u origin master	// push local-master updates to origin-master. publish changes
+
+- Git requires you to merge locally and then push the results
+- Git will reject push if newer changes exists on remote
+
+git branch -a			// list local and remote branches
+git remote rename old_name new_name		// rename remove branch
+git remote rm branch_name				// remove remote branch
+
+-  You local copy of "origin" will never know updates committed by other developers in repo.
+	So "git diff origin" may not show you correct diff.
+   Use "git pull origin" first to update local code then use git diff
+- 
+
+Merging conflicts 
+================
+You are working on master, added line5 in file1.txt and committed change in master
+At the same time other person also added line5 in file1.txt and pushed change to origin/master
+
+git diff master		// no diff
+git diff origin		// no diff. But actually there is
+
+git fetch origin	// updates origin/master
+git diff origin		// now this will show diff
+
+git diff 			// diff between staging area and working dir
+git diff master		// diff between master and working dir
+git diff origin		// diff between origin and working dir
+git diff origin master 	// diff between origin and master
+
+git pull origin		// merges updates from origin/master into local-master
+					// If Automatic merge fails it will list down conflicting files
+					// manually edit all conflicting files and resolve conflicts by using "git add"
+
+vim file1.txt			// manually edit file and reolved conflict					
+git add file1.txt		// mark conflicting files as resolved
+git commit -m "merged file1.txt manually"	// conclude merge
+
+git push -u origin master	// push all changes to origin
+
+
+working with branch
+===============
+- assuming we are on master branch
+git branch repo1br1		// create branch repo1br1 from master
+git checkout repo1br1	// switch to branch repo1br1
+git remote -v
+	origin	https://github.com/sac-poddar/repo1.git (fetch)
+	origin	https://github.com/sac-poddar/repo1.git (push)
+git push -u origin repo1br1		// push branch to origin. Now it will be visible to others
+
+- make some change in local file1.txt and commit. Also, make some change in remote repo's file1.txt and commit
+
+git fetch origin			// update all origin branches cloned locally
+git diff origin/master		// diff between origin/master and current branch i.e. repo1br1. Same as- git diff origin
+git diff origin/repo1br1	// diff between origin/repo1br1 and current branch i.e. repo1br1
+
+git branch -v
+	  master   fe36f27 Merge branch 'master' of https://github.com/sac-poddar/repo1
+	  * repo1br1 cf0815d [ahead 1, behind 1] repo1 branch1 comment
+
+git status -v
+	On branch repo1br1
+	Your branch and 'origin/repo1br1' have diverged,
+	and have 1 and 1 different commit each, respectively.
+	  (use "git pull" to merge the remote branch into yours)
+	nothing to commit, working directory clean
+
+git pull origin			// it knows it need to pull from origin/repo1br1.
+						// This will also merge changes if reqired. 
+						// It will list all conflicting files that cannot be auto-merged
+
+vim file1.txt			// manually edit conflicting file and reolved conflict					
+git add file1.txt		// mark conflicting files as resolved
+git diff origin/repo1br1					// review changes
+git commit -m "merged file1.txt manually"	// conclude merge
+
+git branch -v
+	  master   fe36f27 Merge branch 'master' of https://github.com/sac-poddar/repo1
+	  * repo1br1 4eb548a [ahead 2] merged README.md manually
+
+git push -u origin repo1br1		// push changes to remote repo
+
+
+merging branch into master
+=====================
+git fetch origin			// update all origin branches
+git branch -v
+	  master   fe36f27 [behind 1] Merge branch 'master' of https://github.com/sac-poddar/repo1
+	  * repo1br1 4eb548a merged README.md manually
+
+git checkout master		// update master
+git pull origin
+
+git checkout repo1br1	// switch to repo1br1
+git pull origin
+git diff origin/repo1br1	// make sure there are no changes to commit in repo1br1
+
+git diff origin/master		// review rebase changes. Changes that we need to pull from origin/master
+
+git rebase master
+	First, rewinding head to replay your work on top of it...
+	Applying: repo1 branch1 comment
+	Applying: Update README.md
+	Using index info to reconstruct a base tree...
+	M	README.md
+	Falling back to patching base and 3-way merge...
+	Auto-merging README.md
+	CONFLICT (content): Merge conflict in README.md
+	Failed to merge in the changes.
+	Patch failed at 0002 Update README.md
+	The copy of the patch that failed is found in:
+	   /Users/sachin/dev/repo1/.git/rebase-apply/patch
+	
+	When you have resolved this problem, run "git rebase --continue".
+	If you prefer to skip this patch, run "git rebase --skip" instead.
+	To check out the original branch and stop rebasing, run "git rebase --abort".
+
+vim README.md			// manually reolve conflict
+git add README.md		// mark conflicting files as resolved
+git rebase --continue
+
+git rebase --skip	// to skip patch, you do not want to apply
+
+git diff origin/master		// review merged changes
+git push -u origin repo1br1	// push changes to repo1br1
+
+git checkout master		// switch to master
+git merge repo1br1		// merge repo1br1 into master
+
+git push -u origin master	// push changes to remote repo origin/master
+
+Workflow
+===========
+Centralized Workflow
+	- default development branch is master.
+Feature Branch Workflow
+	- master - stable branch
+	- feature - a new a feature branch for each development task
+		feature branch will be merged to master
+Gitflow Workflow
+	master
+	development
+	feature
+	release_v1.0.0
+Forking Workflow
+	- fork master. this is different than branching. not authorized collaborator
+	- pull request
+	- open source
+
+centralized Workflow
+========
+git status # View the state of the repo
+git add <some-file> # Stage a file
+git commit # Commit a file</some-file>
+
+git push origin master
+// origin is the remote connection to the central repository that Git created when you cloned it
+// master argument tells Git to try to make the origin’s master branch look like your local master branch
+
+rebase on top of others commits. resolving conflicts
+--------
+git pull --rebase origin master
+
+git add <some-file>		// stage manually merged files 
+git rebase --continue
+
+git rebase --abort
+
+git push origin master
+
+
+Feature Branch Workflow
+=========
+- all feature development should take place in a dedicated branch instead of the master branch
+- Advantage - master branch will never contain broken code. Reqd. for continuous integration environments
+- creating branch and pull request - Good for code review and discussion
+
+- create a new branch every time they start work on a new feature. 
+- Feature branches should have descriptive names, like animated-menu-items or issue-#1061. 
+- The idea is to give a clear, highly-focused purpose to each branch.
+- Also, a convenient way to back up everybody’s local commits.
+- commit and push changes to feature branch and create a pull request, asking moderator to merge their additions into master
+- moderator can review the changes before they become a part of the main codebase.
+
+- Pull requests can be facilitated by product repository management solutions like github GUI
+
+git checkout -b marys-feature master		// checks out a branch called marys-feature based on master
+
+git status
+git add <some-file>
+git commit
+
+git push -u origin marys-feature
+// pushes marys-feature to the central repository (origin), and the -u flag adds it as a remote tracking branch. 
+
+// some more changes then
+git push
+
+// files the pull request in her Git GUI asking to merge marys-feature into master, and team members will be notified automatically.
+- The great thing about pull requests is that they show comments right next to their related commits, 
+	so it's easy to ask questions about specific changesets.
+- Other developers can pull marys-feature into his local repository and work on it on his own. 
+	Any commits they added would also show up in the pull request.
+	
+- Once moderator is ready to accept the pull request, someone needs to merge the feature into the stable project 
+	(this can be done by either moderator or developer working on feature branch)
+	
+git checkout master		// switch to master branch
+git pull				// update master
+git pull origin marys-feature	// merge marys-feature into origin/master
+git push 
+
+- you can also rebase the feature onto the tip of master before executing the merge, resulting in a fast-forward merge.
+	this creates linear history
+	
+
+Gitflow Workflow
+==============
+- uses individual branches for preparing, maintaining, and recording releases
+- defines a strict branching model designed around the project release
+- provides a robust framework for managing larger projects
+- good for handling multiple releases in parallel
+
+-  this workflow uses four branches
+	master branch stores the official release history,
+	develop branch serves as an integration branch for features
+	release branch to prepare releases. polishing the release
+	maintenance branch to quickly patch production releases
+	
+- based on releases tag master v1.2.1, v1.2.3
+- feature branches use develop as their parent branch. 
+	When a feature is complete, it gets merged back into develop.
+- Using a dedicated branch to prepare releases makes it possible for one team to polish the current release
+	while another team continues working on features for the next release.
+
+- Maintenance or “hotfix” branches are used to quickly patch production releases. 
+- This is the only branch that should fork directly off of master.
+- As soon as the fix is complete, it should be merged into both master and develop (or the current release branch), 
+	and master should be tagged with an updated version number
+	
+https://guides.github.com/features/mastering-markdown/
+
+Code blocks
+==============
+```
+if(condition)
+	return x; 
+```
+
+Syntax highlighting code block
+================
+```java						// sql, python etc
+if(condition)
+	return x; 
+```
+
+To get the GitHub (MD5) fingerprint format with newer versions of ssh-keygen, 
+==============================
+ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub

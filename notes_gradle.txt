@@ -1,0 +1,54 @@
+Gradle
+===========
+
+1. install gradle binary and add GRADLE_HOME/bin to PATH
+2. install buildship gradle eclispe plugin. Eclipse 4.7.0 has buildship preinstalled
+
+// install wrapper into your proj. Generate gradlew and gradle/wrapper/gradle-wrapper.jar
+gradle wrapper --gradle-version 4.1
+./gradle init --type basic			// genarate basic settings.gradle build.gradle etc
+./gradle init --type java-library	// Uses the "java" plugin to produce a library Jar
+									// create java project dir structure, build.gradle etc. 
+./gradlew init --type java-application
+
+-----------build.gradle-----------
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+webAppDirName= 'WebContent'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile group:'org.apache.logging.log4j', name:'log4j-api', version:'2.8.2'
+    compile group:'org.apache.logging.log4j', name:'log4j-core', version:'2.8.2'
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.25.1'
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+
+    // compile 'org.slf4j:slf4j-api:1.7.25'
+
+    testCompile 'junit:junit:4.12'
+}
+-----------------------------------
+
+gradlew eclipse		// generate eclipse .project file
+gradlew tasks		// list all tasks
+gradlew war			// package war
+gradlew build		// Assembles and tests this project
+gradle help --task init
+
+- Proj directory structure
+src/main/java
+src/main/resources
+src/test/java
+src/test/resources
+WebContent/WEB-INF/
+
+- Commit following gradle files in git
+gradle/
+build.gradle
+gradlew
+gradlew.bat
+settings.gradle

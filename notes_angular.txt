@@ -1,0 +1,25 @@
+Angular
+=======
+
+https://angular.io/start
+
+Setup
+-----
+1. Install Node JS 
+	https://nodejs.org/en/
+ - or
+	npm install -g npm stable	// upgrade npm
+	npm install -g node@12.16.1	// upgrade node to a specific LTS
+2. Install the Angular CLI
+	npm install -g @angular/cli
+	npm link @angular/cli			// required in gitbash so that npm knows where ng is
+3. Create a workspace and initial application
+	ng new my-app
+4. Run the application
+	cd my-app
+	ng serve --open		// on npm start
+	
+- Generate
+	ng generate component component-name
+	ng generate service service-name
+	
