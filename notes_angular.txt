@@ -18,8 +18,50 @@ Setup
 4. Run the application
 	cd my-app
 	ng serve --open		// on npm start
+5. build
+	ng build --prod		// or npm run-script build --prod
 	
 - Generate
 	ng generate component component-name
 	ng generate service service-name
 	
+SOP: same-origin policy
+-------------
+  A web browser allows scripts contained in a first web page to access data in a second web page, only if both web pages have the same origin.
+- An origin is defined as a combination of URI scheme, host name, and port number. 
+- This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page through that page's Document Object Model.
+
+CORS: Cross-Origin Resource Sharing
+-------------
+- technique for relaxing the same-origin policy
+- This standard extends HTTP with a new Origin request header and a new Access-Control-Allow-Origin response header.
+- It allows servers to use a header to explicitly list origins that may request a file or to use a wildcard and allow a file to be requested by any site. 
+
+E.g.  Client(Angular) ---> Server (Python REST)
+
+On server
+1. pip install -U flask-cors		// install flask-cors
+2. In server.py
+  app = Flask(__name__)
+  CORS(app)					// allow CORS on all path
+
+===============
+
+- Angular is an app-design framework and development platform for building  single-page apps.
+- Five common features of Angular's template syntax:
+	*ngFor
+	*ngIf
+	Interpolation {{ }}			// lets you render the property value as text
+	Property binding [ ]
+	Event binding ( )
+
+- Components:  Define areas of responsibility in the user interface, or UI, that let you reuse sets of UI functionality. 
+- A component consists of three things:
+	A component class. ( *.component.ts)
+	An HTML template. (*.component.html)
+	Component-specific styles. (*.component.css)
+- Routing: Angular Router enables you to show different components and data to the user based on where the user is in the application. 
+	The router enables navigation from one view to the next as users perform tasks such as clicking links on the page to navigate to a new page
+- Services:  A service is an instance of a class that you can make available to any part of your application using Angular's dependency injection system.
+	Services are the place where you share data between parts of your application.
+
