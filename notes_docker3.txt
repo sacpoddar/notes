@@ -283,7 +283,8 @@ $ ls k8s/
 client-cluster-ip-service.yaml  postgres-cluster-ip-service.yaml  redis-cluster-ip-service.yaml  server-cluster-ip-service.yaml  worker-deployment.yaml
 client-deployment.yaml          postgres-deployment.yaml          redis-deployment.yaml          server-deployment.yaml
 
-kubectl apply -f k8s			// apply all config files in dir
+kubectl apply -f k8s/			// apply all config files in dir
+kubectl delete -f k8s/			// delete all objects created by this config
 kubectl get pods
 kubectl get services
 kubectl logs <pod-name>
