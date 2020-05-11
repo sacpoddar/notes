@@ -1,0 +1,18 @@
+HTML5 and CSS3
+==============
+
+
+CSS
+====
+- CSS inheritance- Child element inherits the properties from parent element. Child can override CSS
+
+Colors
+-------
+- #RRGGBB
+	Range- 0 to 255 (hex 0 to hex ff)
+	#ff0000 - Red
+	#00ff00 - Green
+
+- Color with transparency
+	rgba(29, 167, 23, 0.75)	
+	
