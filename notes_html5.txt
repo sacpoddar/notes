@@ -1,9 +1,14 @@
 HTML5 and CSS3
 ==============
 
+- All the HTML elements can be categorized into two categories Block Level Elements and Inline Elements.
+- Block elements appear on the screen as if they have a line break before and after them. 
+ <p>, <div>, <h1>, <ul>, <ol>, <dl>, <pre>, <hr />, <blockquote>, and <address> 
+- Inline elements, can appear within sentences and do not have to appear on a new line of their own. 
+ <b>, <i>, <u>, <em>, <strong>, <sup>, <sub>, <big>, <small>, <li>, <ins>, <del>, <code>, <cite>, <dfn>,<kbd>, <var>
 
 CSS
-====
+-------
 - CSS inheritance- Child element inherits the properties from parent element. Child can override CSS
 
 Colors
@@ -16,3 +21,101 @@ Colors
 - Color with transparency
 	rgba(29, 167, 23, 0.75)	
 	
+CSS Box model
+-------------
+content area > padding > border > margin
+
+CSS selectors
+------------- 
+- CSS selectors are used to "find" (or select) the HTML elements you want to style.
+- Types
+Simple selectors (select elements based on name, id, class)
+Combinator selectors (select elements based on a specific relationship between them)
+Pseudo-class selectors (select elements based on a certain state)
+Pseudo-elements selectors (select and style a part of an element)
+Attribute selectors (select elements based on an attribute or attribute value)
+
+h1 { color: red; }				/* element selector */
+para1# { color: red; }			/* id selector */
+.container { width: 1140px; }	/* class selector */
+* {	margin: 0;}					/* universal selector. select all */
+h1, h2, p { color: red; }		/* grouping selector. select all h1, h2, p */
+
+CSS example
+------------
+* {								/* style to apply on all */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;		/* Include padding and border in the element's total width and height */
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+body {			/* apply on body and everything inside it- inheritance */
+    font-family: Helvetica Neue, Arial;
+    font-size: 18px;
+}
+
+h1, h2 {		/* common for all h1 and h2 tags */
+    color: #00960b;
+}
+
+h1 {			/* specific to all h1 tags */
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.main-text {	/* apply on all tags with class main-text */
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 1140px;
+    margin: 20px auto 0 auto;		/* top right bottom left */
+}									/* auto- browser calculates the margin */
+									/* inherit - margin should be inherited from the parent element */
+.blog-post {
+    width: 75%;
+    float: left;			/* specifies how an element should float. left or right */
+    padding-right: 30px;
+    position: relative;
+}
+
+.author-box {
+    padding-top: 20px;
+    border-top: 1px solid #808080;
+}
+
+.author-box img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;		/* circle */
+    float: left;			/* float property is used to put block elements side-by-side */
+}
+
+.blog-post img {		/* only apply to all img tag inside element with blog-post class */
+    height: 150px;
+    width: auto;
+}
+
+.date {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
+
+- position values
+	static	- default. positioned according to the normal flow of the page
+			- not affected by the top, bottom, left, and right properties.
+	relative- positioned relative to its normal position
+	fixed	- positioned relative to the viewport. stays in the same place even if the page is scrolled.
+	absolute- positioned relative to the nearest positioned ancestor
+	sticky	- positioned based on the user's scroll position
+			- toggles between relative and fixed, depending on the scroll position
+
+			
