@@ -167,7 +167,7 @@ When to create branch
 git checkout master		// we are on master
 git branch bug123		// create branch
 
-git checkout -b bug123	// switch to branch
+git checkout bug123	// switch to branch
 git commit				// commit bug fix in branch. local
 git rebase master		// take updates from master
 
@@ -382,7 +382,7 @@ git commit # Commit a file</some-file>
 
 git push origin master
 // origin is the remote connection to the central repository that Git created when you cloned it
-// master argument tells Git to try to make the origin’s master branch look like your local master branch
+// master argument tells Git to try to make the originï¿½s master branch look like your local master branch
 
 rebase on top of others commits. resolving conflicts
 --------
@@ -405,7 +405,7 @@ Feature Branch Workflow
 - create a new branch every time they start work on a new feature. 
 - Feature branches should have descriptive names, like animated-menu-items or issue-#1061. 
 - The idea is to give a clear, highly-focused purpose to each branch.
-- Also, a convenient way to back up everybody’s local commits.
+- Also, a convenient way to back up everybodyï¿½s local commits.
 - commit and push changes to feature branch and create a pull request, asking moderator to merge their additions into master
 - moderator can review the changes before they become a part of the main codebase.
 
@@ -460,7 +460,7 @@ Gitflow Workflow
 - Using a dedicated branch to prepare releases makes it possible for one team to polish the current release
 	while another team continues working on features for the next release.
 
-- Maintenance or “hotfix” branches are used to quickly patch production releases. 
+- Maintenance or ï¿½hotfixï¿½ branches are used to quickly patch production releases. 
 - This is the only branch that should fork directly off of master.
 - As soon as the fix is complete, it should be merged into both master and develop (or the current release branch), 
 	and master should be tagged with an updated version number
