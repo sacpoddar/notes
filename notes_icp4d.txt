@@ -1,0 +1,23 @@
+ICP4D Notes
+============
+
+IBM Cloud Pak for Data V2.5.x Data Engineer
+
+https://developer.ibm.com/articles/intro-to-cloud-pak-for-data/
+https://www.ibm.com/support/producthub/icpdata/docs/content/SSQNUZ_current/dev/dev-resources.html
+ICP4D Playground - https://www.ibm.com/cloud/paks/experiences/cloud-pak-for-data
+
+https://www.ibm.com/services/learning/search?query=bigdata
+https://www.ibm.com/services/learning/badge/ce4b9a55-6721-46e6-bc14-d59f89d7d588
+
+- IBM Cloud Pak for Data is a unified, pre-integrated data and AI platform that runs natively on RedHat OpenShift Container platform. 
+- Services are delivered with an open and extensible cloud native platform for collecting, organizing, and analyzing data. 
+- It’s a single interface to perform end-to-end analytics with built-in governance. 
+- It also supports and governs the end-to-end AI workflow.
+
+Architecture
+------------
+- IBM Cloud Pak for Data is composed of pre-configured microservices that run on a multi-node IBM Cloud Private cluster. 
+- The microservices enable you to connect to your data sources so that you can catalog and govern, explore and profile, transform, and analyze your data from a single web application.
+- IBM Cloud Pak for Data is deployed on a multi-node Kubernetes cluster, using RedHat OpenShift. 
+- Although you can deploy IBM Cloud Pak for Data on a 3-node cluster, it is strongly recommended that you deploy your production environment on a cluster with at least 6 nodes for better performance, better cluster stability, and increased ease of scaling the cluster to support workload growth.
