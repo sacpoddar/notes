@@ -118,4 +118,823 @@ h1 {			/* specific to all h1 tags */
 	sticky	- positioned based on the user's scroll position
 			- toggles between relative and fixed, depending on the scroll position
 
-			
+Web design basics
+=================
+
+Typography
+-----------
+- Use font size between 15px to 22px
+- Use big font size for heading 32px to 60px
+	- You can decrease font weight for larger font size
+- Use line spacing between 120% to 150%
+- 45 to 90 characters per line
+- Use good fonts
+	sans-serif vs serif
+	Open Sans
+	Lato
+- Use only one font
+	
+Color
+-------
+- Use only one base color
+- Use color to draw attention e.g. blue for signup
+- Never use black in your design
+
+picking the right color
+-----------------
+there are psychological effects behind each color.
+- Red is a great color to use when power, passion, strength and excitement want to be transmitted. Brighter tones are more energetic and darker shades are more powerful and elegant.
+- Orange draws attention without being as overpowering as red. It means cheerfulness and creativity. Orange can be associated with friendliness, confidence, and courage.
+- Yellow is energetic and gives the feeling of happiness and liveliness. Also, it associates with curiosity, intelligence, brightness, etc.
+- Green is the color of harmony, nature, life and health. Also, it is often associated with money. In design, green can have a balancing and harmonizing effect.
+- Blue means patience, peace, trustworthiness, and stability. It is one of the most beloved colors, especially by men. It is associated with professionalism, trust and honor. That's actually why the biggest social networks use blue.
+- Purple is traditionally associated with power, nobility and wealth. In your design, purple can give a sense of wisdom, royalty, nobility, luxury, and mystery.
+- Pink expresses romance, passivity, care, peace, affection, etc.
+- Brown is the color of relaxation and confidence. Brown means earthiness, nature, durability, comfort, and reliability.
+
+Text over image
+------------------
+- put text directly on image
+- overlay the image
+- put your text in a box
+- blur the image
+- floor fade
+
+icons
+------
+- Use icons to list features/steps
+- Use icons for actions and links
+- Icons should be recognizable
+- Label your icons
+- Icons should not take a center stage
+- use icon fonts (svg) whenever possible as they can scale
+
+spacing
+----------
+- whitespace between your elements 
+- whitespace between your group of elements
+- whitespace between your website's sections
+
+layout
+-------------
+- define where you want your audience to look first
+- establish a flow that corresponds to your content's message
+- use whitespace to build that flow
+
+- Designing in browser- using HTML and CSS
+- because you cannot design responsive web sites in photoshop
+
+
+7 steps for website designing
+=======================
+
+1. Define your project
+
+Start off by defining the goal of your project. This can be showing your portfolio to the world, selling an e-book, building a blog, etc.
+Also define your audience. Ask yourself: which is the typical user that will visit my website?
+This is important, because you should always design with your goal and audience in mind.
+
+2. Plan out everything
+
+Once your project is defined, plan your content carefully. This includes text, images, videos, icons, etc.
+Remember what I told you about visual hierarchy. It plays an important role when you start thinking about what you want on your website and what you don't. Defining the content before actually starting the design is called the content-first approach. It means that you should design for the content, instead of designing a webpage and then filling it with some stuff.
+Define the navigation.
+Define the site structure. You can draw a sitemap in this step if we're talking about a bigger project.
+
+3. Sketch your ideas before you design
+
+Now it's time to get inspired and think about your design.
+Then, get the ideas out of your head. And with that I mean that you should sketch your ideas before you start designing. It will help you explore ideas and create a concept of what you want to build. Using pencil and paper is a great way of quickly retaining your valuable ideas.
+Make as many sketches as you want, but don't spend too much time perfecting anything. Once you have an initial idea, you can concentrate on the details when designing in HTML and CSS.
+I advise you to never, ever start designing without having an idea of what you want to build. Getting inspiration is very important in this phase, and I already told you how to do that!
+
+4. Design and develop your website
+
+After sketching, start to design your website using all the guidelines and tips you've learned in the web design section.
+You'll do that using HTML and CSS, which is called designing in the browser. Designing in the browser is basically designing and developing at the same time.
+There are more and more designers leaving traditional design programs such as Photoshop and start designing in the browser. The biggest reason for this is that you can't design responsive websites in photoshop. It also saves you tons of time.
+In this phase, you'll use your sketches, content and planning decisions you've made in steps 1, 2 and 3.
+
+5. It's not done yet: optimization
+
+Before you can actually launch your beautiful masterpiece for the world to see it, we have to optimize its performance in terms of site speed.
+You also need to do some basic search engine optimization (SEO) for search engines such as google.
+
+6. Launch the masterpiece
+
+Your optimized website is now finally ready to launch.
+All you need for launching is a webserver that will host your website and deliver it to the world.
+
+7. Site maintenance
+
+The launch of your website is not the end of the story.
+Now it's time to monitor your users' behavior and make some changes to your website if necessary.
+You should also update your content regularly in order to show your users that your website is alive! For instance, a blog can be a great way of doing that.
+
+
+Three ingredients to responsive web design
+===================
+1. Fluid grid - all layout elements are sized in relative units, such as percentages, instead of absolute units like pixels
+2. Flexible images- are also sized in relative units
+3. Media queries- allow us to specify different CSS style rules for different browser widths
+
+Selecting font
+-------------------
+Goto https://fonts.google.com/
+1. Select the font that you want to use e.g. Lato
+2. Select style e.g. Thin 100, Light 300, Light 300 italic, Regular 400
+3. Select "Embed" tab to get CSS rule and link url to use font e.g
+font-family: 'Lato', sans-serif;		/* CSS rule */
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,300&display=swap" rel="stylesheet">						/* style */
+
+CSS Reset
+----------
+CSS authors can force every browser to have all its styles reset to null, thus avoiding cross-browser differences as much as possible.
+
+normalize.css
+-----------
+- A modern, HTML5-ready alternative to CSS resets
+- makes browsers render all elements more consistently and in line with modern standards
+- https://necolas.github.io/normalize.css/
+
+http://www.responsivegridsystem.com/
+https://flatuicolors.com/
+https://www.0to255.com/
+
+<header> - container similar to <div> but tells search engine this is our header
+<nav> - navigation
+
+style.css
+==============
+
+/* Orange color: #e67e22	*/
+
+/* ----------------------------------------------- */
+/* BASIC SETUP */
+/* ----------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: #fff;					/* white. not necessary*/
+    color: #555;							/* grey. text color for entire proj */
+    font-family: 'Lato', 'Arial', sans-serif;
+    font-weight: 300;						/* global/default font size and weight */
+    font-size: 20px;			
+    text-rendering: optimizeLegibility;		/* enables kerning and optional ligatures. */
+    overflow-x: hidden;
+}
+
+.clearfix {zoom: 1;}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+/* ----------------------------------------------- */
+/* REUSABLE COMPONENTS */
+/* ----------------------------------------------- */
+
+
+.row {
+    max-width: 1140px;
+    margin: 0 auto;			/* left and right margin is auto calculated  */
+}
+
+section {
+    padding: 80px 0;
+}
+
+.box {
+    padding: 1%;
+}
+
+/* ----- HEADINGS ----- */
+h1,
+h2,
+h3 {
+    font-weight: 300;			/* make large font look thinner */
+    text-transform: uppercase;	/* to uppercase */
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 240%;		/* 240% of global i.e. 20px = 48px */
+    word-spacing: 4px;		/* word spacing */
+    letter-spacing: 1px;	/* letter spacing */
+}
+
+h2 {
+    font-size: 180%;
+    word-spacing: 2px;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+h3 {
+    font-size: 110%;
+    margin-bottom: 15px;
+}
+
+h2:after {
+    display: block;
+    height: 2px;
+    background-color: #e67e22;
+    content: " ";
+    width: 100px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+/* ----- PARAGRAPHS ----- */
+.long-copy {
+    line-height: 145%;
+    width: 70%;
+    margin-left: 15%;
+}
+
+.box p {
+    font-size: 90%;
+    line-height: 145%;
+}
+
+
+/* ----- ICONS ----- */
+.icon-big {
+    font-size: 350%;
+    display: block;
+    color: #e67e22;
+    margin-bottom: 10px;
+}
+
+.icon-small {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    color: #e67e22;
+    font-size: 120%;
+    margin-right: 10px;
+    
+    /*secrets to align text and icons*/
+    line-height: 120%;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+
+/* ----- LINKS ----- */
+
+a:link,
+a:visited {
+    color: #e67e22;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #e67e22;
+    -webkit-transition: border-bottom 0.2s, color 0.2s;
+    transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+    color: #555;
+    border-bottom: 1px solid transparent;
+}
+
+/* ----- BUTTONS ----- */
+.btn:link,						/* for link and visited state of <a> element */
+.btn:visited,					
+input[type=submit] {
+    display: inline-block;		/* so that inline element <a> can have padding and margin */
+    padding: 10px 30px;			/* top & bottom-10px, left & right- 30px  */
+    font-weight: 300;
+    text-decoration: none;		/* get rid of text underline */
+    border-radius: 200px;		/* make button corner look round */
+    -webkit-transition: background-color 0.2s, border 0.2s, color 0.2s;
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+    							/* On mouse hover, background-color,border,color will change in 0.2 seconds */
+}
+
+.btn-full:link,
+.btn-full:visited,
+input[type=submit] {
+    background-color: #e67e22;		/* orage */
+    border: 1px solid #e67e22;		/* set border to orange as well */
+    color: #fff;					/* set button text color to white */
+    margin-right: 15px;				/* add space between two buttons */
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    border: 1px solid #e67e22;
+    color: #e67e22;					/* for second button- set text to orange */
+}
+
+.btn:hover,							/* for hover and active state of <a> element */
+.btn:active,
+input[type=submit]:hover,
+input[type=submit]:active {
+    background-color: #cf6d17;		/* set backgroud of button look darke orange */
+}
+
+.btn-full:hover,
+.btn-full:active {
+    border: 1px solid #cf6d17;		/* set border of button also look darke orange */
+}
+
+.btn-ghost:hover,
+.btn-ghost:active {
+    border: 1px solid #cf6d17;
+    color: #fff;					/* for second button- set text to white */
+}
+
+
+/* ----------------------------------------------- */
+/* HEADER */
+/* ----------------------------------------------- */
+
+header {
+    background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);
+    										/* linear-gradient - to darken background image */
+    background-size: cover;					/* see whole image */
+    background-position: center;
+    height: 100vh;							/* fill the whole viewport with header */
+    background-attachment: fixed;
+}
+
+.hero-text-box {
+    position: absolute;						/* to vertically and horizontally center box */
+    width: 1140px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);		/* translate half of its width to left. To center text */
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+    float: left;
+    margin-top: 20px;
+}
+
+.logo-black { 
+    display: none;
+    height: 50px;
+    width: auto;
+    float: left;
+    margin: 5px 0;
+}
+
+/* Main navi */
+.main-nav {
+    float: right;
+    list-style: none;
+    margin-top: 55px;
+}
+
+.main-nav li {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.main-nav li a:link,
+.main-nav li a:visited {
+    padding: 8px 0;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 90%;
+    border-bottom: 2px solid transparent;
+    -webkit-transition: border-bottom 0.2s;
+    transition: border-bottom 0.2s;
+}
+
+.main-nav li a:hover,
+.main-nav li a:active {
+    border-bottom: 2px solid #e67e22;
+}
+
+
+/* Mobile navi */
+.mobile-nav-icon {
+    float: right;
+    margin-top: 30px;
+    cursor: pointer;
+    display: none;
+}
+
+.mobile-nav-icon i {
+    font-size: 200%;
+    color: #fff;
+}
+
+
+/* Sticky navi */
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 2px #efefef;
+    z-index: 9999;
+}
+
+.sticky .main-nav { margin-top: 18px; }
+
+.sticky .main-nav li a:link,
+.sticky .main-nav li a:visited {
+    padding: 16px 0;
+    color: #555;
+}
+
+.sticky .logo { display: none; }
+.sticky .logo-black { display: block; }
+
+/* ----------------------------------------------- */
+/* FEATURES */
+/* ----------------------------------------------- */
+
+.section-features .long-copy {
+    margin-bottom: 30px;
+}
+
+
+/* ----------------------------------------------- */
+/* MEALS */
+/* ----------------------------------------------- */
+
+.section-meals {
+    padding: 0;
+}
+
+.meals-showcase {
+    list-style: none;
+    width: 100%;
+}
+
+.meals-showcase li {
+    display: block;
+    float: left;
+    width: 25%;
+}
+
+.meal-photo {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.meal-photo img {
+    opacity: 0.7;
+    width: 100%;
+    height: auto;
+    -webkit-transform: scale(1.15);
+    -ms-transform: scale(1.15);
+    transform: scale(1.15);
+    -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.meal-photo img:hover {
+    opacity: 1;
+    -webkit-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    transform: scale(1.03);
+}
+
+
+
+/* ----------------------------------------------- */
+/* HOW IT WORKS SECTION */
+/* ----------------------------------------------- */
+
+.section-steps {
+    background-color: #f4f4f4;
+}
+
+.steps-box {
+    margin-top: 30px;
+}
+
+
+.steps-box:first-child {
+    text-align: right;
+    padding-right: 3%;
+}
+
+.steps-box:last-child {
+    text-align: left;
+    padding-left: 3%;
+    margin-top: 70px;
+}
+
+.app-screen {
+    width: 40%;
+}
+
+.works-step {
+    margin-bottom: 50px;
+}
+
+.works-step:last-of-type {
+    margin-bottom: 80px;
+}
+
+.works-step div {
+    color: #e67e22;
+    font-size: 150%;
+    height: 54px;
+    width: 54px;
+    border: 2px solid #e67e22;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    margin-right: 25px;
+    float: left;
+    padding: 5px;
+}
+
+.btn-app:link,
+.btn-app:visited {
+    border: 0;
+}
+
+.btn-app img {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
+}
+
+
+/* ----------------------------------------------- */
+/* CITIES */
+/* ----------------------------------------------- */
+
+.box img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.city-feature {
+    margin-bottom: 5px;
+}
+
+
+/* ----------------------------------------------- */
+/* TESTIMONIALS */
+/* ----------------------------------------------- */
+
+.section-testimonials {
+    background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(img/back-customers.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(img/back-customers.jpg);
+    background-size: cover;
+    color: #fff;
+    background-attachment: fixed;
+}
+
+blockquote {
+    padding: 2%;
+    font-style: italic;
+    line-height: 145%;
+    position: relative;
+    margin-top: 40px;
+}
+
+blockquote:before {
+    content: "\201C";
+    font-size: 500%;
+    display: block;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+}
+
+cite {
+    font-size: 90%;
+    margin-top: 25px;
+    display: block;
+}
+
+cite img {
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+
+/* ----------------------------------------------- */
+/* SIGN UP */
+/* ----------------------------------------------- */
+
+.section-plans {
+    background-color: #f4f4f4;
+}
+
+.plan-box {
+    background-color: #fff;
+    border-radius: 5px;
+    width: 90%;
+    margin-left: 5%;
+    box-shadow: 0 2px 2px #efefef;
+}
+
+.plan-box div {
+    padding: 15px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.plan-box div:first-child {
+    background-color: #fcfcfc;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.plan-box div:last-child {
+    text-align: center;
+    border: 0;
+}
+
+
+.plan-price {
+    font-size: 300%;
+    margin-bottom: 10px;
+    font-weight: 100;
+    color: #e67e22;
+}
+
+.plan-price span {
+    font-size: 30%;
+    font-weight: 300;
+}
+
+.plan-price-meal {
+    font-size: 80%;
+}
+
+.plan-box ul {
+    list-style: none;
+}
+
+.plan-box ul li {
+    padding: 5px 0;
+}
+
+
+/* ----------------------------------------------- */
+/* FORM */
+/* ----------------------------------------------- */
+
+.contact-form {
+    width: 60%;
+    margin: 0 auto;
+}
+
+input[type=text],
+input[type=email],
+select,
+textarea {
+    width: 100%;
+    padding: 7px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    height: 100px;
+}
+
+input[type=checkbox] {
+    margin: 10px 5px 10px 0;
+}
+
+*:focus {outline: none;}
+
+
+/* ----------------------------------------------- */
+/* FOOTER */
+/* ----------------------------------------------- */
+
+footer {
+    background-color: #333;
+    padding: 50px;
+    font-size: 80%;
+}
+
+.footer-nav {
+    list-style: none;
+    float: left;
+}
+
+.social-links {
+    list-style: none;
+    float: right;
+}
+
+.footer-nav li,
+.social-links li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer-nav li:last-child,
+.social-links li:last-child {
+    margin-right: 0;
+}
+
+.footer-nav li a:link,
+.footer-nav li a:visited, 
+.social-links li a:link,
+.social-links li a:visited {
+    text-decoration: none;
+    border: 0;
+    color: #888;
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.footer-nav li a:hover,
+.footer-nav li a:active {
+    color: #ddd;
+}
+
+.social-links li a:link,
+.social-links li a:visited {
+    font-size: 160%;
+}
+
+.ion-social-facebook,
+.ion-social-twitter,
+.ion-social-googleplus,
+.ion-social-instagram {
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.ion-social-facebook:hover {
+    color: #3b5998;
+}
+
+.ion-social-twitter:hover {
+    color: #00aced;
+}
+
+.ion-social-googleplus:hover {
+    color: #dd4b39;
+}
+
+.ion-social-instagram:hover {
+    color: #517fa4;
+}
+
+
+footer p {
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+
+
+/* ----------------------------------------------- */
+/* Animations */
+/* ----------------------------------------------- */
+
+.js--wp-1,
+.js--wp-2,
+.js--wp-3
+{
+    opacity: 0;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+
+.js--wp-4 {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+
+.js--wp-1.animated,
+.js--wp-2.animated,
+.js--wp-3.animated {
+    opacity: 1;
+}
+
+
+
