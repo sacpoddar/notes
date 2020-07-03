@@ -1,0 +1,362 @@
+Spring Notes
+=============
+http://staff.cs.psu.ac.th/iew/cs344-481/Java%20The%20Complete%20Reference%20Ninth%20Edition.pdf
+
+Dependency injection
+1. Setter injection
+2. Constructor injection
+3. Autowiring using xml config
+4. Autowiring using annotation - org.springframework.beans.factory.annotation.Autowired
+
+------example-----
+	<!-- Setter injection -->
+	<bean id="e1" class="com.psl.Employee"  >
+		<property name="id" value="101" />
+		<property name="fname" value="sac1" />
+		<property name="lname" value="poddar" />
+		<property name="address" ref="a1"></property>
+	</bean>
+
+	<!-- Constructor injection - ->
+	<bean id="e2" class="com.psl.Employee">
+		<constructor-arg value="102"></constructor-arg>
+		<constructor-arg value="sac2"></constructor-arg>
+		<constructor-arg value="poddar"></constructor-arg>
+		<constructor-arg ref="a1"></constructor-arg>
+	</bean> -->
+	
+	<!-- Autowiring using xml config - ->
+	<bean id="e2" class="com.psl.Employee" autowire="byType">
+		<constructor-arg value="102"></constructor-arg>
+		<constructor-arg value="sac2"></constructor-arg>
+		<constructor-arg value="poddar"></constructor-arg>
+	</bean> -->
+	
+	<!-- Autowiring using annotation -->
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan base-package="com.psl"></context:component-scan>
+	<bean id="e2" class="com.psl.Employee" >
+		<constructor-arg value="102"></constructor-arg>
+		<constructor-arg value="sac2"></constructor-arg>
+		<constructor-arg value="poddar"></constructor-arg>
+	</bean>
+	
+	
+	<bean id="a1" class="com.psl.Address">
+		<property name="city" value="pune"></property>
+		<property name="zip" value="411057"></property>
+	</bean>
+---------------------
+
+- ApplicationContext implementations
+ClassPathXmlApplicationContext
+FileSystemXmlApplicationContext
+XmlWebApplicationContext
+XmlPortletApplicationContext
+
+- <bean> valid attributes
+id
+name
+class
+abstract
+autowire
+parent
+scope
+init-method
+destroy-method
+lazy-init
+
+- To get Life cycle callbacks in bean implement
+InitializingBean
+	- afterPropertiesSet()
+DisposableBean
+	- destroy()
+
+AbstractApplicationContext -> ApplicationContext
+	context.registerShutdownHook()		// Register to get shutdown callback e.g. DisposableBean.destroy()
+
+OR
+<bean .. init-method="" destroy-method=""></bean>
+OR
+<beans .. default-init-method="" default-destroy-method="">
+
+- BeanFactory is a central registry of application components, and centralizes configuration of application components 
+	Bean lifecycle- Initialization methods and their standard order is:
+1. BeanNameAware's setBeanName
+2. BeanClassLoaderAware's setBeanClassLoader
+3. BeanFactoryAware's setBeanFactory
+4. ResourceLoaderAware's setResourceLoader (only applicable when running in an application context)
+5. ApplicationEventPublisherAware's setApplicationEventPublisher (only applicable when running in an application context)
+6. MessageSourceAware's setMessageSource (only applicable when running in an application context)
+7. ApplicationContextAware's setApplicationContext (only applicable when running in an application context)
+8. ServletContextAware's setServletContext (only applicable when running in a web application context)
+9. postProcessBeforeInitialization methods of BeanPostProcessors
+10. InitializingBean's afterPropertiesSet
+11. a custom init-method definition
+12. postProcessAfterInitialization methods of BeanPostProcessors 
+
+	On shutdown of a bean factory, the following lifecycle methods apply:
+1. DisposableBean's destroy
+2. a custom destroy-method definition
+
+- NOTE: If both Java callback and xml config callback are specified java callback will execute first followed by xml config
+
+- Bean scope
+1. singleton - default
+2. prototype	- create a new instance of bean, everytime bean is requested
+3. request	- For Web app. Create a new instance of bean for every http request
+5. session - For Web app. Create a new instance of bean for every http session
+6. globalSession - For portal application. Create a new instance of bean per global HTTP session
+
+<bean .. scope="request">
+
+Event handling
+===================
+1. MyEvent extends ApplicationEvent. Must implement single arg constructor e.g. MyEvent(Object source)
+2. EventProducer implements ApplicationContextAware
+	setApplicationContext(ApplicationContext applicationContext)
+	+genearateEvent() - applicationContext.publishEvent(new MyEvent(this));
+3. EventListener implements ApplicationListener<MyEvent> 
+	onApplicationEvent(MyEvent event)
+4. In bean.xml register producer and listerner bean
+	<bean id="producer" class="com.psl.event.EventProducer"></bean>
+	<bean id="listener" class="com.psl.event.EventListener"></bean>
+5. Test
+		EventProducer producer = applicationContext.getBean("producer", EventProducer.class);
+		producer.genearateEvent();
+		
+AOP
+=============
+- Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) 
+- The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect
+- Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects
+- AOP is used to modularize cross-cutting concerns in aspects. 
+
+- AOP is used in the Spring Framework to
+1. provide declarative enterprise services, especially as a replacement for EJB declarative services. The most important such service is declarative transaction management.
+2. allow users to implement custom aspects, complementing their use of OOP with AOP.
+
+Aspect: a modularization of a concern that cuts across multiple classes. e.g. Trnsaction managenet, Logging
+		- Specified using a schema-based approach or the @AspectJ annotation style.
+JointPoint: A point during the execution of a program. In Spring AOP, a join point always represents a method execution.
+		- All methods in DAO interface- e.g all eligible methods where you can apply logging
+Advice - Action taken by an aspect at a particular join point
+		- Different types of advice include "around," "before" and "after" advice
+		- Spring model an advice as an interceptor, maintaining a chain of interceptors around the join point.
+PointCut - a predicate that matches join points - e.g methods where you want to apply logging e.g. save() using PointCut expression
+		 Advice is associated with a pointcut expression and runs at any join point matched by the pointcut 
+Introduction: declaring additional methods or fields on behalf of a type
+		 - Spring AOP allows you to introduce new interfaces (and a corresponding implementation) to any advised object
+Target object: object being advised by one or more aspects. Also referred to as the advised object. 
+		- Since Spring AOP is implemented using runtime proxies, this object will always be a proxied object.
+		- Business Component e.g. EmployeeDao
+AOP proxy: an object created by the AOP framework in order to implement the aspect contracts (advise method executions and so on).
+		- In the Spring Framework, an AOP proxy will be a JDK dynamic proxy or a CGLIB proxy.
+		- wrapper generated by spring on top of business component - spring is proxy
+Weaving: linking aspects with other application types or objects to create an advised object. 
+		- This can be done at compile time (using the AspectJ compiler, for example), load time, or at runtime. 
+		- Spring AOP, like other pure Java AOP frameworks, performs weaving at runtime.
+
+Types of advice:
+1. Before advice: Advice that executes before a join point, but which does not have the ability to prevent execution flow proceeding to the join point (unless it throws an exception).
+2. After returning advice: Advice to be executed after a join point completes normally: for example, if a method returns without throwing an exception.
+3. After throwing advice: Advice to be executed if a method exits by throwing an exception.
+4. After (finally) advice: Advice to be executed regardless of the means by which a join point exits (normal or exceptional return).
+5. Around advice: Advice that surrounds a join point such as a method invocation. This is the most powerful kind of advice. Around advice can perform custom behavior before and after the method invocation. It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method execution by returning its own return value or throwing an exception.
+
+AOP can be done-
+1. Programmatically
+2. Using Annotation
+3. Using aop namespace
+
+Programmatically
+--------------
+Advices
+Before advice – Run before the method execution - Impl MethodBeforeAdvice 
+		- void before(Method method, Object[] args, Object target) throws Throwable;
+After returning advice – Run after the method returns a result - Impl AfterReturningAdvice
+		- void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable;
+After throwing advice – Run after the method throws an exception - impl ThrowsAdvice. Tag interface, but must implement
+		- void afterThrowing([Method, args, target], ThrowableSubclass);
+Around advice – Run around the method execution, combine all three advices above. - Impl MethodInterceptor
+
+Advisor = Advice + PointCut
+
+--------aop.xml-------------
+	<bean id="empdao" class="com.psl.aop.EmployeeDao"></bean>
+	<bean id="loggingadvice" class="com.psl.aop.LoggingAdvice"></bean>
+	
+	<!-- Advice - ->
+	<bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="empdao"></property>
+		<property name="interfaces">
+			<list><value>com.psl.aop.Idao</value></list>
+		</property>
+		<property name="interceptorNames">
+			<list><value>loggingadvice</value></list>
+		</property>
+	</bean>  -->
+	
+	<bean id="advisor" class=" org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+		<property name="advice" ref="loggingadvice"></property>
+		<property name="expression" value="execution (* *.save*(..))"></property>
+	</bean>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+--------------------------------
+
+- Enabling @AspectJ Support
+	- with Java configuration
+		@Configuration
+		@EnableAspectJAutoProxy
+		public class AppConfig {
+
+		}
+	- with XML configuration
+		<aop:aspectj-autoproxy/>
+		
+Using Annotation approach
+--------------
+@Before, @AfterReturning, @Around, @Aspect, @PointCut
+@Component - Equivalent to registering class as a Bean in xml
+
+- In aop.xml add
+<aop:aspectj-autoproxy />
+<bean id="loggingAspect" class="com.psl.aop.LoggingAspect"></bean>
+
+@Aspect @Component
+public class LoggingAspect {
+	@Before(value="execution (* *.save*(..))")
+	public void logBefore() {}
+	
+	@AfterReturning(value="execution (* *.save*(..))", returning="r")
+	public void logAfterReturning() {}
+}
+OR
+
+@Aspect @Component
+public class LoggingAspect {
+	@PointCut(value="execution (* *.save*(..))")
+	public void pointCut() {}
+	
+	@Before(value="pointCut()")
+	public void logBefore() {}
+	
+	@AfterReturning(value="pointCut()", returning="r")
+	public void logAfterReturning() {}
+}
+
+Schema (Namespace) apprach for config AOP
+---------------------
+	<bean id="loggingAspect" class="com.psl.aop.LoggingAspect"></bean>
+	<aop:config>
+		<aop:aspect id="loggingadvice" ref="loggingAspect" >
+			<aop:pointcut expression="execution (* *.save*(..))" id="pt1"/>
+			<aop:before method="logBefore" pointcut-ref="pt1"/>
+		</aop:aspect>
+	</aop:config>
+
+JDBC Template
+================
+	<!-- Enable annotations -->
+ 	<context:annotation-config></context:annotation-config>
+ 	<context:component-scan base-package="com.psl.aop"></context:component-scan>
+ 	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/emp"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="admin"></property>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="DataSource" ref="dataSource"></property>
+	</bean>
+	
+public class EmployeeDao implements Idao {
+	@Autowired
+	private JdbcTemplate template;
+	
+	@Override
+	public void saveEmployee(Employee emp) {
+		String sql = "insert into employee(id, fname, lname) values(?, ?, ?)";
+		template.update(sql, emp.getId(), emp.getFname(), emp.getLname());
+	}
+	@Override
+	public List<Employee> getEmployeeList() {
+		String sql = "select * from employee";
+		return template.query(sql, new BeanPropertyRowMapper<Employee>(Employee.class));
+	}
+}	
+
+Specifying your own row mapper
+----------------------
+public class EmployeeRowMapper implements RowMapper<Employee>
+{
+	@Override
+	public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+		int id = rs.getInt("id");
+		String fname = rs.getString("fname");
+		String lname = rs.getString("lname");
+		return new Employee(id, fname, lname);
+	}
+}
+- In DAO
+	@Override
+	public List<Employee> getEmployeeList() {
+		String sql = "select * from employee";
+		// return template.query(sql, new BeanPropertyRowMapper<Employee>(Employee.class));
+		return template.query(sql, new EmployeeRowMapper());
+	}
+
+Using Transaction
+-------------------
+PlatformTransactionManager
+DataSourceTransactionManager
+HibernateTransactionManager
+JTATransactionManager
+
+	<tx:annotation-driven/>
+	<bean id="transactionManager" class=" class org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+	
+In DAO
+	@Autowired
+	private PlatformTransactionManager transactionManager;
+	
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void saveEmployee(Employee emp) {
+
+
+Spring MVC
+===============
+1. DispatcherServlet - web.xml - “Front Controller” design pattern
+
+spring xml
+2. HandlerMapping - BeanNameUrlHandlerMapping, ControllerBeanNameHandlerMapping , 
+				ControllerClassNameHandlerMapping, DefaultAnnotationHandlerMapping, SimpleUrlHandlerMapping
+3. Controller - @Controller
+4. ModelAndView - 
+5. ViewResolver - InternalResourceViewResolver
+6. View - jstl
+
+- Web annotation 
+@RequestMapping
+@PathVariable -  indicates that a method parameter should be bound to a URI template variable.
+@RequestParam
+
+https://bvaisakh.wordpress.com/category/java-2/spring-framework/
+After the Controller finished its work and before view was rendered, DispatcherServlet copies all the members of the model into request attributes with the same name.
+
+- SimpleMappingExceptionResolver
+
+- InternalResourceViewResolver
+<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+  <property name="prefix" value="/WEB-INF/jsp/"/>
+  <property name="suffix" value=".jsp"/>
+</bean>
+
+- Validator interface defines
+	- supports(Class cl)
+	- validate(Object, Errors)

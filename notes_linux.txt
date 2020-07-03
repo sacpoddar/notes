@@ -1,0 +1,96 @@
+Linux notes
+================
+
+commands
+===========
+
+diff -Naur fil1 file2	// diff between files ignoring whitespace
+grep -i "citrix" nvd_citrix.txt | cut -c -12 | sort | uniq | wc -l
+zgrep -E "word1|word2" ./*		// search in zip files. word1 or word2
+uptime					// Tell how long the system has been running
+wget					// non-interactive network downloader
+find /path/to/base/dir -type d -ctime +10 | xargs rm -rf	// delete all dir 
+find ./ -type f -exec grep -l 'Search text' {} +			// find 'search text' in all sub dir files
+	grep -l 				// print file name only
+		-h 					// print marching text line only. Not file name
+		-o 					// Print only the matched (non-empty) parts of a matching line
+		-P					// Interpret PATTERN as a Perl regular expression
+screen -D -R <screen_name>	// Create a screen that keeps running in background.
+							// Ctrl+a Ctrl+d	- to detach
+							// Ctrl+d 			- termiate screen
+							// screen -ls 		- list all screen for current user
+// run command as different user
+sudo -u db2inst1 /home/db2inst1/sqllib/bin/db2 create database sac1
+
+mount fileserver.name:/export/path /mnt/fileserver		// mount nfs
+mount -t ext3 /dev/mapper/volume1 /mnt/data				// mount a local device
+
+file permission
+===============
+chmod g-w,o-w logs/						// change file mode bits
+chown -R sachin:sachin logs/		// change file owner:group recursively
+
+auto start service on system startup
+====================
+/etc/init.d/tomcatd						// assuming tomcatd service exists.
+chkconfig --list						// list runlevel information for system services
+chkconfig [--add | --del] tomcatd		// adds/del a new service for management by chkconfig
+chkconfig tomcatd [on | off]			// autostart tomcat on system startup
+
+systemctl list-units
+systemctl start/stop/status nfs-server.service
+systemctl enable/disable nfs-server.service		// enable a service so it starts automatically at boot time
+systemctl list-dependencies nfs-server.service	// To see dependencies of a service
+
+user mgmt
+=========
+understanding /etc/passwd
+--------------------
+/etc/passwd
+	user1:x:1004:999:First User:/home/user1:/bin/bash
+     1	  2   3   4      5            6       7
+
+1. Username: It is used when user logs in. It should be between 1 and 32 characters in length.
+2. Password: An x character indicates that encrypted password is stored in /etc/shadow file.
+3. User ID (UID): Each user must be assigned a user ID (UID). 
+	UID 0 (zero) is reserved for root and UIDs 1-99 are reserved for other predefined accounts. 
+	Further UID 100-999 are reserved by system for administrative and system accounts/groups.
+4. Group ID (GID): The primary group ID (stored in /etc/group file)
+5. User ID Info: The comment field. extra information about the users such as user’s full name, phone number etc. This field use by finger command.
+6. Home directory: The absolute path to the directory the user will be in when they log in. 
+	If this directory does not exists then users directory becomes /
+7. Command/shell: The absolute path of a command or shell (/bin/bash).
+	Typically, this is a shell. Please note that it does not have to be a shell.
+
+lid [username]		// Display user’s groups
+lid -g [groupname]	// Display group’s users
+	
+sshd / sftp
+=============	
+ssh-keygen -t rsa				// generate RSA public-private key pair
+
+/etc/init.d/vsftpd restart		// restart vsftpd service
+
+/var/log/messages
+/var/log/secure					// sshd and vsftpd logs
+
+- enable sshd DEBUG logging
+	vim /etc/ssh/sshd_config
+	LogLevel DEBUG
+
+- Fix for "sshd Could not open authorized keys '/home/ftpuser1/.ssh/authorized_keys': Permission denied"
+	restorecon -FRvv ~/.ssh
+	
+======================
+  * Set up DB2 autostart on reboot
+    - /opt/ibm/db2/V9.7/instance/db2iauto -on db2inst1
+  * db2licm -a /tmp/db2licm.txt <-- for permanent developer license
+  
+=========
+* Set up tomcat autostart
+  - (RHEL) 
+    * Assume working version of /etc/init.d/tomcatAutostart exists
+    * cd /etc/init.d
+    * chkconfig --add tomcatAutostart
+    * chkconfig tomcatAutostart on 
+=========

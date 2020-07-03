@@ -1,0 +1,550 @@
+Hibernate Notes
+================
+
+- Hibernate is a java-based Object/relational mapping(ORM) tool.
+
+- Why need orm
+http://hibernate.org/orm/what-is-an-orm/
+
+The Object-Relational Impedance Mismatch
+====================
+- object models and relational models do not work very well together
+- RDBMSs represent data in a tabular format vs Java, represent it as an interconnected graph of objects.
+- Loading and storing graphs of objects using a tabular relational database exposes us to 5 mismatch problems
+1. Granularity
+	Sometimes you will have an object model which has more classes than the number of corresponding tables
+	in the database (we says the object model is more granular than the relational model). Take for example the notion of an Address…?
+2. Subtypes (inheritance)
+	Inheritance is a natural paradigm in object-oriented programming languages. However, RDBMSs do not
+	define anything similar on the whole (yes some databases do have subtype support but it is completely non-standardized)…?
+3. Identity
+	A RDBMS defines exactly one notion of 'sameness': the primary key. Java, however, defines both object identity a==b and object equality a.equals(b).
+4. Associations
+	Associations are represented as unidirectional references in Object Oriented languages whereas
+	RDBMSs use the notion of foreign keys. If you need bidirectional relationships in Java, you must define the association twice.
+	Likewise, you cannot determine the multiplicity of a relationship by looking at the object domain model.
+5. Data navigation
+	The way you access data in Java is fundamentally different than the way you do it in a relational database.
+	In Java, you navigate from one association to an other walking the object network.
+	This is not an efficient way of retrieving data from a relational database.
+	You typically want to minimize the number of SQL queries and thus load several entities via JOINs and select
+	the targeted entities before you start walking the object network.
+
+Persistence
+====================
+- Process of storing state of an onject to a persistent store
+- It includes managing data integrity and concurrent data access
+
+ORM
+========
+What is ORM
+- a middleware API for mapping objects into database tables throught metadata that describes that mapping
+Why we need ORM(Problems in mapping object model into relational model)
+- Problem of granularity
+	- Object model is more granualr and supports inheriatnce.
+	- SQL has poor support for user defined types
+- Problem of subtypes
+	- SQL does not support inheritance and polymorphism
+- Problem of identity
+	- Java uses == to check if two objects are identical and equals() for equality. RDBMS used primary key for identity
+- Problem with association
+	- Association represents relationship between entities
+	- In object mode it is reprented using object reference. Its directional and navigable
+	- In relational model it is represented using foreign key column. Its NOT directional and navigable
+	- Java association can be oen-to-one, one-to-many, many-to-many
+	- Table association are always oen-to-one, one-to-many. Many-to-many can be represented by using link table
+- Problem of data navigation
+	- Navigating the object netword cause n+1 selects problem
+	- Data retrieval is faster using SQL joins
+
+Hibernate projects
+================
+Hibernate ORM		- Domain model persistence for relational databases
+Hibernate Search	- Full-text search for your domain model
+Hibernate Validator	- Annotation based constraints for your domain model
+Hibernate OGM		- Domain model persistence for NoSQL datastores
+Hibernate Tools		- Command line tools and IDE plugins
+Hibernate Shards	- For distributed deployment architecture. Uses sharding strategies
+
+Hibernate ORM Features
+=============
+1. Object/Relational Mapping
+2. JPA Provider	- an implementation of the Java Persistence API (JPA) specification
+3. Idiomatic persistence - Allow persisting classes following natural Object-oriented idioms including inheritance,
+		polymorphism, association, composition, and the Java collections framewor
+4. High Performance - Hibernate supports lazy initialization, numerous fetching strategies and optimistic locking with automatic versioning and time stamping.
+		Generates much of the SQL at system initialization time instead of at runtime.
+ 		Hibernate consistently offers superior performance over straight JDBC code, both in terms of developer productivity and runtime performance.
+5. Scalability - designed to work in an application server cluster and deliver a highly scalable architecture.
+6. Reliable
+7. Extensibility - Hibernate is highly configurable and extensible.
+
+Hibernate Architecture
+================
+1 SessionFactory - (org.hibernate.SessionFactory)
+		A factory for org.hibernate.Session instances.
+		A thread-safe, immutable cache of compiled mappings for a single database.
+		Factory is intended to be shared by all application threads
+		A client of org.hibernate.connection.ConnectionProvider.
+		Optionally maintains a second level cache of data that is reusable between transactions at a process or cluster level.
+		You can instantiate more than one SessionFactory if you are using multiple databases
+2. Session - (org.hibernate.Session) interface
+		A single-threaded, short-lived object representing a conversation between the application and the persistent store.
+		Not thread safe.
+		Wraps a JDBC java.sql.Connection
+		Factory for org.hibernate.Transaction
+		Maintains a first level cache of application's persistent objects and collections;
+			this cache is used when navigating the object graph or looking up objects by identifier.
+		The org.hibernate.Session interface provides methods to insert, update and delete the object.
+		It also provides factory methods for Transaction, Query and Criteria.
+3. Persistent objects and collections
+		Short-lived, single threaded objects containing persistent state and business function.
+		These can be ordinary JavaBeans/POJOs.
+		They are associated with exactly one Session.
+		Once the org.hibernate.Session is closed, they will be detached and free to use in any application layer
+4. Transient and detached objects and collections
+		Instances of persistent classes that are not currently associated with a Session.
+		They may have been instantiated by the application and not yet persisted,
+			or they may have been instantiated by a closed Session
+5. Transaction - (org.hibernate.Transaction)  interface
+		A single-threaded, short-lived object used by the application to specify atomic units of work.
+		It abstracts the application from the underlying JDBC, JTA or CORBA transaction.
+		A Session might span several Transactions in some cases.
+			However, transaction demarcation, either using the underlying API or Transaction, is never optional.
+		It is optional.
+		The Transaction interface provides methods for transaction management.
+6. ConnectionProvider -  (org.hibernate.connection.ConnectionProvider)
+		It is a factory for JDBC connections (connection pool).
+		It abstracts the application from DriverManager or DataSource.
+		It is optional.
+7. TransactionFactory -  (org.hibernate.TransactionFactory)
+		It is a factory of Transaction. It is optional.
+
+Hibernate configuration
+================
+1. hibernate.properties
+2. hibernate.cfg.xml - If both exist, this will override hibernate.properties
+3. programmatic setup using org.hibernate.cfg.Configuration
+4. Set System properties using java -Dproperty=value
+
+Configuration cfg = new Configuration()
+	.addResource("Item.hbm.xml")					// specifying XML mapping documents
+    .addClass(org.hibernate.auction.Bid.class)		// seaech for mapping file /org/hibernate/auction/Bid.hbm.xml in the classpath
+    .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect")
+    .setProperty("hibernate.connection.datasource", "java:comp/env/jdbc/test")
+    .setProperty("hibernate.order_updates", "true");
+	.setProperties(java.util.Properties)			// accept Properties
+
+- new Configuration() loads hibernate.properties
+- cfg.configure() loads hibernate.cfg.xml
+- Usually an application will create a single Configuration, build a single instance of SessionFactory and then instantiate Sessions in threads servicing client requests.
+- The Configuration is meant only as an initialization-time object.
+- SessionFactorys are immutable and do not retain any association back to the Configuration.
+
+
+--------------hibernate.cfg.xml----------------------
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/test</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">admin</property>
+        <property name="connection.pool_size">1</property> <!-- JDBC connection pool (use the built-in) -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>	<!-- SQL dialect -->
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+        <property name="show_sql">true</property>	<!-- Echo all executed SQL to stdout -->
+        <property name="hbm2ddl.auto">update</property> <!-- create/create-drop/update/validate -->
+
+		<!-- List of XML mapping files -->
+        <mapping resource="com/psl/bean/Event.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+-----------------------------------------------------
+
+- all persistent classes are required to have no-argument constructor
+	- The constructor can be private, however package or public visibility is required.
+	- Hibernate uses reflection to create objects whenever required for runtime proxy generation
+
+- "thread" based method for session tracking is not intended for production use; it is merely useful for prototyping and tutorials
+- The built-in Hibernate connection pool is in no way intended for production use. It lacks several features found on any decent connection pool.
+
+- Hibernate recommends over-riding equals() and hashCode() using - Business key equality
+- object model is more granular than the relational model
+	an object model has more classes than the number of corresponding tables in the database
+
+-  <property name="current_session_context_class">thread</property>
+	SessionFactory().getCurrentSession()
+thread-  the context of a current unit of work is bound to the current Java thread that executes the application
+	- When the transaction ends, either through commit or rollback, Hibernate automatically unbinds the org.hibernate.Session from the thread and closes it for you
+
+- You should never design your application to use a new Hibernate org.hibernate.Session for every database operation. consider session-per-operation an anti-pattern.
+
+Mapping
+=============
+- Identifier generation strategies ( javax.persistence.GenerationType)
+	IDENTITY	- supports identity columns in DB2, MySQL
+	SEQUENCE 	- uses a hi/lo algorithm to efficiently generate identifiers
+	TABLE 		- uses a hi/lo algorithm to efficiently generate identifiers
+	AUTO		- Default. selects IDENTITY, SEQUENCE or TABLE depending upon the capabilities of the underlying database.
+
+@Entity
+public class Invoice {
+   @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+   Integer getId() { ... };
+}
+
+- Other generators
+assigned 	- Default. Lets the application assign an identifier value
+increment	- Generates short,int,long identifiers that are unique per process. Do not use in a cluster
+identity	- Generated by the database.
+			- For MySql this is done by setting the AUTO_INCR constrant
+sequence	-
+hilo		- Generates short,int,long identifiers using hi/lo algo.
+			- Source of hi value is hibernate_unique_key table having column next_hi
+			- these identifierss are unique for only a perticular database
+guid	- uses a database generated GUID string.
+		- For MySql this is done by invoking the uuid() function
+		- not all dialects may support generating a GUID
+native	- selects identity/sequence/hilo depending on the capabilities of the underlying database
+uuid	- Uses 128 bit UUID algo to generate identifiers of type string
+select - primary key generated by the databasse via a trigger
+
+Composite key
+==========
+- A composite key contains more than one attributes to uniquely identify rows
+- There are three ways to map a composite key to object model
+	1. Mapping individual attributes to columns
+	2. mapping an embedded object to columns
+	3. Mapping an embedded object via mapped attributes
+
+- A surrogate key does not have business value
+
+Object states/life-cycle
+===============
+
+			delete()			update()/saveOrUpdate()/merge()
+			<------				<-------
+	(transient)---->(persistent) ----->(detached)
+			save(),				evict()
+			saveOrUpdate(),		close()
+			persist()			clear()
+
+Transient
+- All newly created objects are transient.
+- not associated with a Hibernate Session.
+- Hibernate is not aware of/does not manage, transient objects
+- Has no representation in database. Has no Id (identifier value) assigned.
+- can be garbage collector if eligible
+- Use Session to make an object persistent
+
+Persistent
+- has a representation in the database. Has an Id assigned
+- Hibernate is aware of and managing the object
+- in the scope of a Session.
+- any changes made to an object will be saved automatically
+- Object can be made persistent using - session.save(),saveOrUpdate(),persist(), merge()
+
+Detached
+- an object that has been persistent, but its Session has been closed. session.close()
+- No longer managed by hibernate
+- detached instance can be modified. But changes are not saved in DB
+- can be reattached to a new Session at a later point in time, making it (and all the modifications) persistent again. session.update(), merge()
+- for long running units of work that require user think-time. We call them application transactions, i.e., a unit of work from the point of view of the user.
+
+
+Mapping relationship
+=============
+@ElementCollection
+- Single table with discriminator -  default strategy of inheritance when using annotations
+- Joined - inheritance strategy produces the most normalized schema
+- @Embedded, @Embeddable  - Composition
+- Bag -  un-ordered collection which allows duplicates
+
+Exception
+====================
+ObjectNotFoundException -> UnresolvableObjectException -> HibernateException -> RuntimeException
+
+Session
+==============
+- Session instance is NOT thread safe
+- SessionFactory instance is thread safe
+- session-per-operation is antipattern
+
+save(Object object);	// Persist the given transient instance, first assigning a generated identifier.
+						// This operation cascades to associated instances if the association is mapped with cascade="save-update"
+						// return the generated identifier
+save(String entityName, Object object);
+
+update(Object object);		// Update the persistent instance with the identifier of the given detached instance.
+							// If there is a persistent instance with the same identifier, an exception is thrown.
+update(String entityName, Object object);
+
+saveOrUpdate(Object object);	// Either save( If transient Object)or update(If detached Object) the given instance, depending upon resolution of the unsaved-value checks
+saveOrUpdate(String entityName, Object object);
+
+delete(Object object);	// Remove a persistent instance from the datastore.
+						// object may be persistent or a transient instance with an identifier associated with existing persistent state.
+						// cascades if cascade="delete" is set
+delete(String entityName, Object object);
+
+persist(Object object);		// Make a transient instance persistent.
+							// cascades if cascade="persist" is set
+							// defined by JSR-220.
+							// Hibernate's version of JPA's EntityManager.persist()
+persist(String entityName, Object object);
+
+merge(Object detachedObject);	// Merges the given detached object onto the persistent object with the same identifier.
+						// loads persistence instance if its not associated with session. Return the persistent instance.
+						// If the given instance is unsaved, save a copy of and return it as a newly persistent instance. The given instance does not become associated with the session.
+						// cascades if cascade="merge" or cascade="all" is set
+						// merge is not meant for transient objects
+merge(String entityName, Object object);
+
+evict(Object object)	// Detaches this instance from the session cache. Changes to the instance will not be synchronized with the database.
+						// cascades if cascade="evict" is set
+clear()		// Completely clear the session.
+			// Evict all loaded instances and cancel all pending saves, updates and deletions.
+			// Do not close open iterators or instances of ScrollableResults.
+close()		// End the session by releasing the JDBC connection and cleaning up.
+			// It is not strictly necessary to close the session but you must at least disconnect() it.
+			// throws HibernateException
+
+flush()		// Force this session to flush. Must be called at the end of a unit of work, before committing the transaction and closing the session (depending on setFlushMode(FlushMode), Transaction.commit() calls this method).
+			// Flushing is the process of synchronizing the underlying persistent store with persistable state held in memory.
+			// throws HibernateException
+
+setFlushMode(FlushMode flushMode);	// flushMode determines the points at which the session is flushed
+			// For a logically "read only" session, it is reasonable to set the session's flush mode to FlushMode.MANUAL at the start of the session (in order to achieve some extra performance).
+
+FlushMode.NEVER		- Depricated. Use MANUAL
+FlushMode.MANUAL	- Session is only ever flushed when Session.flush() is explicitly called.
+FlushMode.COMMIT	- Session is flushed when Transaction.commit() is called. Very efficient for read only transactions.
+FlushMode.AUTO		- Default. Session is sometimes flushed before query execution in order to ensure that queries never return stale state.
+FlushMode.ALWAYS	- Session is flushed before every query. This is almost always unnecessary and inefficient.
+
+Query.setFlushMode(FlushMode)		// (Re)set the current FlushMode in effect for this query.
+Criteria.setFlushMode(FlushMode)	// Override the flush mode for this particular query.
+
+contains(Object object)		// returns true if the given instance is associated with this Session
+
+get(Class entity, Serializable id);	// Return the persistent instance of the given entity class with the given id
+									// It first checks the cache, if not found it hits the DB
+									// return null if there is no such persistent instance.
+									// Preferred way to check if persistent instance exists.
+									// never returns an uninitialized instance.
+get(Class entity, Serializable id, LockOptions lockOptions);	// LockOptions.NONE READ UPGRADE
+
+load(Class entity, Serializable id);	// Return the persistent instance of the given entity class with the given id, assuming instance exists
+				// might return a proxied instance that is uninitialized. When proxy is returned, it does not hits the DB
+				// proxy is initialized on-demand, when a non-identifier method is accessed. Hitting DB.
+				// when proxy is being initialized it throws ObjectNotFoundException If specified instance with id does not exits
+				// Note that exception might not be thrown when load() is called, its called later when proxy is being initialized
+				// Do NOT use this method to test if an instance exists in the database.
+
+refresh(Object object);		// Re-read the state of the given persistent or detached instance from the underlying database.
+							// It is inadvisable to use this to implement long-running sessions that span many business tasks.
+							// This method is, however, useful in certain special circumstances. For example
+							1.	where a database trigger alters the object state upon insert or update
+							2.	after executing direct SQL (eg. a mass update) in the same session
+							3.	after inserting a Blob or Clob
+							// throws UnresolvableObjectException if database row with given id is not found
+
+createQuery(String queryString);	// Create a Query instance for the given HQL query string.
+createSQLQuery(String queryString);	// Create a SQLQuery instance for the given SQL query string.
+createCriteria(String entityName);	// Create Criteria instance for the given entity name.
+createStoredProcedureCall(String procedureName);	// Creates a call to a stored procedure.
+
+getNamedQuery(String queryName)		// Create a Query instance for the named query string defined in the metadata.
+getNamedProcedureCall(String name)	// Gets a ProcedureCall based on a named template
+
+- Session methods save/update/delete do NOT save or apply changes to the database. These methods schedule changes to be applied to database.
+- Hibernate collects SQL statement to be issued. on tx.commit() these changes are flushed to database.
+
+- persist() does NOT guarantee that the identifier value will be assigned to the persistent instance immediately, the assignment might happen at flush time.
+- persist() guarantees that it will not execute an INSERT statement if it is called outside of transaction boundaries.
+- save() it returns an identifier, and if an INSERT has to be executed to get the identifier (e.g. "identity" generator, not "sequence"),
+		this INSERT happens immediately, no matter if you are inside or outside of a transaction.
+
+Persistent Context
+===============
+- Every hibernate session has one Persistent Context.
+- Persistent context contains
+	1. Graph of managed persistent instances
+	2. List of SQL statements to send to the database.
+
+Advantage of annotation
+==========
+1. More intuitive
+2. Less verbose
+3. less risk of stale mapping files causing deployment issues
+
+Advantage of mapping xml
+==================
+1. If you are migrating from leagcy env. and have little freedon w.r.t. schema
+2. If you do not have source code of POJO
+
+Projection
+=============
+- An object-oriented representation of a query result set projection in a Criteria query.
+
+- In the criteria api aggregation is done by calling methods in the Projections class
+- In the criteria api a where clause is added by calling methods in the Restrictions class
+
+
+@NamedQuery 	// To write named HQL query
+@NamedNativeQuery	// To write a named SQL query
+
+HQL
+================
+- HQL is fully object-oriented and understands notions like inheritance, polymorphism and association.
+- queries are case-insensitive. Except names of Java classes and properties,
+- Hibernate queries can name any Java class or interface in the from clause
+- You do not usually need to qualify the class name, since auto-import is the default. Ex-
+	from eg.Cat		// package name is optional
+	from Cat		// return all instances of Cat and its subclasses
+	from Cat as cat	// as is optional
+	from Cat cat
+	from Formula, Parameter		//  cartesian product or "cross" join.
+	from Formula as form, Parameter as param
+	from java.lang.Object o		// return all persistent objects
+
+- Supports
+	- JDBC-style positional parameters ?
+	- named parameters :name, :start_date, and :x1
+
+- supported join types are borrowed from ANSI SQL:
+	inner join - selects all rows from both tables as long as there is a match between the columns in both tables.
+	left outer join/left join - returns all rows from the left table , with the matching rows in the right table
+	right outer join/right join - returns all rows from the right table, with the matching rows in the left table
+	full join/full outer join - returns all rows from the left table and from the right table. Includes non-matching rows from both table
+
+- select clause
+	- picks which objects and properties to return in the query result set.
+	select cat.name from DomesticCat cat  where cat.name like 'fri%'
+- Aggregate function
+	select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat) from Cat cat
+	select distinct cat.name from Cat cat
+- You can use arithmetic operators, concatenation, and recognized SQL functions in the select clause:
+- where clause
+	from Cat where name='Fritz'
+	from Cat as cat where cat.name='Fritz'	// If there is an alias, use a qualified property name
+	from Cat cat where cat.mate.name is not null	// translates to an SQL query with a table (inner) join
+	from Foo foo where foo.bar.baz.customer.address.city is not null	// require four table joins in SQL.
+	from Cat cat, Cat rival where cat.mate = rival.mate		// use = to compare properties and instances:
+
+
+Transaction
+============
+- mechanisms to use for working with optimistic locks in Hibernate
+	version	timestamp	optimistic-lock
+
+Hibernate JDBC Properties
+--------------
+hibernate.connection.driver_class	JDBC driver class
+hibernate.connection.url		JDBC URL
+hibernate.connection.username	database user
+hibernate.connection.password	database user password
+hibernate.connection.pool_size	maximum number of pooled connections
+
+Hibernate Datasource Properties
+--------------
+hibernate.connection.datasource	datasource JNDI name
+hibernate.jndi.url				URL of the JNDI provider (optional)
+hibernate.jndi.class			class of the JNDI InitialContextFactory (optional)
+hibernate.connection.username	database user (optional)
+hibernate.connection.password	database user password (optional)
+
+Hibernate Configuration Properties (Optional)
+---------------
+hibernate.dialect		class which implements Hibernate org.hibernate.dialect.Dialect e.g. org.hibernate.dialect.MySQLDialect
+						- allows Hibernate to generate SQL optimized for a particular relational database.
+hibernate.show_sql		Write all SQL statements to console.
+hibernate.format_sql	Pretty print the SQL in the log and console
+hibernate.default_schema		Qualify unqualified table names with the given schema/tablespace in generated SQL.
+hibernate.default_catalog		Qualifies unqualified table names with the given catalog in generated SQL.
+hibernate.session_factory_name	SessionFactory will be automatically bound to this name in JNDI after it has been created
+hibernate.max_fetch_depth		between 0 and 3
+hibernate.default_batch_fetch_size	recommended values 4, 8, 16
+hibernate.default_entity_mode	dynamic-map | pojo	, default is pojo
+hibernate.order_updates			true | false, Forces Hibernate to order SQL updates by the primary key value of the items being updated.
+hibernate.generate_statistics	true | false, collect statistics useful for performance tuning
+hibernate.use_identifier_rollback	true | false, If enabled, generated identifier properties will be reset to default values when objects are deleted
+hibernate.use_sql_comments			true | false
+hibernate.id.new_generator_mappings	true | false, Default is false for backward compatibility. Recommended - true
+
+Hibernate JDBC and Connection Properties
+-------------------
+hibernate.jdbc.fetch_size
+hibernate.jdbc.batch_size				between 5 and 30
+hibernate.jdbc.batch_versioned_data		true | false
+hibernate.jdbc.factory_class
+hibernate.jdbc.use_scrollable_resultset
+hibernate.jdbc.use_streams_for_binary
+hibernate.jdbc.use_get_generated_keys
+hibernate.connection.provider_class		// custom ConnectionProvider which provides JDBC connections to Hibernate
+hibernate.connection.isolation			// Sets the JDBC transaction isolation level. Valid values java.sql.Connection.
+hibernate.connection.autocommit			true | false	, not recommended
+hibernate.connection.release_mode		auto (default) | on_close | after_transaction | after_statement
+hibernate.connection.<propertyName>		Pass the JDBC property <propertyName> to DriverManager.getConnection().
+hibernate.jndi.<propertyName>			Pass the property <propertyName> to the JNDI InitialContextFactory.
+
+Hibernate Cache Properties
+---------------
+hibernate.cache.provider_class			// classname of a custom CacheProvider
+										// To disable second level cache- org.hibernate.cache.internal.NoCacheProvider
+hibernate.cache.use_minimal_puts		true|false, Optimizes second-level cache operation to minimize writes, at the cost of more frequent reads
+										// enabled by default for clustered cache
+hibernate.cache.use_query_cache			true|false, Enables the query cache
+hibernate.cache.use_second_level_cache	true|false, enabled by default for classes which specify a <cache> mapping. Set false to disable
+hibernate.cache.query_cache_factory		// classname of a custom QueryCache interface. Default - StandardQueryCache
+hibernate.cache.region_prefix			// A prefix to use for second-level cache region names
+hibernate.cache.use_structured_entries	true|false, store data in the second-level cache in a more human-friendly format.
+hibernate.cache.auto_evict_collection_cache
+hibernate.cache.default_cache_concurrency_strategy	// default CacheConcurrencyStrategy to use when either @Cacheable or @Cache is used
+													// @Cache(strategy="..") is used to override this default
+
+Miscellaneous Properties
+----------------
+current_session_context_class	// Supply a custom strategy for the scoping of the "current" Session.
+								// i.e. defines which CurrentSessionContext implementation should be used
+								// e.g. jta | thread | managed | custom.Class
+hibernate.query.factory_class
+hibernate.query.substitutions
+hibernate.hbm2ddl.auto			// validate | update | create | create-drop
+hibernate.hbm2ddl.import_files
+
+Hibernate Transaction Properties
+-----------------
+hibernate.transaction.factory_class		// classname of a TransactionFactory to use with Hibernate Transaction API. Default is JDBCTransactionFactory
+
+Caching
+========
+
+@Cache - Configure Cache region names
+@Cacheable	- cache entity instances
+- setCacheable() - for caching the results of a HQL query
+
+- Cache Concurrency strategy
+	NONSTRICT_READ_WRITE
+	READ_ONLY
+	TRANSACTIONAL
+	READ_WRITE		- for data that frequently changes
+
+- Its NOT mandatory for cacheable entity classes to implement the java.io.Serializable interface
+- In the ehcache.xml if eternal=true then timeouts are ignored
+- The lifecycle of a second-level cache is bound to SessionFactory instance
+- A second-level cache has scopes - Cluster, Process
+- To disable second level cache set property
+	hibernate.cache.provider_class=org.hibernate.cache.internal.NoCacheProvider

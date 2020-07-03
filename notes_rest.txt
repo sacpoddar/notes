@@ -1,0 +1,257 @@
+Arch principle
+- Addressability 	 
+- A Uniform and Contained resource 	
+- Representation Oriented	 
+- Stateless Communication 
+
+Use REST
+- Service is compltely stateless 
+- mutual understanding on content being exchanged
+- Limited bandwidth
+Use SOAP
+- When format contract must be established
+- Arch must address nun fucntional req i.e WS*-Standard
+
+Allowed annotation on Class	(javax.ws.rs)
+@Path
+@Produes
+@Consumes	
+
+@Path	- URI path that a resource class or class method will serve requests for. Paths are relative.
+		- Leading and trailing '/' in path are ignored. Base URIs are treated as if they ended in '/'
+	e.g. @Path("customerservice")				// For	example.com/customerservice
+		- Container returns HTTP "404 Not Found" e.g. if client requests http://localhost:9000/customerservice/ but default handler like below is not available
+				@GET
+				public String getMessage()
+				{ 
+		- Container returns HTTP "405 Method Not Allowed" if requested URL matches to a method but path parameters are missing
+@Produes	- Defines the media type(s) that the methods of a resource class or javax.ws.rs.ext.MessageBodyWriter can produce.
+			- If not specified means any type can be produced.
+			- Method level annotations override a class level annotation
+			- A container is responsible for invoking right method based on HTTP Request header Accept:
+			- If no such method is available the container must respond with a HTTP "406 Not Acceptable" as specified by RFC 2616. 
+	e.g. @Produces("text/xml")
+		@Produces(MediaType.APPLICATION_XML)
+		@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		
+@Consumes	- Defines the media types that the methods of a resource class or javax.ws.rs.ext.MessageBodyReader can accept
+			- If not specified, a container will assume that any media type is acceptable.
+			- Method level annotations override a class level annotation.
+			- A container is responsible for invoking right method based on HTTP Request header Content-Type:
+			- If no such method is available the container must respond with a HTTP "415 Unsupported Media Type" as specified by RFC 2616.
+
+Allowed annotation on Method (javax.ws.rs)
+@Path
+@GET		Retrieve
+@POST	Create
+@PUT		Update/Create
+@DELETE	Del
+@HEAD
+@Produes	
+@Consumes
+
+Correct REST req
+/categories/{categoryId}/products/{productId}
+/books/1012345
+
+- For method return type - array of String and primitive type are not allowed e.g String[] , int[], ArrayList<String>
+	e.g. 	int[]  return type will give error - 
+			Mar 10, 2015 2:59:12 PM org.apache.cxf.jaxrs.interceptor.JAXRSOutInterceptor writeResponseErrorMessage
+			WARNING: No message body writer has been found for response class int[].
+		- Client will get HTTP "500 Server Error"
+- Method can return
+	- ArrayList<Customer>	// Customer need to have default contructor and @XmlRootElement tag specified
+	
+To extract info from request
+@PathParam		/customers/1012345
+@QueryParam		/path?firstname=sac&lastname=pd
+@FormParam		name=sac number=123
+@MatrixParam		;start=1;end=20
+@HeaderParam
+@CookieParam
+
+ex	For /customers?id=1012345
+    @GET
+    @Path("/customers")
+    public Customer getCustomer(@QueryParam("id") String id) {
+	
+ex	For /customers/1012345
+    @GET
+    @Path("/customers/{id}/")
+    public Customer getCustomer(@PathParam("id") String id) {
+	
+ex	
+    @GET
+    @Path("/customers")
+    public Customer getCustomer(@HeaderParam("User-Agent") String userAgent) {
+	
+ex 
+    @GET
+    public String getMessage(@HeaderParam("Accept") String accept)
+	
+ex 
+    @GET
+    public String getMessage(@CookieParam("custId") String custId)
+
+Map two path to a method
+@Path("a/{parameter: path1|path2}")
+	
+@DefaultValue	- To set the default value of a param if param is not specified in req
+ex
+	@Path("/test")
+	@GET
+	public Response getName(@DefaultValue("1") @QueryParam("id") int id){
+
+- Resource injection ( javax.ws.rs.core.)
+@Context	-  to inject information into a class field, bean property or method parameter.
+
+Request
+Response		// Set response params. ok(), status(int), 
+Response.ResponseBuilder // status(), cookie(), header(), entity(), language(), expires(), lastModified(), variant(), link()
+HttpHeaders		// 
+Cookie			// 
+UriInfo			// getAbsolutePath(), getPath(), getBaseUri(), getQueryparameters()
+HttpHeaders		// 
+SecurityContext
+Application
+
+GenericEntity	// 
+
+e.g. 
+    @GET
+    public String getMessage(@Context Request req)
+    {
+
+e.g.
+	List<String> list = new ArrayList<String>();
+	GenericEntity<List<String>> entity = new GenericEntity<List<String>>(list) {};
+	Response response = Response.ok(entity).build();
+	
+	
+WebApplicationException - thrown in case of Runtime exception for applications where custom expcceptios are not written
+
+Produces("text/plain")
+Consumes("application/x-www-form-urlencoded")	
+
+HTTP Codes
+1x - Info
+2x - Success
+3x - Redirection
+4x - Client Error
+5x - Server Error
+
+
+Response 
+	- Status
+	- HTTP Message header
+	- Cookies
+ResponseBuilder builder = Response.ok(cust).cookie(ck).status(200).build()	;
+		// status(Response.Status.OK)
+
+GenericEntity - help get type info despite type erasure
+
+ExceptionMapper - convert an exception to an http response
+- If thrown exception id not handled by mapper then it is handled by Container
+
+@Provider ExceptionMapper
+
+Variant processing
+ex
+	@GET
+	public Response get() {
+		List<Variant> vs = Variant.mediaTypes("text/xml", "text/json").languages("en","fr").build();
+		return Response.notAcceptable(vs).vuild;
+
+Web linking	- Using hyperlink as means of navigation from one link to another
+
+conneg - Content negotiation
+UriBuilder - 	
+
+Authentication
+Basic	- Uses Base64 to encode
+Digest	- Uses MD5 hash to encode
+X.509
+
+Security
+1. Container managed security
+	- Cofiguring realms,roles,users with standard JavaEE container
+2. JAX-RS SecurityContext
+	- Injecting a SecurityContext
+3. Declarative security
+	- Annotating classes & methods with javax.annotation.security.*
+
+401	- Unauthorized
+
+Container managed
+web.xml
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>all interface</web-resource-name>
+      <url-pattern>/*</url-pattern>
+	   <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+       <role-name>bluepages</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>TSS PMH Analysis</realm-name>
+	</login-config>
+	<security-role>
+		<role-name>bluepages</role-name>
+	</security-role> 
+
+Declarative	
+@DeclareRoles(value={"admin", "all"})		// only for class. Indicates class methods uses these roles
+@RolesAllowed(value={"admin","class"})		// class and method. method will get preference
+@PermitAll		// all users allowed
+
+JAX-RS
+@Context SecurityContext
+	- isUserInRole()
+	
+http://en.wikipedia.org/wiki/Basic_access_authentication
+serevr sends - WWW-Authenticate: Basic realm="nmrs_m7VKmomXXXXX:"
+client replies- Authorization: Basic QWxhZGRpbjpvcGVuIHNlcXXXX==
+
+DenyAll	httpcode - 401 ??
+PermitAll	
+
+HTTP Status Code
+===============
+100 Continue
+101 Switching Protocols
+
+200 OK
+201 Created
+202 Accepted
+203 Non-Authoritative Information
+204 No Content
+205 Reset Content
+206 Partial Content
+
+300 Multiple Choices
+301 Moved Permanently
+302 Found
+303 See Other
+304 Not Modified
+305 Use Proxy
+306 (Unused)
+307 Temporary Redirect
+
+400 Bad Request
+401 Unauthorized
+402 Payment Required
+403 Forbidden
+404 Not Found
+405 Method Not Allowed
+406 Not Acceptable
+
+500 Internal Server Error
+501 Not Implemented
+502 Bad Gateway
+503 Service Unavailable
+
+ 
