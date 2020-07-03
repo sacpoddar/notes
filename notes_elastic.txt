@@ -1,0 +1,296 @@
+Elasticsearch
+=================
+
+- used for full-text search, structured search, analytics, and all three in combination
+- real-time and distributed search and analytics engine
+- All features are exposed via RESTful API
+
+- A distributed real-time document store where every field is indexed and searchable
+- A distributed search engine with real-time analytics
+- Capable of scaling to hundreds of servers and petabytes of structured and unstructured data
+
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.deb
+dpkg -i elasticsearch-0.90.7.deb
+
+apt-get install unzip
+apt-get install openjdk-7-jdk
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+./bin/elasticsearch -d		// to start in background
+
+/opt/elasticsearch-1.5.1/bin/elasticsearch -d -D es.bypass.vm.check=true		// ignore warning "currently any JVM from IBM will easily result in index corruption."
+
+http://localhost:9200/		// elastic
+http://localhost:5601/		// kibana
+
+localhost:5601/status		// kibana status
+
+# Shutdown local node
+$ curl -X POST 'http://localhost:9200/_cluster/nodes/_local/_shutdown'
+
+# Shutdown all nodes in the cluster
+$ curl -X POST 'http://localhost:9200/_shutdown'
+
+kill -SIGTERM <pid>
+
+curl -X GET 'http://localhost:9200'		//test install
+
+// bulk data upload
+curl -XPOST 'localhost:9200/bank/account/_bulk?pretty' --data-binary @accounts.json
+
+http://localhost:9200/_cat/				// list allowed cat commands to get info about cluster 
+curl 'localhost:9200/_cat/indices?v'	// View all index and size
+
+Basic CRUD-
+curl -X POST 'http://localhost:9200/tutorial/helloworld/1' -d '{ "message": "Hello World!" }'
+curl -X GET 'http://localhost:9200/tutorial/helloworld/1'
+curl -X GET 'http://localhost:9200/tutorial/helloworld/1?pretty=true'
+curl -X DELETE 'http://localhost:9200/tutorial/helloworld/1'
+
+Indexing
+============
+REST URL Format is 
+http://localhost:9200/<index>/<type>/[<id>].
+
+- "Indexing a document" means "insert/update" document in elastic
+- An index is a container for zero or more types. The index name is arbitrary. If there isn't an index with that name on the server already one will be created using default configuration.
+- A type is a container for zero or more documents. type name too is arbitrary. It serves several purposes, including:
+	- Each type has its own ID space.
+	- Different types can have different mappings ("schema" that defines how properties/fields should be indexed).
+	- Although it's possible, and common, to search over multiple types, it's easy to search only for one or more specific type(s).
+
+- To explicitly create index
+curl -XPUT 'http://localhost:9200/movies'
+curl -XPUT 'http://localhost:9200/movies/movie'		// Error. No handler found. You cannot create only type
+	
+- To get metadata of index
+curl -XGET 'http://localhost:9200/movies'
+	
+Create 
+========
+curl -XPUT "http://localhost:9200/movies/movie/1" -d'
+{
+    "title": "The Godfather",
+    "director": "Francis Ford Coppola",
+    "year": 1972
+}'
+- Index and type if does not exists will be created. 
+- If doc with same index/type/id exists it will be updated
+- NOTE: If you do not want to explicitly specify id use POST instead of PUT. A random ID will be auto generated
+curl -XPOST "http://localhost:9200/movies/movie" -d'
+{
+    "title": "The Godfather",
+    "director": "Francis Ford Coppola",
+    "year": 1972
+}'
+
+Search
+=========
+- In order to search with ElasticSearch we use the _search endpoint, optionally with an index and type
+REST URL Format is 
+http://localhost:9200/{endpoint}/_search
+- {endpoint} refers to the ElasticSearch index type (aka table)
+- {endpoint}/_search
+
+- in order to search for our movies we can make POST requests to either of the following URLs:
+
+http://localhost:9200/_search - Search across all indexes and all types.
+http://localhost:9200/movies/_search - Search across all types in the movies index.
+http://localhost:9200/movies/movie/_search - Search explicitly for documents of type movie within the movies index.
+
+-Query DSL: It's ElasticSearch's own domain specific language based on JSON in which queries and filters can be expressed.
+- Search all
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+   "query": {
+      "match_all": {}
+   }
+}
+
+- Search in _all fields
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "query_string": {
+            "query": "kill"
+        }
+    }
+}'
+
+- Search in specific fields
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "query_string": {
+            "query": "ford",
+            "fields": ["title"]
+        }
+    }
+}'
+
+- limit search
+curl -XPOST "http://localhost:9200/_search?size=100" -d'
+{
+    "query": {
+        "query_string": {
+            "query": "ford",
+            "fields": ["title"]
+        }
+    }
+}'
+
+Filtering
+==========
+Get all "drama" movies released in 1962
+
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "query_string": {
+                    "query": "drama"
+                }
+            },
+            "filter": {
+                "term": { "year": 1962 }
+            }
+        }
+    }
+}'
+
+Filtering without a query
+==================
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {
+                }
+            },
+            "filter": {
+                "term": { "year": 1962 }
+            }
+        }
+    }
+}'
+
+alternative is -
+
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "constant_score": {
+            "filter": {
+                "term": { "year": 1962 }
+            }
+        }
+    }
+}'
+
+Mapping
+===========
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "constant_score": {
+            "filter": {
+                "term": { "director": "Francis Ford Coppola" }
+            }
+        }
+    }
+}'
+
+will not return any result.
+
+- When we index a document with ElasticSearch it does two things: 
+	- it stores the original data untouched for later retrieval in the form of _source and 
+	- it indexes each JSON property into one or more fields in a Lucene index. 
+		During the indexing it processes each field according to how the field is mapped. 
+		If it isn't mapped default mappings depending on the fields type (string, number etc) is used.
+
+As we haven't supplied any mappings for our index ElasticSearch uses the default mappings for strings for the director field.
+This means that in the index the director fields value isn't "Francis Ford Coppola". Instead it's something more like ["francis", "ford", "coppola"].
+
+- To tell  ElasticSearch not to analyze (tokenize etc.) "director" field
+curl -XPUT "http://localhost:9200/movies/movie/_mapping" -d'
+{
+   "movie": {
+      "properties": {
+         "director": {
+            "type": "string",
+            "index": "not_analyzed"
+        }
+      }
+   }
+}'
+
+NOTE:
+- In many cases it is not possible to modify existing mappings. 
+- easiest work around for that is to create a new index with the desired mappings and re-index all of the data into the new index.
+
+- Problem with above query is 
+	- while a search for the exact value in the field would match we wouldn't be able to search for single words in the field.
+Sol - we'll map the field multiple times for indexing
+
+curl -XPUT "http://localhost:9200/movies/movie/_mapping" -d'
+{
+   "movie": {
+      "properties": {
+         "director": {
+            "type": "multi_field",
+            "fields": {
+                "director": {"type": "string"},
+                "original": {"type" : "string", "index" : "not_analyzed"}
+            }
+         }
+      }
+   }
+}'
+
+whenever it sees a property named "director" in a movie document that is about to be indexed in the movies index it should index it multiple times.
+Once into a field with the same name (director) and once into a field named "director.original" and the latter field should not be analyzed,
+maintaining the original value allowing is to filter by the exact director name.
+
+New query will be 
+
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "constant_score": {
+            "filter": {
+                "term": { "director.original": "Francis Ford Coppola" }
+            }
+        }
+    }
+}'
+
+- TO get mapping
+curl -XGET 'http://localhost:9200/movies/_mapping'
+
+- create index with mapping (enable timestamp)
+
+http://localhost:9200/movies
+POST account_alert
+{
+    "mappings" : {
+        "_default_":{
+            "_timestamp" : {
+                "enabled" : true,
+                "store" : true,
+                "type" : "date"
+            }
+        }
+      }
+    }
+}
+
+Important links
+===================
+https://www.elastic.co/guide/en/elasticsearch/client/index.html
+https://www.elastic.co/guide/en/elasticsearch/guide/current/relations.html
+https://www.elastic.co/blog/found-elasticsearch-mapping-introduction
+https://www.elastic.co/blog/logstash-jdbc-input-plugin
+http://joelabrahamsson.com/elasticsearch-101/
+
+
