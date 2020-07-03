@@ -258,3 +258,137 @@ cf cups MyDB -p "{\"jdbc-url\":\"jdbc://url\", \"user\":\"id\", \"pass\":\"pwd\"
 cf services								// list user created services
 cf delete-service MyDB					// delete service
 
+
+12 Factor Apps
+==============
+https://12factor.net
+
+- Methodology for building SaaS that
+	- uses declarative format for setup automation
+	- Suitable for deployment on cloud platform
+	- Clean contract with the underlying resources to maximize portability
+	- Minimize divergence between production and dev env
+
+12 Factors
+----------
+1. Codebase
+	- one codebase, many deploys. Deveper/Staging/Prod
+	- each app in its own repo. Branches should be used for deployment to environments
+2. Dependencies
+	- explicitly declare and manage dependencies. e.g. build.gradle
+	- automate the build process- repeatable deployments
+3. Configuration
+	- Store configuration in the environment variables. 
+	- Anything that changes from env to env. e.g. DB URL
+4. Backing services
+	- Any services that the application uses- like Database, messaging, logging
+	- Treat backing services as attached services. means app refers to the service by way of a url provided via the env variable.
+	- Attach using cf bind- Using manifest file
+	- Swapping the service should not require any code change
+5. Build, release, run
+	- Strictly separate build and run stages
+	- Build 
+		- compile code and package. e.g. gradle used to crate war file
+		- one build many deploys
+	- Release 
+		- droplet created by- cf push
+		- war/jar glued with whatever else is needed e.g JDK for java, Liberty for container, Tomcat
+	- Run  
+		- run using a single command- cf start
+		- container provides the runtime
+6. Stateless processess
+	- Execute the apps as one or more stateless processes
+	- No state info in memory or local file system ( no sticky session)
+	- State of the system is defidned by the data in backing service such as database
+								Instance-1
+	User --> Load balancer -->	Instance-2  --> Backing service(Cache, NoSQL..)
+								Instance-3		(User1, User2, User3.. )
+								
+7. Port binding
+	- Export services via port binding
+	- Export the app like a self contained service with a URL
+		e.g. Java Springboot, NodeJS are used to craete self contained apps i.e. they do not 
+		need an external web container
+	- This way one app becomes the backing service for another app	
+8. Concurrency
+	- Scale out via the processes
+	- Scale up - increase CPU, memory- Vertical scaling
+	- Scale out - create additional instances of app - Horizontal scaling
+	- An application process can benifit from vertical scaling upto a certain limit. At some point achieving
+		higher levels of request processing concurrency is not possible.
+	- Application should be designed in such a way that additional process instances may be created to cater
+		to the increases traffic/load
+9. Disposability
+	- Maximize robustness with fast startup and graceful shutdown
+	- Apps may be killed and restarted by the cloud platform without notification at any time
+	- App startup should be fast. As a rule of thumb startup should not take more than 1 min.
+	- App shitdown should be graceful e.g. close connections, ensure no job is locked
+10. Dev/Prod parity
+	- Keep Dev, Staging and Prod as similar as possible
+	- Rerefers to
+		- consistent config and app setup across all env
+		- same backing service & their version across all env
+	- Benifits are
+		- Leads to fewer bugs in prod
+		- faster delivery and continuous deployment
+11. Logs
+	- Treat logs as event streams
+	- log to stdout and stderr
+	- cloud platform takes care of
+		- collating the log events/messages from all instances
+		- routing of logs to a destination
+	- Destination for logs
+		- External to the app. Configured by way of user defined service (cf cups)
+		- Log streams may be analyzed by extrenal system for generating reports/alerts
+12. Admin processes
+	- Run admin/mgmt processes as one off tasks
+	- One-off admin processes should be run in an identical env as the regular process of the app
+		 - build and expose admin processes as part of the app instead of external script
+	- Admin code must ship with the release code so that they are in sync
+		- Developer executing a admin process from his laptop is a bad practice
+	
+Traditional 						PaaS
+Full control over Phy Res (VM)		Limited control
+
+Q1: 12 factors app refers to
+	- application that follow the 12 factor methodology
+	- the 12 best practices for cloud applications
+Q2: Characteristics of cloud native apps
+	- Self healing or Automatic recovery
+	- Designed for catering to failure situation
+	- Automatic scaling
+	- Take advantage of the cloud computing platform
+Q3: Factor#1 says ________ codebase ________ deploys
+A: one many
+Q4: Factor#2 Dependencies - Suggests that you should package all your library JAR files for java application and then put it in a source code control system for sharing with the developers in the team.
+A: False
+Q5: Configuration - Store application configuration in
+	a. property files
+	b. environment
+A: b
+Q6: Backing service - Services should be exposed over light weight protocols such as REST/HTTP instead of direct POJO calls
+A: true
+
+Q1: Maven is a packaging tool for Java/JEE application. Which stage would you use it in?
+	a. build  b. release  c. run
+A: a.
+Q2: Session management should be carried out in 
+	a. application process
+	b. caching service
+	c. local file system
+	d. n/w file system
+	e. backing service
+A: e.
+Q3: Which scaling model is preferred for cloud native applications
+	a. vertical scaling or scaling up
+	b. horizontal scaling or scaling out
+A: 	b.
+Q4: You are creating a reusable component. The preferred way to expose it to multiple applications would be to
+	a. Create a library and distribute it to application development teams
+	b. Create a DLL or UNIX Shared object
+	c. Build a process that would expose the components over REST/HTTP
+	d. Implement RESTful services in Tomcat container
+A: 	c. 
+Q5: cf push is a command that will be used in which stage?
+	a. build  b. release  c. run
+A: b.	
