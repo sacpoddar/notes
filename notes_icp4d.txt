@@ -21,3 +21,8 @@ Architecture
 - The microservices enable you to connect to your data sources so that you can catalog and govern, explore and profile, transform, and analyze your data from a single web application.
 - IBM Cloud Pak for Data is deployed on a multi-node Kubernetes cluster, using RedHat OpenShift. 
 - Although you can deploy IBM Cloud Pak for Data on a 3-node cluster, it is strongly recommended that you deploy your production environment on a cluster with at least 6 nodes for better performance, better cluster stability, and increased ease of scaling the cluster to support workload growth.
+
+1. Collect
+2. Organize
+3. Analyze
+
