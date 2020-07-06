@@ -20,7 +20,7 @@ Colors
 
 - Color with transparency
 	rgba(29, 167, 23, 0.75)	
-	
+
 CSS Box model
 -------------
 content area > padding > border > margin
@@ -118,6 +118,15 @@ h1 {			/* specific to all h1 tags */
 	sticky	- positioned based on the user's scroll position
 			- toggles between relative and fixed, depending on the scroll position
 
+- display values
+	inline	- Displays an element as an inline element (like <span>).
+			- Any height and width properties will have no effect
+	block	- Displays an element as a block element (like <p>). 
+			- It starts on a new line, and takes up the whole width
+	inline-block - Displays an element as an inline-level block container. 
+			- The element itself is formatted as an inline element, but you can apply height and width values
+	table	- Let the element behave like a <table> element
+	
 Web design basics
 =================
 
@@ -314,7 +323,7 @@ section {
     padding: 80px 0;
 }
 
-.box {
+.box {							/* add padding between features section */
     padding: 1%;
 }
 
@@ -348,11 +357,11 @@ h3 {
     margin-bottom: 15px;
 }
 
-h2:after {
+h2:after {						/* little orange line after the header */
     display: block;
     height: 2px;
-    background-color: #e67e22;
-    content: " ";
+    background-color: #e67e22;	/* orange */
+    content: " ";				/* mandatory. keep it blank since we do not want words to appear */
     width: 100px;
     margin: 0 auto;
     margin-top: 30px;
@@ -365,17 +374,17 @@ h2:after {
     margin-left: 15%;
 }
 
-.box p {
+.box p {						/* for all paragraphs in features section */
     font-size: 90%;
     line-height: 145%;
 }
 
 
 /* ----- ICONS ----- */
-.icon-big {
-    font-size: 350%;
-    display: block;
-    color: #e67e22;
+.icon-big {						/* icons are actually fonts. We can use font properties */
+    font-size: 350%;			/* make it big */
+    display: block;				/* display as a block so that it forces line break */
+    color: #e67e22;				/* orange */
     margin-bottom: 10px;
 }
 
@@ -578,11 +587,11 @@ header {
 /* MEALS */
 /* ----------------------------------------------- */
 
-.section-meals {
+.section-meals {					/* favourite meals section */
     padding: 0;
 }
 
-.meals-showcase {
+.meals-showcase {					/* remove style from ul */
     list-style: none;
     width: 100%;
 }
@@ -590,30 +599,30 @@ header {
 .meals-showcase li {
     display: block;
     float: left;
-    width: 25%;
+    width: 25%;						/* 25 x 4 = 100% */
 }
 
 .meal-photo {
     width: 100%;
     margin: 0;
-    overflow: hidden;
+    overflow: hidden;				/* if image overflows hide it */
     background-color: #000;
 }
 
 .meal-photo img {
-    opacity: 0.7;
-    width: 100%;
+    opacity: 0.7;						/* make it look darker */
+    width: 100%;						/* ensure image is as wide as its container  */
     height: auto;
-    -webkit-transform: scale(1.15);
-    -ms-transform: scale(1.15);
+    -webkit-transform: scale(1.15);		/* zoon out 115%. Causes images to overflow out of */
+    -ms-transform: scale(1.15);			/* its container which is meal-photo */
     transform: scale(1.15);
-    -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+    -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;		/* add delay */
     transition: transform 0.5s, opacity 0.5s;
 }
 
-.meal-photo img:hover {
-    opacity: 1;
-    -webkit-transform: scale(1.03);
+.meal-photo img:hover {					/* on mouse hover */
+    opacity: 1;							/* make image lighter */
+    -webkit-transform: scale(1.03);		/* zoom in */
     -ms-transform: scale(1.03);
     transform: scale(1.03);
 }
