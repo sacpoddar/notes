@@ -1,18 +1,34 @@
 ICP4D Notes
 ============
 
+IBM Cloud Pak for data essentials 
 IBM Cloud Pak for Data V2.5.x Data Engineer
 
+https://badges.mybluemix.net/badgedirectory
+https://learn.ibm.com/files/analytics/DAELL/DAELL-Badge-Program/index.html		IBM Badges
+https://learn.ibm.com/files/analytics/DAELL/DAELL-Badge-Program/cloud_pak_for_data/index.html	IBM Cloud Pak for Data V3.0.x badges 
+https://www.youracclaim.com/earner/settings/profile
+
 https://developer.ibm.com/articles/intro-to-cloud-pak-for-data/
+https://developer.ibm.com/series/cloud-pak-for-data-learning-path/
 https://www.ibm.com/support/producthub/icpdata/docs/content/SSQNUZ_current/dev/dev-resources.html
-ICP4D Playground - https://www.ibm.com/cloud/paks/experiences/cloud-pak-for-data
+https://www.ibm.com/support/knowledgecenter/en/SSQNUZ_3.0.1/cpd/overview/overview.html
+https://www.ibm.com/cloud/paks/experiences/cloud-pak-for-data		ICP4D Playground
+
+https://www.youtube.com/watch?v=y5Lz1C2gbrY&list=PLzpeuWUENMK3VLogFEIXqeTIYkx7TULVJ
 
 https://www.ibm.com/services/learning/search?query=bigdata
 https://www.ibm.com/services/learning/badge/ce4b9a55-6721-46e6-bc14-d59f89d7d588
+https://www.ibm.com/services/learning/Q600125I65952Z65		// badges
+https://www.ibm.com/services/learning/badge/65356d44-e2d7-48d2-bbbe-ea34eafd0b21		// IBM Cloud Pak for Data V2.5.x Essentials
+https://zen-cpd-zen.apps.icp4d-experiences-lite-17.demo.ibmcloud.com/zen/#/dataVirtualization/console|constellation		demo instance
+
+https://github.com/IBM/telco-customer-churn-on-icp4d
+https://github.com/horeaporutiu/wkc-tutorial-intelligent-loan
 
 - IBM Cloud Pak for Data is a unified, pre-integrated data and AI platform that runs natively on RedHat OpenShift Container platform. 
 - Services are delivered with an open and extensible cloud native platform for collecting, organizing, and analyzing data. 
-- Itâ€™s a single interface to perform end-to-end analytics with built-in governance. 
+- It's a single interface to perform end-to-end analytics with built-in governance. 
 - It also supports and governs the end-to-end AI workflow.
 
 Architecture
@@ -23,6 +39,422 @@ Architecture
 - Although you can deploy IBM Cloud Pak for Data on a 3-node cluster, it is strongly recommended that you deploy your production environment on a cluster with at least 6 nodes for better performance, better cluster stability, and increased ease of scaling the cluster to support workload growth.
 
 1. Collect
+    - Make all your data accessible–securely at its source–without the need for migration.
+    - Connect to all data and eliminate data silos.
 2. Organize
+    - Create a trusted, business-ready analytics foundation that can simplify data preparation, policy, security and compliance.
+    - Govern and automate data and the AI lifecycle.
 3. Analyze
+	- Build, deploy and manage AI and machine-learning capabilities that scale consistently throughout your organization.
+4. Infuse AI
+    - Operationalize AI throughout your business with trust and transparency.
+    - Run anywhere with agility and avoid vendor lock-in.
+
+Data virtualization
+===================
+- To collect data
+- Menu > Collect > My Data
+	- Data set
+		- Add data from file
+		- Add asset from connection
+	- Data source
+		- Add new data source (add a data connection)
+	- Data request
+		- New data request
+
+- Menu > Collect > 	Data Virtualization
+	- To query many data sources as one.
+- If Data Virtualization is absent you need to deploy it
+	Services > Data Sources > Data Virtualization > Deploy
+	NOTE: This service is not available by default. An administrator must install this service.
+- The IBM Data Virtualization service enables you to create data sets from disparate data sources so that you can query and use the data as if it came from a single source. 
+- Whether your data is in relational databases, JSON, or flat files, you can virtualize your enterprise or IoT data in a governance-infused and trusted environment.
+- With the IBM Data Virtualization service, you can easily add new data sources or use existing data sources from your IBM Cloud Pak for Data environment so that you can create new virtualized views of your data. 
+- The architecture ensures that data persists at the source and is not duplicated, which accelerates query performance.
+- Summary-
+	- you can query data across many systems without having to copy and replicate data, which reduces costs
+	- simplify your analytics and make them more up to date and accurate because you’re querying the latest data at its source.
+
+Refine data
+===========
+- Get perspective on your data
+	Cleanse and shape your data on the Data tab. 
+	Validate your data and find anomalies on the Profile tab. 
+	Get insights into your data on the Visualizations tab.
+- Refine your data
+	Transform your sample data set by entering R code in the command line or selecting operations from the menu.
+- Track your steps
+	As you refine your data, IBM Data Refinery keeps track of the steps in your Data Refinery flow. You can modify them and even select a step to return to a particular moment in your data’s transformation.
+- Run your Data Refinery flow
+	When you're ready, save and create a job to run the Data Refinery flow on the entire data set. You can run the job immediately or schedule it for later. The Data Refinery flow is saved to your project.
+
+Roles
+=====
+Admin, Engineer, User and Steward
+1. Administrator
+	- Privileges
+    Administrator
+    Author governance_artifacts
+    Can provision
+    Manage catalog
+    Manage categories
+    Manage discovery
+    Manage governance_workflow
+    Manage information_assets
+    Manage metadata_import
+    Manage quality
+	
+2. Data Scientist		3. Developer		4. Business Analyst
+	Access catalog		Access catalog		Access catalog
+						Can provision		Access information_assets
+											View quality
+											
+5. Data Engineer					6. Data Quality Analyst				7. Data Steward
+   Access catalog                   Access catalog                   	Access catalog
+   Author governance_artifacts      Author governance_artifacts         Author governance_artifacts
+   Manage discovery                 Manage discovery                	Manage discovery
+   Manage information_assets        Manage information_assets       	Manage information_assets
+   Manage metadata_import	        Manage metadata_import              Manage metadata_import
+   Access quality                   Manage quality      				View quality
+   Can provision	                                                      
+
+Watson Knowledge Catalog
+========================
+- To Find, prepare, and understand data
+- Organize and govern data. Automatically discover, classify, profile, and protect your data so data scientists can find trusted data fast.
+- NOTE: Admin access required to manage ( i.e. create and administer) the catalog
+
+- Allows to use governance, data quality and active policy management in order to help you protect and govern sensitive data, trace data lineage, and manage data lakes
+- help you quickly discover, curate, categorize and share data assets, data sets, analytical models, and their relationships with other people in your organization.
+
+- make it easy for your users to find the data and knowledge that they need while ensuring that data access is compliant with your business rules.
+- Data scientists can find relevant data assets in catalogs with powerful search capabilities, including Watson-powered intelligent recommendations, and user reviews and ratings. They can also use projects to prepare and visualize data from many connected data sources.
+- Data stewards can populate catalogs with high quality, protected data assets by:
+    - Curating data with tools that automatically discover, classify, and assign business terms to data assets.
+    - Analyzing data quality with configurable dimensions.
+    - Unlocking data by automatically masking sensitive data values with policies that enforce data protection rules.
+- Watson Knowledge Catalog seamlessly integrates with Watson Studio, which supplies tools that you can use to analyze data and build models with catalog assets.
+
+- Menu > Organize > All catalogs > Create catalog
+	- Name - TelcoDataCatalog
+	- Description - Data Catalog for Telco customer data
+	- Enable- Enforce data protection rules
+	
+- Catalogs/TelcoDataCatalog
+	- Browse Assets
+		- Add to catalog
+			- Local files - Add data asset from local files. Browse and load Telco-Customer-Churn.csv file
+			- Connected asset - Add virtualized data
+				NOTE: Virtualized data can be added to the Default catalog by someone with Administrator or Editor access to that catalog.
+			- Connection - add a connection to a remote DB, for example DB2 Warehouse in IBM Cloud
+	- Access Control
+		- Add Collaborator - to give other users access to your catalog
+			Role: 1.Admin 2.Editor 3.Viewer
+	- Settings
+
+- Catalogs/TelcoDataCatalog/Telco-Customer-Churn.csv
+	- Overview
+	- Access
+	- Review
+	- Profile
+	- Lineage
+	
+- Menu > Organize > Data and AI Governance > Categories
+	- The fundamental abstraction in Watson Knowledge Catalog is the Category. 
+	- A category is analogous to a folder.
+
+	1. Import - import categories from a cvs file
+		a. Choose file
+			> Add file - Browse and upload glossary-organize-categories.csv
+			> Next
+		b. Set merging
+			1. Replace all values
+			2. Replace only defined values
+			3. Repalce only empty values
+		c. Import
+	2. Create category - Add category manually
+		- Category name: Billing
+		- Description: Data relating to billing
+		> Save
+	
+	Categories/Billing
+		- Subcategories
+			- Create category - create a sub-category
+				- Category name: Total charges
+				- Description: Billing for total charges
+		- Governance artifacts
+			- Type: Business Term
+			- Add artifact
+	
+	Categories/Billing/Total Charges
+		- Subcategories
+		- Governance artifacts
+		
+- Menu > Organize > Data and AI Governance > Classifications
+	- We can also create classifications for assets, similar to Confidential, Personally Identifiable Information, or Sensitive Personal Information
+
+	New Classifications	> Create new classifications
+						> Import from file
+	- Published
+	- Draft
+	
+- Menu > Organize > Data and AI Governance > Data Classes
+	- When you profile your assets, a data class will be inferred from the contents where possible. 
+	- You can also add your own data classes.
+	
+	New data class > Create new data class
+		Data class name:	alphanumeric
+		Primary category:	uncategorized	[change]
+		Description:		Use for any accounting numbers i.e. Billing
+		> Save as draft
+		
+	- Once the data class is created, we can add Stewards for this class, and also associate classifications and business terms
+	
+	Data Classes/alphanumeric
+		1. Overview
+			- Secondary categories
+			- Data matching
+				- Parent data class
+				- Matching method
+				- Dependent data classes
+			- Related artifacts
+				- Classifications		+/-
+					Confidential
+				- Business terms		+/-
+					Billing
+		2. Related content
+	> Publish - To publish data class
+		
+	- To add "alphanumeric" data class to a column in our Telco-Customer-Churn.csv asset.
+		Goto Menu > Organize > All catalogs > TelcoDataCatalog
+		Open Telco-Customer-Churn.csv
+		- Select CustomerID column and click the down arrow next to “Customer Number” and then click View all:
+		- In the window that opens, search for your newly created data class, alphanumeric and click it when it returns in the search. Then click Select:
+	
+- Menu > Organize > Data and AI Governance > Business terms
+
+
+	
+Watson Machine Learning
+=======================
+- For Data analysis, model building, and deploying 
+
+- User loads the Jupyter notebook into the IBM Cloud Pak for Data platform.
+- Telco customer churn data set is loaded into the Jupyter Notebook, either directly from the github repo, or as Virtualized Data after following the Data Virtualization Tutorial from the Getting started with Cloud Pak for Data learning path.
+- Preprocess the data, build machine learning models and save to Watson Machine Learning on IBM Cloud Pak for Data.
+- Deploy a selected machine learning model into production on the IBM Cloud Pak for Data platform and obtain a scoring endpoint.
+- Use the model for credit prediction using a frontend application.
+
+https://github.com/IBM/telco-customer-churn-on-icp4d/blob/master/README.md
+https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/notebooks/Telco-customer-churn-ICP4D.ipynb
+
+
+AutoAI
+======
+- To Automate model building
+- Is a service on Watson Studio to automates machine learning tasks
+- It automatically prepares your data for modeling, chooses the best algorithm for your problem, and creates pipelines for the trained models.
+- AutoAI can be run in public clouds and in private clouds, including IBM Cloud Pak for Data
+
+IBM SPSS Modeler
+================
+- To Build a predictive machine learning model quickly and easily 
+
+- Steps
+	- Create a Project and upload the data
+	- Create an SPSS Modeler Flow
+	- Import the data		Import > Data Asset 
+	- Inspect the data		Outputs > Data Audit
+	- Data preparation		Field Operations > Type
+	- Train the ML Model	Modeling  > Random Forest
+	- Evaluate the results	Outputs > Analysis 
+							Graphs > Evaluation 
+
+Watson OpenScale
+================
+- For Monitoring the model 
+
+- Steps
+	- The developer creates a Jupyter Notebook on IBM Cloud Pak for Data.
+	- OpenScale on IBM Cloud Pak for Data is connected to a Db2® database, which is used to store Watson OpenScale data.
+	- The notebook is connected to Watson Machine Learning and a model is trained and deployed.
+	- Watson OpenScale is used by the notebook to log payload and monitor performance, quality, and fairness.
+	- OpenScale will monitor the Watson Machine Learning model for performance, fairness, quality, and explainability.
+
+https://github.com/IBM/monitor-ibm-cloud-pak-with-watson-openscale/blob/master/README.md
+https://raw.githubusercontent.com/IBM/monitor-ibm-cloud-pak-with-watson-openscale/master/notebooks/ConfigureOpenScale.ipynb.
+
+What's new in version 3.0?
+===========
+IBM cloud pack for data is a fully integrated data in AI platform that modernizes how businesses collect organize and analyze data to infuse AI throughout their organizations.
+cloud native by design the platform unifies market leading services spanning the entire analytics lifecycle from data management to data operations to governance to analytics to automated AI
+cloud pack for data and now supports to new storage options IBM cloud file storage and Red Hat open shift container storage
+you'll see updates to the home page including easy access to getting started tasks on the platform quick navigation to key elements of the system and resources and an overview containing
+notifications recently created projects and other assets and requests and there's a new format for custom KPI cards there's a new utility for the NFS
+and port works storage options to backup and restore persistent volumes that are associated with cloud pack for data 
+so many of the services available in cloud pack for data have significant improvements 
+
+Watson machine learning has several improvements new capabilities in auto AI include more powerful visualizations as well as support for larger data sources and more estimators
+the new batch development options expand the set of data sources and allow you to schedule batch deployment jobs and to deploy Python scripts and are shiny apps and new import and export capabilities
+make it easier for you to share deployment spaces and deployed content
+
+Watson open scale now includes a context-sensitive help pane to provide the help you need when you need it and improvements to model risk management like the ability to compare two models
+Watson studio has several improvements too if you're working in Jupiter lab collaborating through a git repository you can now share your work in Python scripts as well as in notebooks 
+
+Watson studio has some new supported data sources and connections like Apache Impala planning analytics Oh data and si Pio data our studio server with our three point six now allows you to
+collaborate on our shiny apps using git integration data refinery includes six new visualization charts 
+decision optimization now provides upgraded optimization engines more import data formats customized deployment runtimes and the ability to export notebooks with all associated files 
+
+IBM streams now has a reduced footprint when this service is initially provisioned which will decrease your costs for those who want to understand and enhance streams flows
+Python source code you can export to a notebook to run tweak and expand it with advanced API features and streaming data applications can use the online scoring
+functionality of Watson machine learning data stage includes two editions datastage enterprise and data stage
+
+Enterprise Plus and now offers a new job generation feature to automate and simplify a movement from a source to a target other enhancements for datastage includes support for shared containers
+new stages new connectors and enhancements for hierarchical and transformer stages the watson knowledge catalog improvements include enhanced data analysis during advanced data
+curation and you can now import assets from IBM infosphere information server the data virtualization enhancements improve query performance on multiple
+worker nodes provide backup restore and disaster recovery and add support for remote TSV files and there are enhancements to so many other services like Cognos analytics open source
+management Financial Crimes insights regulatory accelerator analytics engine SPSS modeler Watson services along with
+the db2 services and if that's not enough there are new services available in cloud pack for data master data connect will help you power your business applications with trusted
+master data 
+the master data connect service allows you to connect to a master data management server which acts as a central repository to store and maintain master data across your
+organization providing a consolidated central view of the organization's key business facts in the ability to manage master data throughout its lifecycle
+planning analytics is an integrated planning solution that uses AI to automate planning budgeting and forecasting and drive more intelligent workflows 
+
+db2 big sequel is a hybrid sequel unheard OOP engine delivering advanced security rich data query capabilities across enterprise data sources including Hadoop object
+storage and data warehouses though db2 data gate service extracts loads and synchronizes your db2 for z/os data to IBM cloud pack for data for quick access by your new high-volume read-only
+transactional applications and analytic or AI workloads
+
+Watson knolwdge catalog overview
+=======================
+IBM Cloud Pak for Data includes Watson Knowledge Catalog.
+
+Data is what fuels digital transformation, yet, few enterprises get what they need from their data.
+And most say improving the use of data is a top priority.
+Enterprise users need data they can trust, and self-service access to that data.
+
+Watson Knowledge Catalog helps you deliver trusted and meaningful data by providing a secure enterprise catalog management platform that is supported by a data governance framework. 
+A catalog stores data and knowledge and the data governance framework ensures that data access and data quality are compliant with your business rules and standards. 
+
+Watson Knowledge Catalog in Cloud Pak for Data's role-based permissions support roles from 
+- data engineers integrating data, 
+- data governance teams working on stewardship and data quality, and 
+- data citizens who could be business users analyzing data or data scientists working on data science projects.
+
+Data Stewards and Data Quality Analysts govern and curate data to provide Business-Ready data assets that are easy to find and secure.
+Curation includes discovering, classifying, and understanding all types of data to ensure that the data is complete, applicable, and meets quality standards.
+Governance includes describing and protecting your data.
+
+Watson Knowledge Catalog lets you create a glossary of Business terms to ensure that your data is described in a uniform and easily understood way across your enterprise.
+Policies and rules protect data by preventing the exposure of sensitive information to unauthorized users.
+Data protection rules can mask sensitive information so that more data is accessible to more users.
+Curated data sets are published as data assets to your enterprise catalog where Data Citizens can find them.
+
+Data citizens can search for assets with keywords and filters based on tags, business terms, and other asset properties.
+They can choose from AI-recommended assets or highly rated assets.
+They can preview data and read reviews from other catalog collaborators.
+After they find the data they need, data citizens can take advantage of the seamless integration between Watson Knowledge Catalog and Watson Studio to copy data assets into analytical projects to discover insights and build models.
+
+Find Watson Knowledge Catalog Assets Quickly
+==========================
+- how to find assets quickly in IBM Watson knowledge catalog inside IBM cloud pack for data 
+
+there are different ways to access a catalogue on the home page 
+- the quick navigation section has a link to explore catalogs 
+- you can also get here using the left navigation under the organized section and view all catalogs
+- another way is using global search say you want to search for auto throughout the cloud pack for data system you can use the filters to find just data assets
+
+you can see all of these data assets are in the education catalog and they are related to Auto
+here's the education catalog on the Browse assets tab  you can see Watson recommends 
+the more you use the catalog the better the recmmendations or you can view highly rated assets and recently added assets and 
+
+below is the list of all the assets 
+
+a catalog can contain data assets from
+- a local source connections
+- an external data source such as db2 warehouse or Cloudant and data assets that are stored in those external connections
+
+you can filter the catalog assets by type here you see two connections to external data sources viewing the Cloudant connection 
+1. Any type
+2. Connection
+3. Data Asset
+
+- notice the global connection tag this tag is automatically added to any connection that was defined at the cloud pack for data system level
+-the other connection for db2 warehouse doesn't have that tag because it was added directly to this catalog by a catalog collaborator
+
+you can also filter by source for example if you want to see the connected assets that are stored in the Cloudant or db2 warehouse data source
+you can preview the data and see the connection source and type information and you can refresh the data to get the most up-to-date data from the external source
+1. Any source
+2. Cloudant
+3. Warehouse
+
+you can type a search term to find assets and then further refine the results with the tags filter when you view an asset you get a preview of the data and other
+information like a description the format for the asset business terms tags ratings and any classifications 
+from here you can download the asset or if you want to work with the asset in an analytics project you can add this asset to a project just select the project
+name and click Add on the access tab 
+those with permission can add members to view this particular asset. this only applies to assets that are marked as private 
+review tab shows reviews from other collaborators and lets you contribute a review w
+
+hen assets are added to a catalogue with data policies enabled what's in knowledge catalog automatically profiles and classifies the content of the asset
+based on the values in those columns the profile tab contains more detailed information about the inferred classifications you can see the other possibilities for classifying each
+column and the confidence scores for those other possibilities 
+
+on the lineage tab you'll see the various events that Watson knowledge catalog has captured that occurred in the lifecycle of this data asset allowing you to trace what's happening
+to the asset since it was created
+
+Create a Watson Studio project from a file and from a GitHub repository
+================================
+- how to create a Watson studio project in IBM cloud pack for data from a zipped file and from a github repository 
+
+From the cloud pack for data home screen create an analytics project 
+	- you can create an empty project
+	- or you can import a project - 1. from a file.2. from a github repository 
+
+1. from a file
+in this case browse to select a zip file containing an exported Watson studio project just provide a name and click create
+now Watson studio is creating a project space and then uploading and extracting the zip content to the project
+when it's done you can either view the import summary or view the new project 
+
+this is the project overview tab where you see basic information about the project including the 
+- description
+- storage usage 
+- collaborators 
+- recent activity which includes the status of the import and 
+- associated deployment spaces
+
+on the assets tab you'll see the 
+- data assets notebooks and 
+- data refinery flows included in the imported project
+
+on the environments tab 
+- you can define the hardware size and software configuration for the runtime associated with Watson's studio tools such as notebooks
+
+jobs tab shows 
+- any scheduled active and previous jobs started from running an asset such as a notebook or data refinery flow 
+- from here you can view the details of each job and manage jobs
+
+access control tab 
+- lets you add and manage additional collaborators for your project
+
+on the settings tab you can 
+- edit the project name and description 
+- you can also view and associate a deployment space. 
+- Integrations
+- Additional settings
+
+a deployment space is an environment in Watson machine learning to which you promote assets from Watson studio.
+once these assets are in the deployment space they can be configured deployed and monitored .
+
+if this project was connected to a github repository or enabled to use the Jupiter lab IDE to edit notebooks
+then you would see that information in the integrations and additional settings sections
+
+2. import the project from a github repository
+just provide a project name and select the token from the list.
+if you don't have a token you can create one right from here. to see how to do that watch the enabled git integration to use the
+Jupiter lab IDE video in the IBM cloud pack for data Learning Center 
+next you need the URL for the github repository that you want to sync with this project. you can copy that from the main
+repository page and paste that here. after the URL is verified you'll see a list of the branches in that repository
+lastly enable on-demand synchronization with the github repository again watch the video mentioned previously to see
+how to setup the project to use the jupiter lab ide now create the project and wait for the process to complete
+when it's done you can either view the import summary or view the new project and on the assets tab you'll see the
+files that were synced from the github repository now you're ready to examine the assets and get started analyzing data 
 
