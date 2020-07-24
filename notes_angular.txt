@@ -48,20 +48,56 @@ On server
 ===============
 
 - Angular is an app-design framework and development platform for building  single-page apps.
+
 - Five common features of Angular's template syntax:
 	*ngFor
 	*ngIf
-	Interpolation {{ }}			// lets you render the property value as text
-	Property binding [ ]
-	Event binding ( )
+	Interpolation {{ }}		// lets you render the property value as text
+	Property binding [ ]	// lets you interpolate values computed from application data into the HTML
+	Event binding ( )		// lets your app respond to user input by updating your application data
 
-- Components:  Define areas of responsibility in the user interface, or UI, that let you reuse sets of UI functionality. 
+- Modules:
+- an Angular app is defined by a set of NgModules. NgModules are basic building blocks.
+- Every Angular app has a root module, conventionally named AppModule, resides in app.module.ts
+- You launch your app by bootstrapping the root NgModule
+- NgModules can import functionality from other NgModules
+- @NgModule() decorator identifies the class as a NgModule
+
+- Components:  Define areas of responsibility in the user interface, or UI, that let you reuse sets of UI functionality.
+- @Component() decorator identifies the class as a component
 - A component consists of three things:
 	A component class. ( *.component.ts)
 	An HTML template. (*.component.html)
 	Component-specific styles. (*.component.css)
-- Routing: Angular Router enables you to show different components and data to the user based on where the user is in the application. 
+- A template combines HTML with Angular markup that can modify HTML elements before they are displayed.
+	
+- Routing: The Angular Router NgModule provides a service that lets you define a navigation path among the different application states and view hierarchies in your app.
 	The router enables navigation from one view to the next as users perform tasks such as clicking links on the page to navigate to a new page
+	To define navigation rules, you associate navigation paths with your components
+	
 - Services:  A service is an instance of a class that you can make available to any part of your application using Angular's dependency injection system.
-	Services are the place where you share data between parts of your application.
+- Services are the place where you share data between parts of your application.
+- @Injectable - decorator provides the metadata that allows other providers to be injected as dependencies into your class
+
+NgModule metadata
+---------------
+most important properties are -
+- declarations: The components, directives, and pipes that belong to this NgModule.
+- exports: The subset of declarations that should be visible and usable in the component templates of other NgModules.
+- imports: Other modules whose exported classes are needed by component templates declared in this NgModule.
+- providers: Creators of services that this NgModule contributes to the global collection of services; they become accessible in all parts of the app. (You can also specify providers at the component level, which is often preferred.)
+- bootstrap: The main application view, called the root component, which hosts all other app views. Only the root NgModule should set the bootstrap property.
+
+src/app/app.module.ts
+
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+@NgModule({
+  imports:      [ BrowserModule ],
+  providers:    [ Logger ],
+  declarations: [ AppComponent ],
+  exports:      [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
 
