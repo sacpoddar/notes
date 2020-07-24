@@ -50,8 +50,8 @@ On server
 - Angular is an app-design framework and development platform for building  single-page apps.
 
 - Five common features of Angular's template syntax:
-	*ngFor
-	*ngIf
+	*ngFor					// iterate over a list
+	*ngIf					// 
 	Interpolation {{ }}		// lets you render the property value as text
 	Property binding [ ]	// lets you interpolate values computed from application data into the HTML
 	Event binding ( )		// lets your app respond to user input by updating your application data
@@ -63,7 +63,7 @@ On server
 - NgModules can import functionality from other NgModules
 - @NgModule() decorator identifies the class as a NgModule
 
-- Components:  Define areas of responsibility in the user interface, or UI, that let you reuse sets of UI functionality.
+- Components:  A component controls a patch of screen called a view.
 - @Component() decorator identifies the class as a component
 - A component consists of three things:
 	A component class. ( *.component.ts)
@@ -88,16 +88,102 @@ most important properties are -
 - providers: Creators of services that this NgModule contributes to the global collection of services; they become accessible in all parts of the app. (You can also specify providers at the component level, which is often preferred.)
 - bootstrap: The main application view, called the root component, which hosts all other app views. Only the root NgModule should set the bootstrap property.
 
-src/app/app.module.ts
+	src/app/app.module.ts
 
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-@NgModule({
-  imports:      [ BrowserModule ],
-  providers:    [ Logger ],
-  declarations: [ AppComponent ],
-  exports:      [ AppComponent ],
-  bootstrap:    [ AppComponent ]
-})
-export class AppModule { }
+	import { NgModule }      from '@angular/core';
+	import { BrowserModule } from '@angular/platform-browser';
+	@NgModule({
+	  imports:      [ BrowserModule ],
+	  providers:    [ Logger ],
+	  declarations: [ AppComponent ],
+	  exports:      [ AppComponent ],
+	  bootstrap:    [ AppComponent ]
+	})
+	export class AppModule { }
 
+Component metadata
+-------------------
+- selector: A CSS selector that tells Angular to create and insert an instance of this component wherever it finds the corresponding tag in template HTML
+- templateUrl: The module-relative address of this component's HTML template.
+- providers: An array of providers for services that the component requires
+
+	src/app/hero-list.component.ts
+
+	@Component({
+	  selector:    'app-hero-list',
+	  templateUrl: './hero-list.component.html',
+	  providers:  [ HeroService ]
+	})
+	export class HeroListComponent implements OnInit {
+
+Template
+----------
+- A template looks like regular HTML, except that it also contains Angular template syntax, which alters the HTML based on your app's logic and the state of app and DOM data.
+- Your template can use data binding to coordinate the app and DOM data
+
+	src/app/hero-list.component.html
+
+	<h2>Hero List</h2>
+	<p><i>Pick a hero from the list</i></p>
+	<ul>
+	  <li *ngFor="let hero of heroes" (click)="selectHero(hero)">
+		{{hero.name}}
+	  </li>
+	</ul>
+	<app-hero-detail *ngIf="selectedHero" [hero]="selectedHero"></app-hero-detail>
+
+- The *ngFor directive tells Angular to iterate over a list.
+- {{hero.name}}, (click), and [hero] bind program data to and from the DOM, responding to user input
+- <app-hero-detail> tag in the example is an element that represents a new component, HeroDetailComponent
+
+Data binding
+------------
+- four forms of data binding markup
+			---{{value}}------------->
+Component	---[property]= 'value---->		DOM
+			<--(event) = 'handler'----
+			<--[(ng-model)]= 'prop'-->
+			
+- {{hero.name}} interpolation displays the component's hero.name property value within the <li> element.
+- [hero] property binding passes the value of selectedHero from the parent HeroListComponent to the hero property of the child HeroDetailComponent.
+- (click) event binding calls the component's selectHero method when the user clicks a hero's name.
+
+- Two-way data binding combines property and event binding in a single notation.
+
+	src/app/hero-detail.component.html
+		  
+	<input [(ngModel)]="hero.name">
+
+Pipes
+-----
+- let you declare display-value transformations in your template HTML
+- A class with the @Pipe decorator defines a function that transforms input values to output values for display in a view.
+- {{interpolated_value | pipe_name}}
+- You can chain pipes
+- A pipe can also take arguments that control how it performs its transformation
+	 <p>Today is {{today | date}}</p>			<!-- Default format: output 'Jun 15, 2015'-->
+	 <p>The date is {{today | date:'fullDate'}}</p>		<!-- fullDate format: output 'Monday, June 15, 2015'-->
+
+Directives
+-----------
+- When Angular renders templates , it transforms the DOM according to the instructions given by directives.
+- you can define your own directive using the @Directive() decorator
+- A component is technically a directive. 
+- @Component() decorator extends the @Directive() decorator with template-oriented features
+- In addition to components, there are two other kinds of directives: structural and attribute.
+
+- Structural directives alter layout by adding, removing, and replacing elements in the DOM. 
+	<li *ngFor="let hero of heroes"></li>
+	<app-hero-detail *ngIf="selectedHero"></app-hero-detail>
+- *ngFor - iterative. Stamp out one <li> per hero in the heroes list
+- *ngIf - conditional. Includes the HeroDetail component only if a selected hero exists.
+
+- Attribute directives alter the appearance or behavior of an existing element
+	<input [(ngModel)]="hero.name">
+	
+Services and DI
+---------------
+- A service is typically a class with a narrow, well-defined purpose. 
+- Ideally, a component's job is to enable the user experience and nothing more. A component should present properties and methods for data binding, in order to mediate between the view (rendered by the template) and the application logic (which often includes some notion of a model).
+- A component can delegate certain tasks to services, such as fetching data from the server, validating user input, or logging directly to the console.
+- By defining such processing tasks in an injectable service class, you make those tasks available to any component.
