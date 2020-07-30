@@ -2,6 +2,9 @@ Angular
 =======
 
 https://angular.io/start
+https://code.visualstudio.com/docs/remote/containers-tutorial	Developing inside Containers
+https://code.visualstudio.com/docs/remote/ssh-tutorial			Working over SSH
+https://code.visualstudio.com/docs/remote/wsl-tutorial			Using Windows Subsystem for Linux
 
 Setup
 -----
