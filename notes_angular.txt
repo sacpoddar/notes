@@ -27,6 +27,10 @@ Setup
 - Generate
 	ng generate component component-name
 	ng generate service service-name
+	ng generate module app-routing --flat --module=app
+	
+	--flat puts the file in src/app instead of its own folder.
+	--module=app tells the CLI to register it in the imports array of the AppModule
 	
 SOP: same-origin policy
 -------------
@@ -243,3 +247,114 @@ Providing services
 	  templateUrl: './hero-list.component.html',
 	  providers:  [ HeroService ]
 	})
+
+- A provider is something that can create or deliver a service; e.g. it instantiates the HeroService class to provide the service.
+- injector is the object that is responsible for choosing and injecting the provider where the app requires it. e.g. root injector
+
+- a service property must be public if we're going to bind to it in the template.
+	constructor(public messageService: MessageService) {}
+- Angular only binds to public component properties.
+
+Routes
+------
+- Routes tell the Router which view to display when a user clicks a link or pastes a URL into the browser address bar.
+  src/app/app-routing.module.ts
+  
+	const routes: Routes = [
+	  { path: 'heroes', component: HeroesComponent }
+	];
+	
+	@NgModule({
+	  imports: [RouterModule.forRoot(routes)],
+	  exports: [RouterModule]
+	})
+	export class AppRoutingModule { }
+	
+- path: a string that matches the URL in the browser address bar.
+- component: the component that the router should create when navigating to this route.
+- @NgModule metadata initializes the router and starts it listening for browser location changes.
+- imports: [RouterModule.forRoot(routes)],
+	adds the RouterModule to the AppRoutingModule imports array and configures it with the routes
+- forRoot() - configure the router at the application's root level.
+- forRoot() method supplies the service providers and directives needed for routing, and performs the initial navigation based on the current browser URL.
+- exports: [RouterModule]
+	exports RouterModule so it will be available throughout the app.
+	
+- src/app/app.component.html
+
+	<h1>{{title}}</h1>
+	<router-outlet></router-outlet>
+	<app-messages></app-messages>
+	
+- <router-outlet> tells the router where to display routed views.
+	- Note that now all pages will have "<h1>{{title}}</h1>" followed by component, followed by <app-messages>
+	- localhost:4200/  juts displays the title as we have not defined route for path / yet
+- now app will only display the HeroesComponent when the user navigates to it i.e. localhost:4200/heroes
+
+- routerLink is the selector for the RouterLink directive that turns user clicks into router navigations
+	<a routerLink="/heroes">Heroes</a>
+	
+
+In-memory Web API 
+================
+- intercepts HttpClient requests, applying them to an in-memory data store, and returning simulated responses.
+- By using the In-memory Web API, you won't have to set up a server to learn about HttpClient.
+- Install the In-memory Web API package
+	npm install angular-in-memory-web-api --save
+
+Error handling
+==============
+- To catch errors, you "pipe" the observable result from http.get() through an RxJS catchError() operator.
+	src/app/hero.service.ts
+	
+	import { catchError, map, tap } from 'rxjs/operators';
+	
+	getHeroes(): Observable<Hero[]> {
+	  return this.http.get<Hero[]>(this.heroesUrl)
+		.pipe(
+		  catchError(this.handleError<Hero[]>('getHeroes', []))
+		);
+	}
+	
+- The catchError() operator intercepts an Observable that failed. It passes the error an error handler that can do what it wants with the error.
+
+Tap into the Observable
+-----------------
+- RxJS tap() operator, looks at the observable values, does something with those values, and passes them along. 
+- The tap() call back doesn't touch the values themselves.
+	getHeroes(): Observable<Hero[]> {
+		return this.http.get<Hero[]>(this.heroesUrl)
+		  .pipe(
+			tap(_ => this.log('fetched heroes')),
+			catchError(this.handleError<Hero[]>('getHeroes', []))
+		  );
+	}
+	
+subscribe
+---------
+- Subscribe to result
+- src/app/heroes/heroes.component.ts
+	add(name: string): void {
+	  name = name.trim();
+	  if (!name) { return; }
+	  this.heroService.addHero({ name } as Hero)
+		.subscribe(hero => {
+		  this.heroes.push(hero);
+		});
+	}
+- When addHero() saves successfully, the subscribe() callback receives the new hero
+- If you neglect to subscribe(), the service will not send the add request to the server. As a rule, an Observable does nothing until something subscribes.
+
+AsyncPipe
+---------
+- src/app/hero-search/hero-search.component.html
+    <ul class="search-result">
+      <li *ngFor="let hero of heroes$ | async" >
+        <a routerLink="/detail/{{hero.id}}">
+          {{hero.name}}
+        </a>
+      </li>
+    </ul>
+- The $ is a convention that indicates heroes$ is an Observable, not an array.
+- Since *ngFor can't do anything with an Observable, use the pipe character (|) followed by async. This identifies Angular's AsyncPipe and subscribes to an Observable automatically so you won't have to do so in the component class.
+    
