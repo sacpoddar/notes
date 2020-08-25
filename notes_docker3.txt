@@ -183,8 +183,10 @@ kubectl apply -f client-node-port.yaml
 kubectl get nodes			// get the status of all running nodes
 kubectl get pods			// get the status of all running pods
 kubectl get services		// get the status of all running services
+kubectl get all				// get all
 kubectl describe service client-node-port		// describe service
 kubectl logs <pod-name>				// print container logs
+kubectl config current-context		// docker-desktop or 
 winpty kubectl exec -it <pod-name> sh		// login to container shell
 
 - many docker commands are available with kubectl as well
@@ -345,7 +347,7 @@ kubectl get secrets
                   name: pgpasswordsecret
                   key: PGPASS
 				  
-- NOTE: Environment variale value has to be string e.g.
+- NOTE: Environment variable value has to be string e.g.
             - name: REDIS_PORT
               value: '6379'
 
@@ -374,7 +376,10 @@ Ingress
 	kubectl get pods -n ingress-nginx
 	kubectl get services -n ingress-nginx		// Verify the service was enabled
 
-minikube dashboard			// to open kubernetis dashboard
+	kubectl get ing								// kubectl get ingress
+	kubectl describe ing <name>
+	
+minikube dashboard								// to open kubernetis dashboard
 
 Travis
 ======
