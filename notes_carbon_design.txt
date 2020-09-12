@@ -54,5 +54,129 @@ git remote remove starter
 npm install
 npm start
 
+from scratch
+=============
+	ng new carbon-angular-tutorial 
+- Would you like to add Angular routing? Yes
+- Which stylesheet format would you like to use? SCSS
+	cd carbon-angular-tutorial
+	npm install carbon-components carbon-components-angular @carbon/icons-angular
+- carbon-components - component styles
+- carbon-components-angular - Angular components
+- @carbon/icons-angular - Angular icons
+- src/styles.scss
+	@import '~carbon-components/scss/globals/scss/styles';
+- tslint.json
+	copy carbon recommended code styles from docs
+- apply code styles
+	ng lint --fix
+- add Progressive web app support
+	src/sw.js
+	copy from docs
+- to register our service worker and use it to cache files locally
+	src/index.html
+	copy from docs
+- src/manifest.json
+	copy from docs
+- add sw.js and manifest.json into our asset entities (build & test) in angular.json
+	"assets": [
+	  "src/favicon.ico",
+	  "src/assets",
+	  "src/sw.js",
+	  "src/manifest.json"
+	],
+- reference the manifest.json and theme-color in the index.html <head> tags
+	<link rel="manifest" href="manifest.json" />
+	<meta name="theme-color" content="#ffff00" />
+- ng g component header --lint-fix
 
+- Using carbon icon
+	- search for icon in library https://www.carbondesignsystem.com/guidelines/icons/library/
+	- e.g. to add icon named "Notification"
 
+	1. import icon <IconName>Module e.g. NotificationModule
+  app/app.module.ts
+  	import { NotificationModule } from '@carbon/icons-angular';
+  	
+  	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		UIShellModule,
+		NotificationModule,
+	],
+	
+	2. Use icon named ibmIcon<IconName> e.g. ibmIconNotification
+  app/header/header.component.html
+	<ibm-header-action title="action">
+		<svg ibmIconNotification size="20"></svg>		// prefix "ibmIcon" with icon name
+		<!--svg icon ibmIconNotification20></-->		// old. not supported in icons-angular: "^11.0.1"
+	</ibm-header-action>
+	
+Create pages
+------------
+- add a home page
+	ng g module home --routing --lint-fix		// generates app/home/home.module.ts and app/home/home-routing.module.ts
+	ng g component home/landing-page --lint-fix
+- add a repo page
+	ng g module repositories --routing --lint-fix
+	ng g component repositories/repo-page --lint-fix
+	
+src/app/home
+├── landing-page
+│   ├── landing-page.component.html
+│   ├── landing-page.component.scss
+│   ├── landing-page.component.spec.ts
+│   └── landing-page.component.ts
+├── home-routing.module.ts
+└── home-page.module.ts
+
+src/app/repositories
+├── repo-page
+│   ├── repo-page.component.html
+│   ├── repo-page.component.scss
+│   ├── repo-page.component.spec.ts
+│   └── repo-page.component.ts
+├── repositories-routing.module.ts
+└── repositories.module.ts
+
+Add routing
+-----------
+- src/app-routing.module.ts
+	const routes: Routes = [
+	  {
+		path: '', loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+	  },
+	  {
+		path: 'repos', loadChildren: () => import('./repositories/repositories.module').then(
+				(m) => m.RepositoriesModule ),
+	  },
+	];
+- modify the NgModule declaration to use the hash router:
+	@NgModule({
+	  imports: [RouterModule.forRoot(routes, { useHash: true })],
+	  exports: [RouterModule],
+	})
+	export class AppRoutingModule {}
+- src/app/home/home-routing.module.ts
+	import { LandingPageComponent } from './landing-page/landing-page.component';
+	
+	const routes: Routes = [
+	  {
+		path: '',
+		component: LandingPageComponent,
+	  },
+	];
+- src/app/repositories/repositories-routing.module.ts
+	import { RepoPageComponent } from './repo-page/repo-page.component';
+	
+	const routes: Routes = [
+	  {
+		path: '',
+		component: RepoPageComponent
+	  }
+	];
+- fixes to the UI Shell to have it route to the repo page.
+  src/app/header/header.component.html
+	<ibm-header [route]="['/']" name="Carbon Tutorial Angular">
+		<ibm-header-navigation ariaLabel="Carbon Tutorial Angular">
+			<ibm-header-item [route]="['/repos']">Repositories</ibm-header-item>
