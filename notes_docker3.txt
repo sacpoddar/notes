@@ -28,6 +28,7 @@ kubectl get svc
 kubectl top <nodes/pods>
 kubectl get pods --namespace=kube-system
 kubectl get namespaces
+winpty kubectl exec -it <pod-name> sh
 
 expressweb app
 ==================
