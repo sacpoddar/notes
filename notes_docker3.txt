@@ -7,7 +7,8 @@ Command summary
 ================
 docker images					// List images
 docker ps						// List running containers
-docker rmi <image-id>			// Remove one or more images
+docker rmi <image-id>			// Remove one or more images separated by space
+docker rmi -f <image-id>		// force deletion
 docker image build -t spoddar0/redis:latest	-f ./Dockerfile .	// build image
 docker run -d -p 4000:80 --name friendlyapp friendlyhello		// create container from image
 docker stop <container_id|names> 								// Gracefully stop the specified container
@@ -18,6 +19,15 @@ docker tag <image> username/repository:tag  					// Tag <image> for upload to re
 docker push username/repository:tag            					// Upload tagged image to registry
 docker run username/repository:tag                  			// Run image from a registry
 
+kubectl get pods
+kubectl get ing
+kubectl logs <pod-name>
+kubectl describe pod <pod-name>
+kubectl describe ing <ingress-name>
+kubectl get svc
+kubectl top <nodes/pods>
+kubectl get pods --namespace=kube-system
+kubectl get namespaces
 
 expressweb app
 ==================
