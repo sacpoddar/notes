@@ -1,0 +1,260 @@
+Red Hat Sales Specialist - Red Hat OpenShift 
+============================================
+
+https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkLP%3D43780340
+
+Introduction to Cloud-Native Development
+==============================
+
+Cloud-native applications take advantage of cloud computing models to increase application development and 
+delivery speed, deployment flexibility, and quality, while reducing deployment risks. 
+This approach lets organizations get the most from innovative technologies like containers and microservices, and 
+game-changing practices like Agile, DevOps, and continuous integration and deployment (CI/CD).
+
+key customer challenges, 
+how cloud-native development can solve them, and 
+how Red Hat solutions can be the foundation for your customers as they embark on this journey.
+
+What is Cloud-native application development?
+An approach to building and running applications to fully exploit the advantages of the cloud computing model, that is, 
+to create applications that are responsive, elastic and resilient.  
+Empowers organizations to build and run scalable applications in modern, dynamic environments such as public, private, 
+and hybrid clouds.
+
+The primary characteristics of cloud-native development are applications that:  
+- are packaged as containers 
+- are orchestrated by platforms capable of running on top of any cloud infrastructure 
+- adopt the principles of microservices and 
+- are developed using practices such as continuous delivery and DevOps. 
+
+These technologies and techniques enable systems with applications that are resilient, manageable, and observable. 
+When these applications are combined with robust automation, IT teams (from both the “dev” and “ops” side, working 
+collaboratively) have the power to make high-impact changes frequently, with minimal risk.
+
+Cloud native development is all about accelerated application development and delivery to:  
+- Build new applications and services to enable business innovation and transformation  
+- Modernize existing applications to gain new value from existing IT investments 
+- Connect new and existing applications together to drive new innovation and efficiency and gain competitive differentiation.
+
+Benefits
+------------
+- Customer centered focus
+ Enables rapid continuous improvement that leads to customer-first focus in a timely manner.
+ increase aboility to innovate quickly and efficiently.
+- Bias for speed
+ Bias for speed with continuous delivery of new and optimized existing application.
+ Building the capabilities to perform modern application development across the entire application portfolio
+- Divide and conquer application development
+ building microservices rather than a single full-blown application
+- Automation
+ Using  devops practices and tools to automate application delivery.
+ With DeoOps you can have both speed and quility
+
+How RedHat support Cloud native development?
+------------
+The technical foundation of cloud native application development is based on the following four key technologies and techniques.  
+1) Containers and orchestration
+2) DevOps automation and continuous delivery
+3) Microservices and service mesh
+4) Application Programming Interfaces (APIs) and API management
+ 
+These key cloud-native development technologies and techniques address process, infrastructure, and architecture improvements. 
+With a cloud-native strategy, enterprises can maximize the speed of its application delivery, from initial 
+- idea to 
+- production release to 
+- customer feedback, and, finally, to 
+- enhancements based on user feedback while lowering risk.
+
+Cloud-native development empowers organizations to build and run scalable applications in modern, dynamic environments 
+such as public, private, and hybrid clouds. Containers, service meshes, microservices, immutable infrastructure, 
+declarative APIs and DevOps exemplify this approach. 
+These technologies and techniques enable loosely coupled systems--in other words, applications--that are resilient, 
+manageable, and observable. Combined with robust automation, they allow IT (on both the Dev and Ops sides) to make 
+high-impact changes frequently and predictably with minimal risk.
+
+Portfolio:
+1. RedHat OpenShift Container platform and RedHat CodeReady
+ build, package, deploy and operate applications with an automated CI/CD and DevOps experience
+2. RedHat Middleware Portfolio
+ design, develop, integrate and modernize applications through microservices
+3. RedHat Ansible automation
+  IT automation engine for software provisioning, configuration management, and application deployment
+4. Open Innovation Lab and Container adoption program
+ provides immersive services to arm customers with the knowledge, processes and practices
+
+Who to contact? 
+When you are talking to customers, you want to be mindful of the different roles people have in purchasing deliberations.  
+- business leaders: are the power decision makers. 
+ They want to use software applications to gain competitive advantage. They need IT to continuously deliver applications 
+ with greater frequency and great user experience to advance digital business objectives and grow revenue and acquire new customers.  
+- IT leaders: are buyer decision makers concerned with the speed of solution delivery. Wants standardization and 
+ predictability of repeatable processes, platforms, and architectures. Cost of ownership and lowering risks is also 
+ important to them. 
+- application architects: are concerned with standards, support for choice of architectures, frameworks and 
+ language runtimes, and agile development, DevOps and CI/CD automation. They also want portability, choice and 
+ flexibility to run across hybrid multi clouds with consistency. 
+- application developers: They are evaluator users who want development choices. They are concerned with languages 
+ and architectural framework familiarity and support, developer tools, collaboration experience and learning resources. 
+ 
+ Once you have sorted out the respective roles of your contacts, you will want to have a conversation strategy
+
+Questions to ask? 
+1.	What are the key application development projects in the next 18 months? 
+2.	How do you balance application development versus legacy reuse versus SaaS and hosted services? 
+3.	How do ensure your applications function across all the data centers and cloud locations you operate? 
+4.	What are your plans for using the cloud for development? 
+5.	How is your developer experience in your current software development processes? 
+6.	What type of middleware application services, on-premise and cloud, are you currently using or planning to use in your development?
+
+
+
+Introduction to Hybrid Cloud Infrastructure 
+===========================
+There are four basic models for cloud infrastructure: public cloud, private cloud, multicloud, and hybrid cloud. 
+Public cloud:
+- Subscription based service
+- Used often for personal storage
+- shared with others
+- you don't  need to manage it
+- no time limits or requirements 
+- Easily transferable
+Private cloud:
+- You own or rent the entire facility
+- You maintain and control the infrastructure and security
+- You can customize it
+Multicloud:
+- using multiple clouds from many providers for numerous tasks.
+- typically these clouds are public
+	- To achieve greater flexibility, lowering costs, avoiding vendor lock-in, or using specific regional cloud providers. 
+- increasingly, they also include private clouds
+	- organization can use a private cloud instance without having to own or manage the infrastructure itself.  
+- aligning each workload to the most optimal cloud infrastructure. 
+Hybrid cloud:
+- organizations have a combination of one or more public and private clouds that are orchestrated to work together for 
+  a specific task or application. 
+- difference between hybrid and multicloud is
+	- When the use of public clouds is coordinated, that's hybrid; 
+	- when the use of multiple public clouds is more opportunistic in nature, it is multicloud. 
+- hybrid cloud environments include traditional private cloud infrastructures, such as bare-metal servers, 
+  virtualization, programmable infrastructure such as OpenStack, or on-premises container platforms. 
+  These separate cloud environments may remain unique entities, but workloads are able to traverse across them. 
+- In the hybrid cloud environment, organizations maintain consistent policies, security, and access controls across 
+  the enterprise via management and automation tools, integration, and APIs. When the cloud infrastructure is 
+  engineered to work together, your customers’ IT managers can operate with maximum security and ease of use. 
+
+Public cloud advantages
+-----------
+- Convenient and easy
+- Scalable
+- available on-demand
+- requires little in-house administration
+
+limitation:
+- costs associated with scaling, compliance, and security
+- vendor lock-in
+- may not be the right fit
+
+Hybrid cloud advantages
+-------------
+- you can scale up or out as needed while still meeting your compliance, security, or workload-driven requirements: 
+  Clouds support cloud-native applications by scaling out, while virtualization supports traditional workloads by scaling up. 
+- your customers have greater flexibility in choosing the right vendor for the right task.  
+- Hybrid cloud allows information and processes to be shared across the increasingly agile enterprise in an 
+ orchestrated, interoperable fashion.  
+
+Challenges:
+- undefined cloud strategy
+	- on traditional VM
+	- no idea how to take advantage of cloud
+	- need help understanding  options
+- institutional knowledge gap
+	- no idea about cloud technologies like openstack
+	- who is going to manage workloads in a hybrid cloud configuration
+- security and policy constraint
+	- how can we offer users and developers a seft service option, regardless of infrastructure platform
+	- how to ensure policy compliance for systems in cloud 
+
+Benefits of RedHat Hybrid cloud
+- greater ease of mgmt and automation
+- make the most of existing investments while deploying newer assets and services
+- services team can help customers overcome knowledge gap
+- extensive partner system that support RedHat produts and services
+- world class support, traininig and consulting services
+- consistent enforcement of policies
+	- sensitive information and critical systems can be kept on premises
+	- less sensitive workloads can be moved to public cloud
+	- RedHat can help customers device right strategies
+	
+Hybrid cloud infrastructure use cases
+--------------
+1. to accelerate adoption of public cloud infrastructure
+  Advantage: Elasticity, Scalability, Speed
+  Challenges:
+	- Providers infrastructure, mgmt and automation software may be different from what the IT orsganization uses
+		in its own datacenters
+	- Vendor lock-in that can occur as customers adopt the services and tools of those vendors
+  Red Hat has worked closely with all of the key cloud providers to certify and make available the Red Hat technology 
+  portfolio on that cloud provider via the Red Hat Certified Cloud and Service Provider program, or “CCSP.” 
+  As a result, customers will enjoy a consistent operational environment and reduce lock-in to any one cloud. 
+2. to run containers at scale across hybrid and multicloud environments.
+  Once customers have moved some workloads to the public cloud, they may find that 
+  - they need to keep other workloads on-site due to regulatory or security concerns, or
+  - they want to use multiple cloud vendors due to geographic or performance considerations. 
+  What is the best way for them to incorporate hybrid cloud or multicloud computing? 
+  By extending their strategy of taking advantage of the enterprise-grade Red Hat portfolio on the public cloud 
+  (thanks to CCSP and Cloud Access programs), customers can adopt the Red Hat OpenShift Container Platform to take 
+  advantage of Kubernetes and containers and extend to hybrid or multicloud computing.  
+  With Red Hat hybrid cloud infrastructure, customers can 
+  - use containers in a hybrid cloud environment, and 
+  - have application portability across private and public clouds. 
+  - They will have a consistent operational model and a 
+  - common application platform for accelerated application development through production on any cloud.
+  
+RedHat Solutions
+-----------------
+1. Accelerate adoption of public cloud infrastructure
+  Red Hat makes it very easy to consume Red Hat solutions on the public cloud. 
+  Customers can run the Red Hat technology stack that they trust across their datacenters on the major cloud providers today.
+- CCSP (Certified Cloud and Service Provider)
+  Through the CCSP program, Red Hat works with the cloud providers to engineer, test, and certify Red Hat solutions on 
+  that cloud provider. 
+- Red Hat Cloud Access
+  allows Red Hat customers to easily migrate their existing Red Hat product license subscriptions to the cloud.
+- Also through CCSP, Red Hat Enterprise Linux is available as the operating system to run on virtual machines and 
+  machine images hosted by the cloud provider. This gives the customer the benefits of Red Hat Enterprise Linux 
+  (such as security, performance, and reliability), which they can enjoy in the datacenter in the public cloud.  
+- With Red Hat Enterprise Linux available everywhere, this also means that Red Hat portfolio solutions such as 
+  Red Hat OpenShift Container Platform can also be used on these public cloud platforms. 
+- With Red Hat Enterprise Linux and Red Hat OpenShift Container Platform running on the public cloud, customers can 
+  accelerate the delivery of applications and services for the business. 
+- With the help of Red Hat Services, customers can readily address the technical complexity associated with cloud 
+  adoption and focus on transforming their business culture.  
+- Finally, Red Hat Open Innovation Labs provides a powerful workshop residency environment that can quickly help the 
+  customer find the solutions they need.
+
+2. Run containers at scale across hybrid and multicloud environments.
+- The Red Hat approach to this use case is to abstract away the details of the underlying cloud providers. 
+  Customers do this by running the Red Hat portfolio on those providers to implement a common application platform across multiple clouds.  
+- Red Hat OpenShift Container Platform runs wherever Red Hat Enterprise Linux runs, so it becomes easy to deploy and 
+  run it on any of the Red Hat certified cloud partners. 
+- With Red Hat OpenShift, organizations can take advantage of the leading Kubernetes-based container platform to easily 
+  build, deploy, and run both cloud-native and traditional stateful applications.  
+- And with Red Hat OpenShift Application Runtimes, the Red Hat middleware software portfolio for OpenShift, application 
+  development becomes faster and easier. 
+- When Red Hat Insights, which is included with Red Hat Enterprise Linux subscriptions, and Red Hat Satellite, which is 
+  included with Red Hat Smart Management subscriptions, are added, it becomes even easier to manage a hybrid cloud 
+  infrastructure solution.  
+- Furthermore, OpenShift Operators assists with automating the deployment and management of software within OpenShift, 
+  and customers can use cloud.redhat.com for a SaaS interface to multicloud management by Red Hat. 
+- Also, Containers on Cloud provides a proven approach and side-by-side mentoring to accelerate business agility. 
+  This offering combines container-native workloads with Infrastructure-as-a-Service (or “IaaS”) across physical, 
+  virtual, and cloud infrastructures.  
+- With Red Hat Services, customers can address the complexity of deploying containers on cloud and focus on 
+  transforming organizational culture. 
+- Finally, in today’s environment, security is critical. The Red Hat hybrid and multicloud infrastructure portfolio is 
+  built from the ground up on Red Hat Enterprise Linux, which utilizes Security Enhanced Linux, or SELinux, and has 
+  been hardened over the course of 25 years of development.  
+- Trusted by Fortune 500 companies. Red Hat is an industry leader in security management and vulnerability mitigation.
+
+How to sell RedHat OpenShift Container platform
+===================================

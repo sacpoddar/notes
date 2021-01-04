@@ -1,0 +1,415 @@
+Red Hat Foundations
+===================
+
+https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D41559188
+
+Digital Transformation
+======================
+This course covers: 
+what digital transformation is, 
+why it’s crucial for businesses, 
+what businesses need to do, 
+how open source makes it possible, 
+why Red Hat is the best choice for helping businesses with their digital transformation journey, and how we do it.
+
+What is digital transformation?  
+------------------------------
+Generally speaking, digital transformation is the integration of digital technology into all areas of a business, 
+fundamentally changing how a business operates and delivers value to its customers.  
+However, digital transformation is more than just technology. It encompasses cultural changes, agile processes, 
+and next-generation architecture as well as how they’re interconnected.  
+It's a cultural change that requires organizations to continually challenge the status quo, experiment, and get 
+comfortable with failure.
+
+Different Journey for everyone:
+The digital transformation journey is different for everyone, so we need to focus on each customer’s specific needs.
+For example, a customer might be facing a disruptive competitor with a new application that’s capturing market share
+ and the customer needs to respond with an advanced application. Or perhaps a customer’s existing I.T. costs are too
+ high to devote time, money, and resources to transforming the business; so it needs to get its current operations 
+ more efficient before turning their efforts to digitally transforming.  
+Before we can help them get to where they want to be, we must first figure out through discussion and probing what a
+ specific customer wants and needs from an IT challenge standpoint.
+ 
+Requires a Strategy: 
+No matter where a business is today, their digital transformation journey requires a strategy that encompasses more 
+ than just technology. It needs to prepare their people and processes in addition to transforming I.T.  
+ In other words, to be successful, digital transformation requires business acumen combined with future-proof use of
+ technology. This is where a knowledgeable partner like Red Hat can add value and help a business on its digital 
+ transformation journey.
+ 
+why it’s crucial for businesses?
+-------------------------------
+The business world is rapidly changing. That’s nothing new; businesses have always been changing and innovating. 
+However, the rate at which those changes are taking place is accelerating, and those changes are becoming more dramatic.
+Many businesses are finding themselves unprepared, and this is driving the need for businesses to adopt a new digital mindset.  
+Some causes for this disruption include: 
+- The widespread adoption and use of technology 
+- Competitors delivering faster and better at lower costs 
+- Changing customer behavior, demands, and higher expectations 
+- Rapid innovation and invention.
+
+To succeed, companies must fundamentally change the way they do business to adapt to a world characterized by what 
+the World Economic Forum describes as the fourth industrial revolution: hyperconnectivity.  As technology advances
+and more and more people are using it, I.T. operations are becoming more relevant, and are faced with new challenges.  
+
+Disruption comes not only from technology itself, but also from how it’s being applied as well as the operating models
+behind the technology or the business using it.  For example, a competitor may be doing the same task faster, better,
+and at a lower cost only because it digitally transformed. This makes it imperative for a business to shift and make
+continuous, iterative changes--in other words, it must digitally transform to remain competitive.  
+
+Higher expectations from customers and users are making digital transformation even more essential to remaining 
+competitive in fast-changing markets.  Businesses that fail to take advantage of digital transformation risk losing 
+market share and industry relevance, leading to weaker financial performance and potential failure.  
+
+There is no doubt that digital transformation is also changing the way we use technology and no industry is immune. 
+Around the world, companies face an influx of new competitors and new business models.  Digital transformation 
+efforts already in play in many industries are remapping the business landscape. For example, Uber has already 
+disrupted the transportation industry. Companies like Amazon and Alibaba have altered existing business models in 
+the retail market.
+
+what businesses need to do,
+-------------------------
+Assess where they are now
+Maintain, Optimize or Innovate
+Many organizations are not ready for their digital transformation. It poses many challenges they are unprepared to face. 
+But deciding whether to maintain or optimize their current portfolio or innovate, differentiate, and grow is the first 
+step to starting their digital transformation journey.  
+Whatever decision they make, in order to meet the challenges they need to consider how to: 
+- Gain efficiency by optimizing the IT they have - IT Optimization
+- Improve productivity by integrating apps, data, and processes - Agile intergration
+- Increase agility by adding and managing cloud infrastructure - Hybrid cloud infrastructure
+- Move faster by building more modern applications - Cloud-native app dev
+- Achieve Scale by building a scalable management and automation platform - IT automation + management
+
+Determine where they want to be
+Before developing a strategy, businesses first need to determine where they are on their digital journey.  
+Are they adopting next generation technology to transform?  
+Are they accelerating transformation to become a leader?  
+Are they continuously innovating to stay a leader?
+
+Look at how others are doing it
+
+how open source makes it possible
+---------------------------------
+Better solutions:
+Demands for efficiency, agility, and innovation require organizations to always look for new technologies. 
+Open source plays a part in both generating demand and making better solutions possible.  
+Open source can make better digital transformation solutions possible because: 
+- Collaboration fosters innovation 
+- Shared problems are solved faster 
+- Working together creates necessary standardization 
+- Transparency creates access and the ability to act
+
+Community powered approach:
+Many enterprises that rely on interoperable, flexible, and scalable technologies are already using open source. 
+Open source development and culture uses its community-powered approach to drive rapid innovation, making open 
+source solutions ideal for meeting digital transformation needs.  
+Open organizations participate in communities both inside and outside the organization to: 
+- Respond to opportunities more quickly. 
+- Improve access to resources & talent for the organization. 
+- Inspire, motivate, and empower people at all levels to act with accountability.
+
+why RedHat
+-----------
+Open source communities are very good at what they do-rapid iteration, innovation, collaboration, and 
+addressing common problems with the power of community. But businesses have some needs that communities
+do not--and should not--have to address. This is where Red Hat steps in.  
+We help organizations interact with the open source technologies they need--getting changes and requests 
+upstream. We are trusted by the communities that cultivate innovation; they know we will not stifle or hoard 
+it, because by sharing, we can make it even better.  
+- We refine community software by performing QA. and integration tasks, and standardizing user interfaces.  
+- We ensure that open source technologies delivered to our customers remain secure over the lifecycle of the product.  
+- We offer the innovation of community software with the stability of an enterprise life cycle and technical support.
+
+- User interfaces
+- QA and integration
+- Getting changes accepted upstream
+- Predictable, stable lifecycle management
+- Secure value chain
+- Support
+
+The RedHat difference
+- Open source leadership
+- Strength in Linux
+- Comprehensive portfolio
+- Hybrid Cloud
+- Our people and culture
+
+How do we help customers on their digital transformation journey?
+--------------------------
+Starting the conversation:
+In order to help companies achieve success in a digital world, we must pivot from product-led conversations to 
+business-value driven conversations. We need to focus our effort on achieving a customer-centric viewpoint that 
+applies technology in ways which best serve our customers. We need to identify where they are today and more 
+importantly, where they want to be tomorrow. By doing this, we can provide highly individualized services and 
+even anticipate customer needs based on their behavior patterns.
+
+Asking the right questions:
+Getting the right information requires asking the right questions. Even though not all conversations will be 
+centered specifically on digital transformation, here are some questions to help you get started.  
+- What disruptive competitive threats are you facing? 
+- What would you do differently if you were the disruptor? 
+- What new competition are you seeing from non-traditional market players? 
+- What new entrants are there into your market? 
+- In what ways are you looking to establish competitive differentiation through digital services? 
+- How ready is your organization to take advantage of digital opportunities? 
+	- How are you preparing your people? 
+	- How are your processes changing? 
+	- How are you preparing your technology or infrastructure to take advantage of digital opportunities?
+
+Things to listen for:
+Here are some of the things to listen for in a customer's response: 
+We have this new competitor… 
+The business is really being pushed right now by the competition. 
+Our management is asking us how we are going to respond to the competition. 
+Our customers are demanding… 
+Our industry is changing so rapidly right now. 
+The market we are in seems to be shifting in a new direction.
+
+Subscriptions
+=============
+Red Hat subscription model delivers features and benefits that customers cannot get under the traditional licensing model. 
+
+Subscriptions vs Licenses
+--------------------
+There are three fundamental differences between Red Hat's subscription model and the traditional licensing models.
+1. Comprehensive: a Red Hat subscription provides everything a customer needs. With a subscription, customers can operate 
+ Red Hat's enterprise-ready, open source technology in their environment, with no incremental maintenance costs or fees.  
+  Licensing models often have expensive and unpredictable additions to software costs, such as user access licenses,
+ per-incident support fees, and version upgrade charges. 
+2. Spread-out cost: With a subscription, cost is spread across the term of the subscription. During this term, the customer has access
+ to unlimited upgrades, as well as access to support services and content.  
+  Under a proprietary licensing model, your customer can expect the cost of the software to be concentrated at the 
+ beginning of the licensing period.  
+3. 24x7 support: Red Hat’s subscription model provides options for support 24 hours a day, seven days a week, and not just for when things break. 
+  In the licensing model, support is generally provided on a break-fix basis. 
+
+Value of a RedHat Subscription
+-----------------------
+With Red Hat subscriptions, your customers can count on three high-level values: technology, assurance, and expertise.   
+
+On the technology front, a Red Hat subscription gives your customers access to enterprise-ready software, updates and 
+security patches, and information and support services that span their entire application infrastructure, life cycle, 
+and architecture.   
+Red Hat also provides assurance by maintaining relationships with thousands of vendors and service providers to certify 
+their technologies in your customers’ Red Hat environment. Multivendor support gives customers a single source to trust 
+when it comes to keeping your business running.  
+Finally, technical expertise is a key aspect of Red Hat’s customer engagement philosophy. Through discussions, articles, 
+documentation, and other knowledge content available in the Red Hat Customer Portal, partners and customers have access 
+to all the expertise that our engineers have to offer.
+
+value proposition
+----------------
+A Red Hat subscription is more cost-effective than a traditional software license, and it provides greater value.   
+
+- A subscription covers engineering support and customer support, maintenance, lifecycle updates, upgrades, 
+ security patches, and access to the support portal. It covers a general life of Red Hat’s technology for 10 years, 
+ from shipment of the first major release.  
+- For Red Hat partners, there is an additional, very attractive value to our subscription model. Red Hat subscriptions 
+ provide partners with a predictable revenue stream, a high percentage of renewals, and the opportunity to cross-sell. 
+- Currently an estimated 90 percent of our subscriptions renew, and a large percentage of customers purchase additional 
+ Red Hat technologies during their renewal.   
+- The Red Hat subscription model also provides an advantage as the public cloud attracts enterprise customers. Red Hat 
+ pivoted its existing business model to include a pay-as-you-go option for major public clouds, such as AWS and 
+ Microsoft Azure. The pay-as-you-go option also exists for managed service providers that drive revenue by managing 
+ their customers’ infrastructure.   
+- For some of Red Hat’s technologies, customers and partners can even take an existing subscription and port it over to 
+ a public cloud environment, when extra scalability is required, without changing the purchase agreement with you or Red Hat.
+
+benefits
+---------
+- A Red Hat subscription provides ongoing delivery. It helps customers get the latest software faster because a 
+subscription includes unlimited access to all updates and upgrades in both binary and source code form.   
+- Customers get access to the Red Hat Customer Portal, a single destination that provides integrated access to all the 
+features of their subscription. The portal allows subscribers to communicate with Red Hat, keep track of the number and 
+location of their subscriptions, submit and track support tickets and feature requests, and download software. 
+A Red Hat subscription also provides critical security updates to keep your customers' systems stable and secure with 
+the latest, extensively tested security patches. These are available through the web-based Customer Portal. 
+All these ongoing delivery features provide cost certainty to customers. Once a customer has purchased an appropriate 
+subscription for each instance running, there is nothing else to pay and no hidden costs.  
+- A subscription also provides the benefits of Red Hat’s certification and testing. Red Hat provides the back-end 
+engineering, development, and testing necessary to create an enterprise-ready product. Every subscription supports an 
+ecosystem of co-development where Red Hat and partners collaborate to certify hardware, software, and cloud provider solutions. 
+This is one of the most important components of the Red Hat model, as it certifies that customers can, in most cases, 
+deploy Red Hat solutions on their existing hardware, eliminating the need for hardware upgrades.  
+- The next benefit is assurance-customers have the support of Red Hat’s Open Source Assurance program, which is 
+designed to protect customers developing and deploying Red Hat open source solutions. The program includes legal 
+assurances for customers purchasing certain Red Hat subscriptions, allowing them to continue to use their chosen 
+open source solution without interruption.  
+- Finally, customers have access to Red Hat’s flexible approach. With Red Hat subscriptions, customers do not have to 
+upgrade to the latest version and each release is supported for up to 10 years, depending on the solution. 
+Subscriptions are flexible and transferable, allowing customers to upgrade their system hardware with no penalty. 
+Subscriptions, with the exception of mainframe, are not version-, architecture-, or system-specific. Customers can 
+easily transfer a subscription from old to new hardware, upgrade or downgrade to any supported version of Red Hat 
+software, and deploy on physical servers, virtual machines, or in the cloud.   
+- No matter what a customer's requirements are for software, lifecycle, hardware, support, and portability, they can 
+choose the subscription that is right for their organization.
+
+Enterprise agreement and SEAP (Subscription Education and Awareness Program)
+------------------
+When customers purchase a Red Hat subscription, they enter into a formal contract called the Red Hat Enterprise 
+Agreement, which governs the terms under which Red Hat deliver subscriptions.   
+- The Agreement applies any time an active subscription exists within the customer's environment. Specifically, it 
+outlines the rights and responsibilities of both Red Hat and the customer.   
+- The agreement includes the customer’s right to access the full value of the subscription, including all tested and 
+certified software, maintenance, documentation, support, and indemnification. The Enterprise Agreement also outlines 
+the customers’ responsibility to maintain one subscription for each resource running Red Hat software.  
+- In some instances, customers may not be familiar with their responsibilities under their subscription agreement, 
+or they may not be aware of the rapid rate of adoption of Red Hat software. As a result, sometimes there will be non-compliance.  
+- The most basic types of non-compliance you will see are non-renewals, over-deployment, third-party support, and 
+redistribution without rights.
+- If you, as Red Hat partners, spot non-compliance in your customer base, you should bring this to Red Hat’s attention. 
+Red Hat will help you convert it to a deal that you retain and get credit for. 
+- Red Hat helps customers understand their responsibilities through the Subscription Education and Awareness Program, 
+or SEAP. This program assists customers and partners in understanding and adhering to the subscription model. 
+- Customers who go through the SEAP process develop a better understanding of the value of their subscriptions, 
+which leads to broader adoption and more consistent renewals.
+- In addition to the resources offered by SEAP, you can always bring your questions or concerns to your Red Hat account manager.
+
+Renewals
+==========
+
+What is RedHat Renewals Program?
+--------
+- The good news for partners is Red Hat has set up a team to streamline the subscription renewal process. 
+This dedicated Red Hat team handles all upfront interactions with your customers.  
+- Red Hat’s representatives take the lead on several kinds of customer interactions.  
+- The first priority is to maintain subscription records and give customers timely notice about renewal opportunities. 
+Red Hat representatives will contact your customers to remind them of upcoming subscription expirations.  
+- Second, Red Hat subscriptions come with compliance requirements. Should there be a compliance issue with one of your 
+customers, Red Hat will take the lead and help the customer identify and resolve it.  
+- A third key role for Red Hat representative is to understand customers’ needs and identify new Red Hat products 
+that will bring further productivity to their enterprise.  
+- While Red Hat provides these services, our partners retain account control themselves, and are responsible for closing all deals.
+
+Why?
+----
+The Red Hat subscription model is very different from the traditional software licensing model. 
+With traditional models, companies find themselves paying large costs at the outset, with no ability to predict 
+future maintenance expenses.  
+- Unlike traditional software licensing models, Red Hat’s pay-as-you-go subscriptions have no large upfront fees, and 
+the relationship is very different. Companies are able to spread the cost of the technology solution across multiple 
+subscription renewals.  
+- Everything, including updates and upgrades, is provided in one all-inclusive price. This means more predictable 
+expenses, and the cost over the lifespan is often lower.  
+- By renewing with Red Hat, your customers will have access to all versions of the product. This means the operating 
+system, bug fixes, proactive security updates, source code and documentation, and additional hardware and software certifications.  
+- Customers will not want to settle for a single version of a software implementation. By renewing their subscriptions, 
+customers gain ongoing access to Red Hat’s proven distributions, which undergo extensive software testing and quality assurance.  
+- Renewing subscriptions means renewing support. While it is a good thing if a customer requires little or no product 
+support, it is still important to be able to count on having access to a global network of knowledgeable Red Hat support engineers.  
+- Finally, renewals entitle customers to the Red Hat Open Source Assurance program, which helps safeguard customers 
+developing and deploying open source solutions from legal harm.
+
+Identify renewal opportunities
+------------------
+Red Hat maintains several subscription tiers, so renewals present an opportunity to educate customers on these options. 
+For example, customers can upgrade from Self-support subscriptions or Standard subscriptions to Premium subscriptions.  
+- Partners can realize additional revenue by educating customers about Red Hat products such as Red Hat Satellite, 
+a systems management solution, consultancy services that the partners can provide, or by pointing out the value of 
+moving to a higher subscription base.  
+- It is also important to keep Red Hat subscriptions active because of the ongoing need to comply with applicable laws 
+and regulations. Red Hat and partners can encourage renewals by educating customers on how subscriptions facilitate 
+regulatory and industry compliance.They can also do this by showing customers data around their subscription usage.  
+- Through it all, partners always maintain account control. Partners can use the renewal period as an occasion to 
+connect with customers. And when partners retain customers through renewals, they have an opportunity to have productive 
+conversations about their enterprise needs. This, in turn, means partners can increase customer satisfaction and 
+position themselves for follow-on sales or expansion.
+
+Commmon questions
+-------------
+When you have conversations with customers about renewals, you will have an opportunity to answer their questions, and 
+also educate them not only about their subscriptions, but about other Red Hat resources.  
+
+Do all customer systems running Red Hat products require a subscription? 
+Red Hat’s business model is a one-for-one concept, meaning that a customer is required to purchase a subscription for 
+each instance of Red Hat Enterprise Linux or Red Hat Middleware that is installed, for as long as there are any active 
+subscriptions within their organization.  
+
+Can I renew my subscriptions directly? 
+Yes. Red Hat understands these are your customers. Red Hat provides a tool to give you the information you need to 
+stay on top of your accounts and work productively with the Red Hat Renewals Team.  
+
+I paid for a subscription last year, so why do I need to renew? 
+This is a common one. The way Red Hat approaches this objection is to remind customers that they initially purchased 
+a 12-month subscription, including access to certified and tested Red Hat software binaries, updates, maintenance, 
+and support. Renewing the subscription continues those benefits.  
+When customers buy proprietary software, they pay an upfront license fee. Then they pay for maintenance every year 
+But by purchasing a Red Hat subscription, they receive continued access to the latest tested and certified solutions 
+provided by Red Hat, including full version upgrades (at no additional charge) when they become available.  
+
+How much does it cost to renew? 
+For subscription renewal pricing, customers should contact the Red Hat partner from whom they originally purchased 
+their Red Hat subscription. Otherwise, they should contact a Red Hat sales representative.  
+
+What is included in my Red Hat Enterprise Linux subscription? 
+With an active subscription, customers receive much more than just technical support. 
+A Red Hat subscription provides everything they need to help run their systems safely and reliably. 
+Access to the latest versions of Red Hat tested software binaries that have been certified by thousands of independent 
+software and hardware vendors. Access to software updates, upgrades, security advisories, and bug fixes through the 
+Red Hat Customer Portal. Access to telephone and/or web production support. Development support is also available. 
+The opportunity to participate in Open Source Assurance, Red Hat’s intellectual property assurance program.  
+
+How do I manage my subscription? 
+We make sure customers know that subscriptions are handled through the Red Hat Customer Portal, a web-based systems 
+management tool. 
+Red Hat Subscription Management (RHSM) is the service which manages the Red Hat subscriptions and entitlements.  
+Customers can access their content through RHSM using Red Hat Satellite, Subscription Asset Manager (SAM), and the 
+award-winning Customer Portal. Note that RHSM replaced Red Hat Network (RHN) Hosted.  
+For other management questions, customers should contact their Red Hat sales representative or Red Hat partner.  
+
+Can I choose to only renew subscriptions for my mission-critical machines? 
+No. As long as there are any active subscriptions within the organization, customers must purchase a subscription for 
+each instance of Red Hat Enterprise Linux or JBoss Enterprise Middleware in use.  
+Red Hat’s solutions create a great deal of value for our customers, whether they use some or all of them on a particular 
+system or on many systems. The stability, security, and reliability of Red Hat enterprise solutions are enjoyed 
+everywhere they are deployed. Red Hat understands that different machines have different technological and support needs, 
+so there is a full range of subscription offerings that users can mix and match within their environment to meet those needs.  
+
+How long does my subscription last? 
+We sell subscriptions in one- and three-year terms.  
+
+I have not used maintenance or support. Do I have to renew my subscription? 
+Red Hat is always happy to hear that customers have not required technical support.  However, a Red Hat subscription 
+provides much more than just technical support. By renewing, our customers ensure that support is available if they 
+do need it in the future, but more importantly, a subscription provides continued access to reliable software solutions 
+and binaries that are tested, certified, and proven to be stable.  
+
+When I renew, can I change my subscription to include other products, or more or less of what I initially purchased? 
+Yes, but if customers maintain any other active subscriptions with Red Hat, they are obligated to purchase a 
+subscription for every installed unit.  
+
+I forgot to renew my subscription and it has expired. Can I still renew? 
+Yes. To renew a subscription, customers should contact their Red Hat partner or a Red Hat sales representative. 
+To find contact information for the Red Hat partner or Red Hat sales representative who is best suited to assist, 
+they should refer to the Red Hat subscription renewal guide online.  
+
+If I do not renew, can I continue to use the software? 
+Yes, but the customer will no longer receive critical ongoing support, bug fixes, proactive security updates, 
+source code and documentation, and any additional hardware and software certifications. 
+The customer will lose the benefits that help keep their enterprise systems running smoothly and securely.  
+If the customer maintains any other active subscriptions with Red Hat, they are obliged to purchase a subscription 
+for every installed unit.  
+
+What do I do once I receive my renewal subscription? 
+Customers should go to www.redhat.com and register to activate their subscription. 
+They will receive an automatically generated welcome email outlining how they can access their subscription resources.  
+
+Can I choose to have another vendor support Red Hat Enterprise Linux in my environment? 
+Yes. Customers are free to purchase additional technical support for their Red Hat Enterprise Linux environment. 
+As long as they have active Red Hat subscriptions, they are required to maintain a subscription for each instance of 
+Red Hat Enterprise Linux or JBoss Enterprise Middleware. This will not release them from obligations to purchase 
+Red Hat subscriptions for the same systems.
+
+
+Introduction to cloud computing
+==============================
+Scale up vs  Scale out
+
+On-premises
+Software as a service
+Platform as a service
+Infrastructure as a service
+
+
+
