@@ -19,6 +19,7 @@ docker tag <image> username/repository:tag  					// Tag <image> for upload to re
 docker push username/repository:tag            					// Upload tagged image to registry
 docker run username/repository:tag                  			// Run image from a registry
 
+kubectl config current-context	
 kubectl get pods
 kubectl get ing
 kubectl logs <pod-name>
@@ -28,6 +29,8 @@ kubectl get svc
 kubectl top <nodes/pods>
 kubectl get pods --namespace=kube-system
 kubectl get namespaces
+kubectl get secrets
+ibmcloud ks cluster get -c <cluster> | grep Ingress
 winpty kubectl exec -it <pod-name> sh
 
 expressweb app
@@ -172,7 +175,7 @@ services:
       - .:/app
     command: ["npm", "run", "test"]
 
-Kubernetis
+Kubernetes
 ==========
 - Kubernetis is a system to deploy containerized apps
 - Nodes are individual machines (or VM's) that run containers
@@ -301,6 +304,11 @@ kubectl set image deployments/client-deployment client=stephengrider/multi-clien
 - Configure VM to use your docker server
 	eval $(minikube docker-env)			// only configures current terminal window
 
+- imagePullPolicy
+	IfNotPresent
+	Always		(default)
+	Never
+
 Complex app
 =============
 cd complex
@@ -322,7 +330,7 @@ PVC (Persistent Volume Claim)
 =============================
 - Volume in container terminology
 	Some type of mechanism that allows a container to access a filesystem outside itself
-- Volume in kubernetis
+- Volume in kubernetes
 	An object that allows a container to store data at the pod level
 
 Kubernetis Volume	
@@ -387,7 +395,7 @@ Ingress
 - There are multiple implementation of ingress. 
 - We are using 'ingress-nginx'. a ngnix based implementation
 	https://github.com/kubernetes/ingress-nginx
-- There is also 'kubernetis-ingress'. not used here
+- There is also 'kubernetes-ingress'. not used here
 
 - setup of ingress-nginx changes depending on your environment(local, GC, AWS, Azure)
 - Ingress Config > kubctl > Ingress Controller
@@ -406,7 +414,7 @@ Ingress
 	kubectl get ing								// kubectl get ingress
 	kubectl describe ing <name>
 	
-minikube dashboard								// to open kubernetis dashboard
+minikube dashboard								// to open kubernetes dashboard
 
 Travis
 ======
@@ -447,7 +455,7 @@ exit		// exit container
 
 Helm
 ======
-- Helm is package manager for kubernetis cluster
+- Helm is package manager for kubernetes cluster
 
 Install Helm v3
 -----------
