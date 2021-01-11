@@ -156,6 +156,7 @@ docker start -a <container-id>	// run container
 
 ## List Docker images
 docker image ls
+docker images
 
 ## List Docker containers (running, all, all in quiet mode)
 docker container --help
