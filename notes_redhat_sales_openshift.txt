@@ -1,5 +1,5 @@
-Red Hat Sales Specialist - Red Hat OpenShift 
-============================================
+Red Hat Sales Specialist Notes - Red Hat OpenShift
+==================================================
 
 https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkLP%3D43780340
 
@@ -28,7 +28,7 @@ The primary characteristics of cloud-native development are applications that:
 - are developed using practices such as continuous delivery and DevOps. 
 
 These technologies and techniques enable systems with applications that are resilient, manageable, and observable. 
-When these applications are combined with robust automation, IT teams (from both the “dev” and “ops” side, working 
+When these applications are combined with robust automation, IT teams (from both the "dev" and "ops" side, working 
 collaboratively) have the power to make high-impact changes frequently, with minimal risk.
 
 Cloud native development is all about accelerated application development and delivery to:  
@@ -140,7 +140,7 @@ Hybrid cloud:
   These separate cloud environments may remain unique entities, but workloads are able to traverse across them. 
 - In the hybrid cloud environment, organizations maintain consistent policies, security, and access controls across 
   the enterprise via management and automation tools, integration, and APIs. When the cloud infrastructure is 
-  engineered to work together, your customers’ IT managers can operate with maximum security and ease of use. 
+  engineered to work together, your customers' IT managers can operate with maximum security and ease of use. 
 
 Public cloud advantages
 -----------
@@ -194,7 +194,7 @@ Hybrid cloud infrastructure use cases
 		in its own datacenters
 	- Vendor lock-in that can occur as customers adopt the services and tools of those vendors
   Red Hat has worked closely with all of the key cloud providers to certify and make available the Red Hat technology 
-  portfolio on that cloud provider via the Red Hat Certified Cloud and Service Provider program, or “CCSP.” 
+  portfolio on that cloud provider via the Red Hat Certified Cloud and Service Provider program, or "CCSP." 
   As a result, customers will enjoy a consistent operational environment and reduce lock-in to any one cloud. 
 2. to run containers at scale across hybrid and multicloud environments.
   Once customers have moved some workloads to the public cloud, they may find that 
@@ -247,14 +247,297 @@ RedHat Solutions
 - Furthermore, OpenShift Operators assists with automating the deployment and management of software within OpenShift, 
   and customers can use cloud.redhat.com for a SaaS interface to multicloud management by Red Hat. 
 - Also, Containers on Cloud provides a proven approach and side-by-side mentoring to accelerate business agility. 
-  This offering combines container-native workloads with Infrastructure-as-a-Service (or “IaaS”) across physical, 
+  This offering combines container-native workloads with Infrastructure-as-a-Service (or "IaaS") across physical, 
   virtual, and cloud infrastructures.  
 - With Red Hat Services, customers can address the complexity of deploying containers on cloud and focus on 
   transforming organizational culture. 
-- Finally, in today’s environment, security is critical. The Red Hat hybrid and multicloud infrastructure portfolio is 
+- Finally, in today's environment, security is critical. The Red Hat hybrid and multicloud infrastructure portfolio is 
   built from the ground up on Red Hat Enterprise Linux, which utilizes Security Enhanced Linux, or SELinux, and has 
   been hardened over the course of 25 years of development.  
 - Trusted by Fortune 500 companies. Red Hat is an industry leader in security management and vulnerability mitigation.
 
 How to sell RedHat OpenShift Container platform
 ===================================
+
+What is it?
+-----------
+- Red Hat OpenShift Container Platform is a Kubernetes-based container platform for securely developing, deploying 
+	and running cloud-native applications. 
+- It allows organizations to accelerate and streamline application development and deployment-on-premise, in the 
+	public cloud, or in a hybrid of both.   
+- With OpenShift, each infrastructure deployment shares the same management tooling, which enables true hybrid cloud 
+	use cases and a consistent user experience. 
+- Both IT operations and development teams can standardize their processes around one interface.  
+- Red Hat OpenShift is based on enterprise-grade open source technology. It includes a broad ecosystem of software 
+	components, such as Docker-formatted container technology, Kubernetes container orchestration, Red Hat Enterprise 
+	Linux CoreOS, and more, all of which are backed by Red Hat and its partners.
+
+Why customers choose it?
+-----------------------
+- While Kubernetes is a key component of this infrastructure, it is only one part of the deployment solution.   
+- There are a number of additional components that will need to be pieced together, tested, and hardened for "day 2" 
+	operations, including networking, security, storage, GPU support, load balancing, service mesh, serverless, 
+	pipelines, and more.  
+- No matter what infrastructure your customers choose, whether it's bare metal, virtual infrastructure, private cloud, 
+	or public cloud, Red Hat OpenShift Container Platform includes a developer-friendly, consistent user experience.
+
+DevOps support?
+-------
+- DevOps is a transformative process that brings developers and IT operations teams together to produce software in 
+short iterative cycles.   
+- OpenShift supports DevOps processes by enabling developers to build and deploy applications at the click of a button, 
+	while providing operations teams the ability to manage application deployments to meet performance, security, 
+	and compliance requirements. 
+
+what does it solves? - use cases
+-------------
+1. Deploy a multicloud container platform
+- With Red Hat OpenShift Container Platform, customers have a comprehensive platform built to install across a hybrid 
+	cloud infrastructure that will ensure their company's ability to innovate.  
+- The user experience is always consistent using OpenShift, which reduces the complexity in managing and deploying 
+	applications across a hybrid cloud.
+2. Accelerate application development with containers
+- Red Hat OpenShift Container Platform supports cloud-native application development by streamlining and automating 
+	development processes. 
+	This allows your clients to accelerate application delivery with containers.   
+- Red Hat OpenShift accelerates product life cycles by giving developers more control over their environment and 
+	self-service to a wide choice of tools and components. 
+- The developer interface remains consistent across all hybrid cloud infrastructures, reducing the effort required 
+	to adapt the process for each unique target.
+
+who is a good prospect?
+---------------
+- Red Hat OpenShift Container Platform appeals to organizations of all sizes, from startups to global enterprises 
+	across all verticals and industries.   
+- Look for customers that are committed to being responsive to the needs of their customers. and who have recognized 
+	that the current model is not supporting the agility they need to be responsive.    
+- They may have already determined their future is built around containers, or they may be early in investigating what 
+	cloud-native applications look like and how they can transform their capabilities. 
+
+who do i reach out to?
+-------------------
+- It is important to involve people from both IT operations and development organizations to make sure they clearly 
+	understand how OpenShift enables teams to achieve business outcomes together.  
+- CTO and the enterprise or application architects. They are trying to modernize applications and build forward-looking
+	processes and frameworks to drive their business toward its goals.  
+- Development leads are good prospects because they want to give their team of developers a choice of commercially 
+	supported tools, languages, and frameworks, such as continuous integration and continuous delivery, or CI/CD.   
+- IT operations leaders are also target buyers as they look to support the consumption and deployment agility their 
+	development team needs.
+- engage the security team to hear their concerns about compliance and how the OpenShift may address their concerns.
+- CIOs and line of business executives are driven to expedite innovation and time to market, and to explore new business 
+	opportunities through software. 
+
+questions to ask?
+-------------------
+C-suite or Business leaders:
+- focus on the business value that derives from technology. They may not be interested in the particulars of the technology itself.
+- "What are your competitors doing that you would like to do?" 
+- "What are your upcoming priorities?" 
+- "What skills gaps may be preventing your teams from effectively adopting containers?" 
+- "What is your company's cloud strategy, and do you plan to expand your public or private cloud initiatives?"
+
+development leaders and teams:
+- focus on developer benefits that ship with OpenShift. Introduce the OpenShift developer console and show how it aligns to developer workflows.
+- "When a developer asks for a specific environment, how long does it take until the actual application deployment?  
+- "How do you manage upgrade processes for your production environments?" 
+- "How many containers are you deploying? How do you see that scaling?  Are you using service mesh to manage the 
+ 	interconnection between each"? 
+- "What programming languages or frameworks do you use?"  
+- "Are you using a standard pipeline tool?" 
+- "Which new capabilities are you interested in adopting?"  
+
+IT operations teams:
+- are concerned about the availability and uptime, security, cost, scalability of the infrastructure, and being able 
+	to define on-premise or cloud infrastructure requirements for applications. 
+- "How do you ensure high availability for your services?" 
+- "How do you scale in case of peak usage?" 
+- "How much time does it take to clone one of your existing environments?" 
+- "Are you looking for easier portability between on-premise and cloud environments?" 
+- "How much time do you spend patching security fixes?" 
+- "Do you have future VMware products you need to support?"
+
+How to handle objections: DIY kubernetes
+--------------------------
+- Because OpenShift consists of open source technologies, some customers might think they can do-it themselves   
+
+Q:	"Why can't we just build it ourselves? We can install Docker and Kubernetes."   
+A: Docker and Kubernetes are just two of the building blocks needed for a complete container platform. 
+- OpenShift adds easy management of registry and image streams for container image version tracking with automated builds. 
+- OpenShift also supports developer tools, middleware, service mesh, serverless deployments, integration with pipelines 
+	and persistent storage for stateful applications.  
+- Kubernetes also doesn't ship with a Linux distribution, and Linux is key for containers.  
+
+- The value of OpenShift is that customers can choose to manage a platform themselves with OpenShift Container Platform 
+	or they can use a managed service like OpenShift Dedicated or Azure Red Hat OpenShift.
+
+How to handle objections: public cloud-managed kubernetes
+-------------------------
+Q: "It's easier and cheaper if we just use managed Kubernetes from public cloud." 
+A: Red Hat OpenShift is a more complete solution that includes many of the management and lifecycle tools needed for 
+	a true application platform. This means customers won't waste time searching for missing components that are 
+	outside of Kubernetes itself. 
+	Second, public cloud vendors manage only part of the Kubernetes infrastructure, while customers own and are 
+	responsible for managing and securing all their applications and worker nodes. 
+	OpenShift also helps customers retain flexibility for hybrid cloud deployments and avoid cloud vendor lock-in.
+
+How to sell RedHat OpenShift Container storage
+===================================
+- a container, by nature, is transient. If the container is rebooted, all the data stored in container is lost.
+- Red Hat OpenShift Container Storage provides dynamic, stateful, and highly available container-native storage that 
+	can be provisioned and de-provisioned on demand using Kubernetes API calls, while the monitoring and management of 
+	the storage cluster is an integral part of the OpenShift Administrator Console.
+- it's a persistent software-defined storage integrated with and optimized for Red Hat OpenShift Container Platform.
+
+- Red Hat OpenShift Container Storage is engineered, tested, and qualified to work with Red Hat OpenShift Container 
+	Platform on any infrastructure. 
+- Together, these technologies provide everything needed for hybrid cloud, enterprise container development and 
+	deployment, controlled by Kubernetes. This tight integration removes the guesswork from running Red Hat 
+	OpenShift across multiple platforms.
+- Developers gain consistency in how their applications interact with their data, wherever the application is deployed, 
+	on-premise or in the cloud. And they have all this while providing the data storage functionality, data services, 
+	and data protection that enterprises require.
+
+why ?
+------
+Red Hat OpenShift Container Storage provides 
+- a unified end user experience across the open hybrid cloud. 
+- Developers will have a cloud-like experience with the ability to scale with robust data availability and durability. 
+- user interface provides integrated management with OpenShift Container Platform. 
+- By running OpenShift Container Storage with OpenShift Container Platform, customers will experience license cost savings.
+
+- Red Hat OpenShift Container Storage is container-native storage. 
+- It can run anywhere the OpenShift environment is deployed: 
+	bare metal, 
+	virtual machines, 
+	containers, and 
+	cloud deployments.
+- This flexibility helps customers standardize storage across multiple environments. 
+- Red Hat OpenShift Container Storage, when paired with Red Hat OpenShift Container Platform, gives organizations the 
+	freedom to build, deploy, and run applications anywhere, providing a consistent and standardized development, test, 
+	and production environment.
+- Container-native storage offers consistent data services so organizations can extract more value from their 
+	data—wherever it resides—bringing enterprise readiness and business continuity to applications in the hybrid cloud. 
+	Red Hat OpenShift Container Storage provides a valuable storage abstraction layer.
+
+challenges it solves
+--------------
+- Red Hat OpenShift Container Storage helps your customers solve their challenges around hybrid cloud infrastructure, 
+	where they have a mix of private, on-premise, or hosted cloud environments and third-party public cloud environments.
+- Hybrid cloud infrastructure is supported by common services, data, and end-to-end orchestration. This orchestration 
+	lets IT manage and deploy container-based applications across their cloud environments seamlessly, with maximum 
+	flexibility and at a time of their choosing.
+- Prominent use cases for Red Hat OpenShift Container Storage range from messaging and continuous integration and 
+	continuous delivery (CI/CD) applications to persistent storage for SQL and NoSQL databases and artificial 
+	intelligence and machine learning, or AI/ML, applications.
+	
+who is a good prospect?
+---------------
+- Existing OpenShift customers 
+- Business leaders/operations,
+- Developers architects
+ For developers and architects, a single unified platform supports 
+	- block storage for databases and messaging, 
+	- shared file storage for continuous integration and data aggregation, 
+	- object storage for archival, backup, and media storage.
+	
+Line of business managers, including C-level business leaders: they need
+- make cloud-native deployments enterprise-ready. 
+- empower individual business units—for example, so they can buy OpenShift and run it wherever they need it. 
+- concerned about simplicity and the speed of deployment. 
+- meet application requirements, including the application’s data, with one vendor.
+- avoid cloud lock-in and maintain the ability to move applications and data between clouds and on-premise environments.
+
+IT operations: they need
+- cloud-like enterprise, everywhere. 
+- maximum hybrid and multicloud mobility, as well as storage automation.
+- maximize flexibility in infrastructure choices, with no cloud vendor lock-in, technical dead ends
+- a single persistent volume solution for file, block, or object that is tightly integrated with OpenShift Container Platform.
+- a single dashboard to monitor and manage containers and their corresponding persistent volumes 
+
+Architects and Developers: they need
+- empower developers to innovate without artificial constraints? 
+- a simple and consistent data access experience, whether on-premise or in the cloud. 
+- flexibility to code against the standard Kubernetes persistent volume APIs for block and file access
+- develop, test and deploy end-to-end with one consistent platform.
+ 
+questions to ask?
+----------------
+Lines of business and C-suite leaders:
+	- focus on questions that address their high-level business goals and challenges. 
+- “What types of cloud-based application growth are you experiencing?” 
+- “Do you use multiple public cloud providers today, or do you anticipate deploying hybrid or multicloud solutions in 
+	the future? How do you expect to scale?” 
+- “What kinds of data-intensive applications are you running?” 
+- “What is slowing down your business and ability to deploy new applications faster?” 
+- “Is the data for their cloud-based applications transient or does it need to be stored permanently?"
+
+Head of IT operations:
+	- enquire about their hybrid- or multicloud plans; depending on their business needs, organizations may be seeking 
+	easier portability between on-premise and cloud environments, which OpenShift Container Storage helps provide.
+- “How do you ensure high availability for your storage services?” 
+- “How do you scale in case of peak storage usage?” 
+- “How much time does it take to clone one of your existing environments, and their migration strategy?” 
+- “How much time do you have to spend patching security fixes, and is this a big issue for your organization?” 
+- “What business needs are driving your cloud-native plans?” 
+
+Head of Development:
+	- Red Hat OpenShift Container Storage provides persistent storage for many popular development workflows like 
+	CI/CD pipelines, SQL/NoSQL databases, and AI/ML applications. This means development teams can likely make good 
+	use of their investments without disrupting their current processes. 
+- “What kinds of data-intensive applications are you running? Which are stateful versus stateless?” 
+- “Do these data intensive applications need a unified block, file, and S3 object storage? Do they require persistent access to data?”
+- “Do your applications require multicloud support?”
+- “How long does it take from the time a developer asks for a specific environment to actual application deployment?”
+
+objections : we already have storage
+-----------
+- Red Hat OpenShift Container Storage provides additional value and features such as data protection, data portability, 
+	and is fully integrated into Red Hat OpenShift Container Platform.
+- The solution works with both OpenShift Container Platform infrastructure and existing storage environments (such as Amazon EBS, NetApp, and others).
+
+objections : most of our workloads are static
+-----------
+- Red Hat OpenShift Container Storage provides data protection, availability, and portability for traditional 
+	application workloads, as well as emerging application workloads requiring static and dynamic data.
+
+objections : using a traditional storage vendor
+-----------
+- Legacy storage typically provides static provisioning mode and lacks the portability and agility required by 
+	container platforms. 
+- Legacy platforms do not provide developers a unified platform that supports block, file, and object storage for 
+	cloud-native applications. 
+- It also suffers from a monolithic appliance model with vendor lock-in, and high TCO, or total cost of ownership. 
+- Finally, legacy storage requires a separate management system and is not integrated into the OpenShift Container 
+	Platform management console.
+	
+objections : using a public cloud
+-----------
+- Public cloud storage options are missing key features, such as recovering persistent volume claims across availability zones. 
+- Public cloud storage doesn't offer storage federation for multicloud as they are trying to lock customers into their platform. 
+- Public cloud providers also do not provide portability across other public clouds. 
+
+pricing
+---------
+The subscription pricing for Red Hat OpenShift Container Storage is based on core pairs (that is 2-core).
+- The OpenShift Container Storage nodes will not be counted against the OpenShift Container Platform subscription. 
+- This means that the customer only pays for OpenShift Container Storage SKUs, and not for OpenShift Container Platform, 
+	even though OpenShift Container Platform is actually running underneath OpenShift Container Storage. 
+- This is a pricing advantage for OpenShift Container Storage compared to other solutions because customers can save 
+	money by not needing additional OpenShift Container Platform licenses.
+- OpenShift Container Storage 3 subscriptions are the same as OpenShift Container Storage 4; there is no additional cost or need to transfer.
+- Based on the level of support required, OpenShift Container Storage is sold as either Standard or Premium subscription, 
+	and the subscription is available for either one or three years. 
+	
+bigger picture
+----------
+- most storage infrastructure used by development teams was not developed or optimized for microservices and containers.
+- development teams will need software-defined, container-based storage that is easy to use, highly available, flexible, 
+	and allows for faster development cycles for their stateful applications and services.
+- Red Hat OpenShift Container Storage was created specifically for container-based environments and is highly integrated 
+	with Red Hat OpenShift Container Platform.
+- Now your customers can have a single vendor in Red Hat to provide support for the entire container-based environment, 
+	including containers, orchestration, and storage.
+- Red Hat OpenShift Container Storage combined with Red Hat OpenShift Container Platform offers a complete open source 
+	solution for hybrid cloud and a unified DevOps experience.
+- So, when you talk to customers about Red Hat OpenShift Container Storage, your biggest ally will be a solution your customers are already using: Red Hat OpenShift Container Platform.
