@@ -33,6 +33,13 @@ kubectl get namespaces
 kubectl get secrets
 ibmcloud ks cluster get -c <cluster> | grep Ingress
 winpty kubectl exec -it <pod-name> sh
+ibmcloud ks cluster ls							// List all clusters in your IBM Cloud account
+ibmcloud ks cluster get -c <cluster-name/cluster-id>
+ibmcloud ks cluster config -c <cluster-name/cluster-id>		// configure to use specified cluster
+kubectl cluster-info							// cluster info
+ibmcloud ks cluster master refresh -c <cluster-name/cluster-id>		// To fix if master may not be in sync with your permissions
+ibmcloud ks cluster config -c <cluster-name/cluster-id> --admin			// login and pull new certs
+
 
 expressweb app
 ==================
