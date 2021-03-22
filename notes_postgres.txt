@@ -1,0 +1,68 @@
+Postgres
+========
+
+https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-managing-connections
+
+Setup
+=====
+sudo apt-get update
+sudo apt-get install postgresql-10.4
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+sudo -u postgres psql -c "CREATE DATABASE testdb;"
+sudo service postgresql start/stop/restart
+
+- Restart postgres on Windows
+	c:\apps\PostgreSQL\12\bin\pg_ctl.exe -D "c:\apps\PostgreSQL\12\data" start/stop/restart
+
+- Get active connections
+	select count(*) from pg_stat_activity;
+- SHOW max_connections;
+
+Common statements
+=================
+create schema bookstore;
+
+create table customer (
+		city varchar(200),
+		name varchar(200) not null,
+		father_name varchar(200) not null,
+		registration_date date,
+		primary key(name, father_name)
+)
+create index customer_index on customer (city, name);
+
+insert into customer(city, name, father_name, registration_date)
+values('pune', 'name1', 'father1', '2021-01-10')
+on conflict(name, father_name)
+do update set
+city = excluded.city,
+registration_date = excluded.registration_date
+
+select * from customer
+
+-- drop table customer
+-- drop table customer_temp
+
+create table customer_temp ( like customer including all)
+
+-- drop index customer_index
+-- drop index bookstore.customer_index
+-- alter table customer_temp rename to customer
+
+select * from pg_indexes
+where schemaname = 'public'  -- bookstore
+order by indexname
+
+
+Postgres ERROR messages
+=======================
+
+Nov 24, 2020 7:24:58 PM org.postgresql.core.v3.ConnectionFactoryImpl log
+WARNING: IOException occurred while connecting to localhost:5432
+java.net.SocketException: Connection reset
+
+org.postgresql.util.PSQLException: FATAL: the database system is shutting down
+
+PSQLException: FATAL: terminating connection due to administrator command
+
+

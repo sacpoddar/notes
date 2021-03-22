@@ -7,6 +7,7 @@ Command summary
 ================
 docker images					// List images
 docker ps						// List running containers
+docker ps --size				// with size info
 docker rmi <image-id>			// Remove one or more images separated by space
 docker rmi -f <image-id>		// force deletion
 docker image build -t spoddar0/redis:latest	-f ./Dockerfile .	// build image
