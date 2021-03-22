@@ -378,7 +378,7 @@ Route
 	- Lets external clients reach OpenShift-hosted applications
 
 Router
--------
+------
 - Multi-tier applications easily deployed
 	- Routing layer required to reach applications from outside OpenShift environment
 - Router container can run on any node host in environment
@@ -482,6 +482,10 @@ Users and Projects
 ------------------
 Project
 -------
+- a project allows a community of users to organize and manage their content in isolation from other communities. 
+- Projects are OpenShift extentions to Kubernetes namespaces, with additional features to enable user self-provisioning.
+- different projects can have different user permissions and quotas attached to them.
+ 
 - Allows groups of users or developers to work together
 - Unit of isolation and collaboration
 - Defines scope of resources
@@ -893,3 +897,165 @@ Helm Charts
 - Helm v3
 	- No server-side component (Tiller)
 	- Helm CLI interacts with Kubernetes APIs
+
+
+Resource Exploration Lab
+========================
+
+https://www.opentlc.com/account/		// reset passwd
+https://labs.opentlc.com/				// OPENTLC lab portal
+
+- Openshift Master Console ( web console )
+https://console-openshift-console.apps.shared-na4.na4.openshift.opentlc.com
+
+https://github.com/sclorg/nodejs-ex		// Import from git
+
+- Resources selection 
+Deployment- creates an application in plain Kubernetes style. 
+Deployment Config- creates an OpenShift style application. 
+Knative Service- creates a microservice.
+
+Add to project
+--------------
+Select a way to create an application, component or service from one of the options
+- from Git - Import code from your git repository to be built and deployed
+- Container image - Deploy an existing image from an image registry or image stream tag
+- from Catalog - Browse the catalog to discover, deploy and connect to services
+- from Dockerfile - Import your Dockerfile from your git repo to be built & deployed
+- YAML - Create resources from their YAML or JSON definitions
+- Database - Browse the catalog to discover database services to add to your application
+
+Overview panel
+--------------
+Details tab:
+- Pod replica count can be managed here
+- For serverless applications, the Pods are automatically scaled down to zero when idle and scaled up depending on the channel traffic.
+- Other aspects of the Pod configuration available
+	Name, Namespace, Labels, Annotations, Status
+Resources tab:
+- Resources created by the Deployment, and their status is indicated here.
+- Pods status and logs
+- Builds status and logs. start a new build if needed
+- Services
+- Routes - permit external access to the Pods. URL to access them is listed.
+Monitoring tab:
+- CPU Usage
+- Memory Usage
+- Bandwidth
+- Events
+
+Edit source code 
+- This feature is available only when you create applications using the From Git, From Catalog, and the From Dockerfile options.
+
+Topology view - to group applications and resources within an application group
+List View - to see a list of all your applications 
+
+Instantiate Template: (e.g. MongoDB)
+- automatically populated template with details for the MongoDB service.
+- following resources will be created:
+	- DeploymentConfig
+	- PersistentVolumeClaim
+	- Secret
+	- Service
+
+- To add the MongoDB service to the existing application group, hold SHIFT, select the mongodb Pod and drag it to 
+	the application group "nodejs-ex-app"; the MongoDB service is added to the existing application group.
+- adding it to an application group automatically adds the required labels to the component.
+	e.g. app.kubernetes.io/part-of: nodejs-ex-app
+- To integrate the app and the database, the Node.js application and the MongoDB database need to be configured elsewhere
+
+Monitoring page
+----------
+Dashboard - shows combined metrics for the project
+Metrics - allows to create custom graphs of Prometheus Metrics
+Events - view events reported as a stream. can be filtered
+
+Deployments and Deployment Configs
+--------------------------
+- API objects that provide two similar, but different, methods for fine-grained management over common user applications
+- Both describes the desired state of a particular component of the application as a Pod template.
+- Deployment Configs involve one or more ReplicationControllers, which contain a point-in-time record of the state of 
+	a Deployment Config as a Pod template. 
+  Deployments involve one or more ReplicaSets, a successor of ReplicationControllers.
+  e.g.
+  Deployments - nodejs-ex
+  Deployment Configs - mongodb
+
+Quiz 3
+=======
+Question 1
+Which of the following is a true statement about projects?
+A. Each project has its own resources, policies, and constraints/quotas
+B. Projects allow a team or group of users to organize and manage their content in isolation from others
+C. The OpenShift administrator can create projects and assign administrator users for them
+D. All of the above
+Ans: D 
+Question 2
+Quotas can be used to limit the number of objects created in a project and the amount of compute/memory/storage resources requested across objects.
+TRUE
+FALSE
+Ans: A
+Question 3
+CPU and memory-based metrics are viewable from the Red Hat OpenShift Container Platform web console and are available for use by Horizontal Pod Autoscalers (HPAs).
+TRUE
+FALSE
+Ans: A
+Question 4
+The EFK stack is useful for viewing logs aggregated from hosts and applications, regardless of whether they come from multiple containers or deleted pods.
+TRUE
+FALSE
+Ans: A
+Question 5
+Which of the following is a true statement about templates?
+A. A template describes a set of objects that can be parameterized and processed to produce a list of objects for creation by OpenShift
+B. A template can be processed to create anything you have permission to create within a project
+C. A template can define a set of labels to apply to every object defined in the template
+D. All of the above
+Ans: D
+Question 6
+In the EFK stack used for aggregated logging, what is the role of Fluentd?
+A. An object store where all logs are stored
+B. It gathers logs from nodes and feeds them to Elasticsearch
+C. A web UI for Elasticsearch
+D. All of the above
+Ans: B
+Question 7
+In the EFK stack used for aggregated logging, what is the role of Kibana?
+A. An object store where all logs are stored
+B. It gathers logs from nodes and feeds them to Elasticsearch
+C. A web UI for Elasticsearch
+D. All of the above
+Ans: C
+Question 8
+Template parameters can be which of the following?
+A. User defined via command line or web console
+B. Static and defined in the template
+C. Generated by a regular expression when the template is processed
+D. All of the above
+Ans: D
+Question 9
+Which of the following is a true statement about OpenShift metrics collection facilities?
+A. The OpenShift node exposes metrics that Prometheus collects and stores
+B. CPU and memory-based metrics are viewable from the Red Hat OpenShift Container Platform web console and are available for use by Horizontal Pod Autoscalers (HPAs)
+C. Prometheus Metrics is a metrics engine that stores data persistently
+D. All of the above
+Ans: D
+Question 10
+Which of the following is a FALSE statement about Operators?
+A. They extend the OpenShift API
+B. They encode operational knowledge
+C. They replace templates
+D. They can be written in Ansible
+Ans: C
+Question 11
+Which of the following is a true statement about the web console?
+A. The Developer perspective has a robust topology view/tool
+B. The web console runs as pods on the Master servers
+C. You can upgrade the cluster from the Administrator perspective
+D. All of the above
+Ans: D
+Question 12
+Helm 3 support does away with server-side components and includes the Helm CLI.
+TRUE
+FALSE 
+Ans: A
