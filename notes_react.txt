@@ -1,0 +1,30 @@
+React Notes
+===========
+
+npm install -g create-react-app
+npx create-react-app myapp
+
+cd myapp
+npm start		// Starts the development server.
+npm run build	// Bundles the app into static files for production.
+npm test		// Starts the test runner.
+
+VS Code plugins
+--------------
+ES7 React/Redux/GraphQL/React-Native snippets
+Auto Rename Tag
+
+
+https://react-bootstrap.github.io/
+https://material-ui.com/
+https://bootswatch.com/
+https://cdnjs.com/libraries/font-awesome
+
+// npm install react-bootstrap bootstrap
+npm install react-bootstrap
+
+- download bootstrap.min.css from bootswatch.com and import in index.js
+
+
+
+
