@@ -1,6 +1,30 @@
 Python notes
 ============
 
+miniconda
+=========
+https://docs.conda.io/en/latest/miniconda.html
+Open Anaconda Prompt
+	conda update conda
+- Creating a new env from scratch
+	conda create -n testenv python=3.7
+	conda activate testenv						// switch to env
+	conda config --add channels conda-forge		// channel for installing Python libraries
+- Creating a new env from existing env.yml file
+	conda env create -f env.yml
+	conda activate testenv
+- Install required packages
+	conda install numpy			// or
+	conda install --channel "conda-forge" numpy
+	pip list					// list installed packages
+- Generate/update env.yml file
+	conda env export --no-build -f env.yml
+- Exit env
+	conda deactivate
+- Remove env
+	conda remove -n testenv --all
+
+
 - Python uses indentation to indicate a block of code.
 - Python will give you an error if you skip the indentation:
 	if 5 > 2:
