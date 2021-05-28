@@ -152,3 +152,39 @@ String"""
 
 	x = "my name is {1} I am {0} years old"
 	print( x.format(31, "sac"))		# my name is sac I am 31 years old
+	
+Boolean
+--------
+- a boolean can have value True or False
+	x = True
+- bool() function allows you to evaluate any value, and give you True or False in return
+	x = "Hello"
+	y = 15
+	print(bool(x))			# True
+	print(bool(y))			# True
+- False, None, Empty string, 0, and empty list, tuple, set, and dictionary evaluates to False
+- isinstance() function, can be used to determine if an object is of a certain data type:
+	x = 200
+	print(isinstance(x, int))	# True
+	
+List
+------
+- List is a collection which is ordered and changeable. Allows duplicate members.
+- Tuple is a collection which is ordered and unchangeable. Allows duplicate members.
+- Set is a collection which is unordered and unindexed. No duplicate members.
+- Dictionary is a collection which is ordered* and changeable. No duplicate members.
+
+	list1 = ["apple", "banana", "cherry", "orange"]
+	list2 = [1, 5, 7, 9, 3]
+	print( len(list1) )								# 4  - Get list length using len() function
+	list4 = list(("apple", "banana", "cherry"))		# Using the list() constructor to make a List
+	
+	print( list1[0] )	# apple
+	print( list1[-1] )	# orange. Negative indexing. -1 refers to the last item, -2 refers to the second last item etc.
+	print( list1[1:3] ) # ['banana', 'cherry'] 	- Range of Indexes. 
+						# Return value will be a new list with the specified items. 
+                        # start-index (included) and end-index (excluded).
+	print( list1[1:] ) 	# ['banana', 'cherry', 'orange']		start-index till end
+	print( list1[:3] )	# ['apple', 'banana', 'cherry']			till end-index
+	if "apple" in list1:			# Check if a item exists
+		print("apple exist")

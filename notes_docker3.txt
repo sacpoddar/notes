@@ -14,6 +14,7 @@ docker image build -t spoddar0/redis:latest	-f ./Dockerfile .	// build image
 docker run -d -p 4000:80 --name friendlyapp friendlyhello		// create container from image
 docker stop <container_id|names> 								// Gracefully stop the specified container
 winpty docker exec -it <container_id> bash						// attach to container shell
+winpty docker exec -u 0 -it <container_id> sh					// login as root user
 docker logs <container_id|names> 								// view logs, STDOUT
 docker login             										// Log in this CLI session using your Docker credentials
 docker tag <image> username/repository:tag  					// Tag <image> for upload to registry
