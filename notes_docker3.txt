@@ -20,18 +20,27 @@ docker login             										// Log in this CLI session using your Docker 
 docker tag <image> username/repository:tag  					// Tag <image> for upload to registry
 docker push username/repository:tag            					// Upload tagged image to registry
 docker run username/repository:tag                  			// Run image from a registry
+docker cp <container-id>:<source-file> <target-dir>				// copy files from/to container
 
 kubectl config current-context
 kubectl config use-context 'docker-desktop'	
 kubectl get pods
 kubectl get ing
-kubectl logs <pod-name>
+kubectl logs <pod-name>					// pod logs
+kubectl logs -f --tail=20 <pod-name>	// stream logs and tail only few lines
+	-f			Stream logs 
+	--tail=20 	Display only the most recent 20 lines of output
+	
+kubectl logs -p -c <container_id> <pod-name>		// Return snapshot of previous terminated container logs from pod
 kubectl describe pod <pod-name>
 kubectl describe ing <ingress-name>
 kubectl get svc
 kubectl top <nodes/pods>
-kubectl get pods --namespace=kube-system
-kubectl get namespaces
+kubectl get ns													// list all namespaces
+kubectl get pods -n ingress-nginx								// get pods for namespace ingress-nginx
+kubectl logs -f ingress-nginx-controller-xxx -n ingress-nginx	// get logs for ingress-nginx controller
+kubectl delete --all pods -n ingress-nginx						// delete all pods under namespace
+kubectl delete ing <ingress-name>								// delete ingress
 kubectl get secrets
 ibmcloud ks cluster get -c <cluster> | grep Ingress
 winpty kubectl exec -it <pod-name> sh
