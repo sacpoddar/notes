@@ -25,8 +25,9 @@ docker cp <container-id>:<source-file> <target-dir>				// copy files from/to con
 
 kubectl config current-context
 kubectl config use-context 'docker-desktop'	
-kubectl get pods
-kubectl get ing
+kubectl get pods|ing|node|svc  [-o wide]
+kubectl describe pods|ing|node|svc <name>
+kubectl get all --all-namespaces
 kubectl logs <pod-name>					// pod logs
 kubectl logs -f --tail=20 <pod-name>	// stream logs and tail only few lines
 	-f			Stream logs 
@@ -52,6 +53,8 @@ kubectl cluster-info							// cluster info
 ibmcloud ks cluster master refresh -c <cluster-name/cluster-id>		// To fix if master may not be in sync with your permissions
 ibmcloud ks cluster config -c <cluster-name/cluster-id> --admin			// login and pull new certs
 
+token=$(kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
+kubectl -n kube-system describe secret $token
 
 expressweb app
 ==================
