@@ -174,7 +174,7 @@ Accessor Properties
 	// 2. creating Accessor property using ES5 object literal notation
 	var emp2 = {
 		get name() {
-			return this._name;
+			return this._name;  // _ prefixed variable names are considered private by convention but are still public.
 		},
 		set name(value) {
 			this._name = value + "23";
@@ -324,4 +324,568 @@ Collections
 	// weakmap.set("three", "THREE");	// ERROR: string literal cannot be used as key
 	console.log( weakmap.get(two));
 	
-- 
+
+ES5 New features
+================
+- "use strict"
+    - "use strict" defines that the JavaScript code should be executed in "strict mode".
+    - Strict mode makes it easier to write "secure" JavaScript.
+    - Using a variable, without declaring it, is not allowed. 
+    - in normal mistyping a variable name creates a new global variable. In strict mode, this will throw an error
+    - any assignment to a non-writable property, a getter-only property, a non-existing property, 
+        a non-existing variable, or a non-existing object, will throw an error
+    - Deleting a variable (or object), function is not allowed.
+    - Octal numeric literals are not allowed
+    
+    "use strict";
+    y = 10;             // ReferenceError: y is not defined
+    
+    const obj = {get x() {return 0} };
+    obj.x = 3.14;       // TypeError: Cannot set property x of #<Object> which has only a getter 
+
+- Property Getters and Setters
+    var person = {
+        firstName: "John",
+        lastName: "Doe",
+        language: "NO",
+        get lang() {
+            return this.language;
+        },
+        set lang(value) {
+            this.language = value;
+        }
+    };
+
+    // Set an object property using a setter:
+    person.lang = "en";
+
+- trailing commas in object and array definitions
+    person = { name: "Sac", age: 46,}
+    arr = [ 1, 2, 3, ]
+    // NOTE: JSON does not allow trailing commas.
+    
+- Property Access on Strings
+    var str = "HELLO WORLD";
+    console.log( str.charAt(0) );   // H
+    console.log( str[0] );          // H  - Added in ES5
+
+- String.trim()      // removes whitespace from both sides of a string.
+    console.log( str.trim() );
+- JSON.parse()       // convert text to JavaScript object
+  JSON.stringify()   // convert JavaScript object to string
+    var personStr = '{ "name": "Sac", "age": 46}';
+    person = JSON.parse(personStr);
+    console.log( person )                   // print obj
+    console.log( JSON.stringify(person) )   // print
+- Array methods
+    isArray()
+    forEach()
+    map()
+    filter()
+    reduce()
+    every()
+    some()
+    indexOf()
+    lastIndexOf()
+    
+    var fruits = ["Banana", "Orange", "Apple", "Mango"];
+    var arr1 = [1, 2, 3, 4, 5]
+
+    console.log( Array.isArray(fruits) );                   // true. checks whether an object is an array.
+    fruits.forEach( (value) => console.log(value) );        // iterate
+
+    fruits.forEach( function myFunc(value){                 // iterate
+        console.log(value)
+        })
+
+    var arr2 = arr1.map( function myFunc(value){            // iterate and returns a new array
+        return value + 1;
+    });
+    console.log( JSON.stringify(arr2) );    // [2, 3, 4, 5, 6]
+
+    var arr3 = arr1.filter( function myFunc(value){         // filter based on condition and returns a new array
+        return value > 3;
+    });
+    console.log( JSON.stringify(arr3) );    // [4,5]
+
+    var sum = arr1.reduce( function myFunc(total, value){   // reduce and return a number
+        return total + value;
+    });
+    console.log( sum );             // 15
+    
+    
+ES6 New features
+================
+
+- let keyword
+    - Before ES6 (2015), JavaScript had only Global Scope and Function Scope.
+    - ie. Variables declared with the var keyword can NOT have block scope.
+    
+    function f1() {
+        if(true) {
+            var v2 = 2;
+        }
+        console.log( v2);   // prints 2
+    }
+    
+    - Variables defined with let have Block Scope.
+    - can not be redeclared in same scope
+    - can be redeclared in nested block.
+    
+    let v1 = 2;
+    let v1 = 3;     // SyntaxError
+    
+    function f1() {
+        if(true) {
+            let v2 = 2;
+        }
+        console.log( v2);   // ReferenceError: v2 is not defined
+    }
+    
+    - Variables defined with var are hoisted to the top and can be initialized at any time
+    - Variables defined with let are also hoisted to the top of the block, but must be initialized before use.
+    
+    "use strict"
+    v2 = "sac2";
+    console.log( v2);   // print sac2
+    var v2;             // no error
+    
+    "use strict"
+    v2 = "sac2";
+    console.log( v2);   //
+    let v2;             // ReferenceError: Cannot access 'v2' before initialization
+
+    
+- const keyword
+    - declares a constant. must be initialized in declaration. variable cannot be Reassigned.
+    - have Block Scope
+    - cannot be Redeclared in same scope
+    
+    const PI = 3.141
+    
+- arrow function
+    - allows a short syntax for writing function expressions
+    
+    var x = function (x, y) {       // old style
+        return x * y;
+    }
+    console.log( x(2, 3) )
+
+    const f2 = (x, y) => {      // using arrow function
+        return x * y;
+    }
+    console.log( f2(2, 5) )
+    
+    const f3 = (x, y) => x * y;     // valid
+
+    - Arrow functions do not have their own this. They are not well suited for defining object methods.
+    - Arrow functions are not hoisted. They must be defined before they are used.
+    - Using const is safer than using var, because a function expression is always a constant value.
+
+    hello = () => "Hello World!";       // valid
+    hello = (val) => "Hello " + val; 
+    hello = val => "Hello " + val;
+    
+    - In regular functions the this keyword represented the object that called the function, 
+        which could be the window, the document, a button or whatever.
+    - With arrow functions the this keyword always represents the object that defined the arrow function.
+
+- for/of loop
+    for (let x of iterable) {      // iterable can be Array, String, Map, NodeList etc.
+        console.log( x )
+    }
+    
+- Map Objects
+    - A Map object holds key-value pairs where the keys can be any datatype including Object
+    - remembers the original insertion order of the keys
+
+    new Map()	        // Creates a new Map object
+    size	            // get size of map
+    set(key, value)	    // Sets key, value
+    get(key)	        // Get value for the key
+    has(key)	        // Returns true if a key exists.
+    delete(key)	        // Removes an element specified by a key.
+    forEach()	        // Invokes a callback for each key/value pair. 
+    keys()	            // Returns an array of the keys in a Map object
+    values()	        // Returns an array of the values in a Map object
+    entries()	        // Returns an array of the key/value pairs in a Map object
+    clear()	            // Removes all elements in a Map
+    
+    // Create Objects
+    const apples = {name: 'Apples'};
+    const bananas = {name: 'Bananas'};
+
+    // Create a new Map
+    const fmap = new Map();
+
+    // Add new Elements to the Map
+    fmap.set(apples, 500);
+    fmap.set(bananas, 300);
+
+    console.log( fmap.size );          // 3
+    console.log( fmap.get(apples) );   // 500
+    console.log( fmap.has(apples) );   // true
+
+    let keys = fmap.keys();         // MapIterator
+    let values = fmap.values();     // MapIterator
+    let entries = fmap.entries();   // MapIterator
+    
+    fmap.forEach( (value, key, map) => {     // iterate map
+        console.log(value)
+    });
+
+    for(let x of keys) {        // iterate keys
+        console.log(x);
+    }
+    for(let x of values) {      // iterate values
+        console.log(x);
+    }
+    for(let x of entries) {
+        console.log(x[0]);      // key
+        console.log(x[1]);      // value
+    }
+
+    fmap.delete(apples);
+
+- Set Objects
+    - set of objects
+    
+    new Set()	        // Creates a new Set object
+    size	            // get size of set
+    add(key)	        // Adds a new element to the Set
+    delete(key)	        // Removes an element specified by its value.
+    has(key)	        // Returns true if a value exists
+    forEach()	Invokes a callback for each element
+    clear()	            // Removes all elements from a Set
+    keys()	            // Returns an array of the values in a Set object
+    values()	        // Same as keys()
+    entries()	        // Returns an array of the values in a Set object
+    
+- Default Parameter Values
+    - allows function parameters to have default values.
+    
+    function myFunction(x, y = 10) {
+      // y is 10 if not passed or undefined
+      return x + y;
+    }
+    myFunction(5); // will return 15
+    
+- Function Rest Parameter
+    - rest parameter (...) allows a function to accept any number of arguments as an array:
+    - must be the last param
+    
+    function sum(...args) {
+      let sum = 0;
+      for (let arg of args) sum += arg;
+      return sum;
+    }
+
+    let x = sum(4, 9, 16, 25, 29, 100, 66, 77);
+    
+- Promise
+    - Promise object represents the eventual completion or failure of an asynchronous operation and its resulting value
+    - A Promise is in one of these states:
+        pending:    initial state, neither fulfilled nor rejected.
+        fulfilled:  meaning that the operation was completed successfully.
+        rejected:   meaning that the operation failed.
+
+    let a1 = 10;
+    let b1 = 20;
+    function div( x , y) {
+        return x / y;
+    }
+
+    // promise
+    let myPromise = new Promise(function(resolve, reject){
+        console.log("In promise");
+        if( b1 != 0) {
+             // async task
+            setTimeout(() => {
+                console.log("executing div()");
+                let res = div(a1, b1)
+                resolve( res);
+              }, 300);
+        } else {
+            reject("Error")
+        }
+    });
+
+    myPromise.then(
+        function(value) {
+            console.log("Result = " + value);
+        },
+        function(error) {
+            console.log(error);
+        }
+    );
+    console.log("finished")
+    
+    OUT:
+    In promise
+    finished
+    executing div()
+    Result = 0.5
+
+    - Promise methods
+        Promise.all()
+        Promise.allSettled()
+        Promise.any()
+        Promise.prototype.catch()
+        Promise.prototype.finally()
+        Promise.race()
+        Promise.reject()
+        Promise.resolve()
+        Promise.prototype.then()
+        
+    - As the Promise.prototype.then() and Promise.prototype.catch() methods return promises, they can be chained.
+        const p = new Promise((resolve, reject) => {....});
+        p.then(handleResolvedA, handleRejectedA)
+         .then(handleResolvedB, handleRejectedB);
+        
+    
+- class
+    - Classes are templates for JavaScript Objects.
+    
+    class Car {
+        constructor(name, year) {
+            this.name = name;
+            this.year = year;
+        }
+        getName() {
+            return this.name;
+        }
+        getYear() {
+            return this.year;
+        }
+    }
+    let car = new Car("nexon", 2020);
+    console.log( car.getName() + " " + car.getYear() );
+    
+- String methods 
+    str.includes("value");     // returns true if a string contains a specified value
+    str.startsWith("value")
+    str.endsWith("value")
+- Array methods
+    Array.from("ABCDEFG")       // Returns [A,B,C,D,E,F,G] 
+        - returns an Array object from any object with a length property or any iterable object  
+    arr.keys()                  // returns an Array Iterator object with the keys of an array.
+    arr.find(criteriaFunction)  // returns first element from array that passes criteria function
+    arr.findIndex(criteriaFunction)  // returns index of first element from array that passes criteria function
+    function criteriaFunction(value, index, array) {
+      return value > 18;
+    }
+
+- ES6 added 2 new global number methods:
+    isFinite(arg)       // returns false if the argument is Infinity or NaN.
+    isNaN(arg)          // returns true if the argument is NaN
+
+- Object.entries()
+    - returns an array of the key/value pairs in an object
+    - This is the same as iterating with a for...in loop, except that a for...in loop enumerates 
+    properties in the prototype chain as well. 
+    
+    const person = {
+      firstName : "John",
+      lastName : "Doe",
+      age : 50,
+    };
+
+    for (const [key, value] of Object.entries(person)) {
+      console.log(`${key}: ${value}`);
+    }
+
+    OUT:
+    firstName: John
+    lastName: Doe
+    age: 50
+
+- native JavaScript modules
+    - dependent on the import and export statements
+    - each file is its own module
+    
+    - export statement
+        - to export live bindings to members like functions, objects, Classes, constants etc.
+        - You can export members one by one. What’s not exported won’t be available directly outside the module
+        
+        // app.js
+        export const myNumbers = [1, 2, 3, 4];
+        const animals = ['Panda', 'Bear', 'Eagle'];     // Not available directly outside the module
+
+        export default function myLogger() {            // define a default export with the default keyword
+          console.log(myNumbers, pets);
+        }
+
+        export class Alligator {
+          constructor() {
+            // ...
+          }
+        }
+        
+        - Or you can export desired members in a single statement at the end of the module, like
+            export { myNumbers, myLogger, Alligator };
+        - You can also give an aliases to exported members with the as keyword:
+            export { myNumbers, myLogger as Logger, Alligator }
+            
+    - import statement
+        - to import read only live bindings which are exported by another module    
+        - Imported modules are in strict mode whether you declare them as such or not
+        - Bindings imported are called live bindings because they are updated by the module that exported the binding
+        
+        // test.js
+        import { myLogger, Alligator } from './app.js';
+        
+        import myLogger as Logger from './app.js';      // Importing with alias
+        import * as Utils from './app.js';              // Importing all exported members
+            Utils.myLogger();                           // In this case use . notation to access members
+        import Logger from './app.js';                  // Importing a module with a default member
+        import Logger, { Alligator, myNumbers } from 'app.js';  // import non-default members on top of the default one
+
+
+ES 2016 New Features
+====================
+- ** Exponentiation Operator
+    let x = 5;
+    let z = x ** 2;     // z = 25. Same as Math.pow(x,2)
+    x **= 2             // x = 25. Exponentiation Assignment
+
+- Array.includes()
+    const arr = ["Banana", "Orange", "Apple", "Mango"];
+    arr.includes("Mango"); // is true 
+
+
+ES 2017 New Features
+====================
+- String Padding
+    let str = "5";
+    str.padStart(4,0);  // 0005
+    str.padEnd(4,0);    // 5000
+    
+- async/await function
+    - The purpose of async/await is to simplify the syntax necessary to consume promise-based APIs
+    - async functions can contain zero or more await expressions
+    - await expressions suspens execution until the returned promise is fulfilled or rejected, 
+    making promise-returning functions behave as if its synchronous
+    - return value of the await expression is resolved value of the promise
+    - Async functions always return a promise. If the return value of an async function is not explicitly a promise, 
+    it will be implicitly wrapped in a promise. e.g
+    async function foo() {
+       return 1
+    }
+    // similar to
+    function foo() {
+       return Promise.resolve(1)
+    }
+
+    - Example:
+function resolveAfter2Seconds() {
+    console.log("starting slow promise")
+    return new Promise(resolve => {
+        setTimeout(function () {
+            resolve("slow")
+            console.log("slow promise is done")
+        }, 2000)
+    })
+}
+
+function resolveAfter1Second() {
+    console.log("starting fast promise")
+    return new Promise(resolve => {
+        setTimeout(function () {
+            resolve("fast")
+            console.log("fast promise is done")
+        }, 1000)
+    })
+}
+
+async function sequentialStart() {
+    console.log('==SEQUENTIAL START==')
+
+    // 1. Execution gets here almost instantly
+    const slow = await resolveAfter2Seconds()
+    console.log(slow) // 2. this runs 2 seconds after 1.
+
+    const fast = await resolveAfter1Second()
+    console.log(fast) // 3. this runs 3 seconds after 1.
+}
+
+async function concurrentStart() {
+    console.log('==CONCURRENT START with await==');
+    const slow = resolveAfter2Seconds() // starts timer immediately
+    const fast = resolveAfter1Second() // starts timer immediately
+
+    // 1. Execution gets here almost instantly
+    console.log(await slow) // 2. this runs 2 seconds after 1.
+    console.log(await fast) // 3. this runs 2 seconds after 1., immediately after 2., since fast is already resolved
+}
+
+function concurrentPromise() {
+    console.log('==CONCURRENT START with Promise.all==')
+    return Promise.all([resolveAfter2Seconds(), resolveAfter1Second()]).then((messages) => {
+        console.log(messages[0]) // slow
+        console.log(messages[1]) // fast
+    })
+}
+
+async function parallel() {
+    console.log('==PARALLEL with await Promise.all==')
+
+    // Start 2 "jobs" in parallel and wait for both of them to complete
+    await Promise.all([
+        (async () => console.log(await resolveAfter2Seconds()))(),
+        (async () => console.log(await resolveAfter1Second()))()
+    ])
+}
+
+sequentialStart() // after 2 seconds, logs "slow", then after 1 more second, "fast"
+
+// wait above to finish
+setTimeout(concurrentStart, 4000) // after 2 seconds, logs "slow" and then "fast"
+
+// wait again
+setTimeout(concurrentPromise, 7000) // same as concurrentStart
+
+// wait again
+setTimeout(parallel, 10000) // truly parallel: after 1 second, logs "fast", then after 1 more second, "slow"
+
+
+ES 2018 New features
+====================
+
+- Asynchronous Iteration
+    for await(let x of list) {
+        ...
+    }
+- Promise finally()
+
+    function checkMail() {
+      return new Promise((resolve, reject) => {
+        if (Math.random() > 0.5) {
+          resolve('Mail has arrived');
+        } else {
+          reject(new Error('Failed to arrive'));
+        }
+      });
+    }
+
+    checkMail()
+      .then((mail) => {
+        console.log(mail);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        console.log('Experiment completed');
+      });
+
+
+    Object Rest Properties
+    New RegExp Features
+
+- Object Rest Properties
+    - allows us to destruct an object and collect the leftovers onto a new object:
+    let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+    x; // 1
+    y; // 2
+    z; // { a: 3, b: 4 }
+

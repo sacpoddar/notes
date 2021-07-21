@@ -22,6 +22,7 @@ https://react-bootstrap.github.io/
 https://material-ui.com/
 https://bootswatch.com/
 https://cdnjs.com/libraries/font-awesome
+https://github.com/bradtraversy/proshop_mern
 
 // npm install react-bootstrap bootstrap
 npm install react-bootstrap
@@ -29,6 +30,18 @@ npm install react-bootstrap
 - download bootstrap.min.css from bootswatch.com and import in index.js
 - from https://cdnjs.com/libraries/font-awesome "Copy Link Tag" for all.min.css and include it in index.html
 
+- Convert commonjs - require() syntax to 
+    import style syntax which are ECMAScript modules (available in Nodejs 14.4+) 
 
+- Package.json “proxy”: “http://localhost:5000”
+npm i axios
+npm i -D nodemon concurrently 
+npm i dotenv
+npm i mongoose 
+npm i colors 
+npm i bcryptjs 
+npm i express-async-handler 
+npm i redux react-redux redux-thunk redux-devtools-extension 
+- Redux Dev tools chrome extension
 
 

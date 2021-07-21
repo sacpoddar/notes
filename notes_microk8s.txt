@@ -12,10 +12,17 @@ https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
 https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/kubelet-integration/
 
+
+Manage Docker as a non-root user
+------------
+sudo groupadd docker            // Create the docker group
+sudo usermod -aG docker $USER   // Add your user to the docker group
+- Log out and log back in so that your group membership is re-evaluated.
+
 Installation
 ------------
 sudo snap install microk8s --classic --channel=1.21
-sudo usermod -a -G microk8s $USER           // Join the group
+sudo usermod -a -G microk8s $USER           // Join the group. Manage kubectl as not-root user
 sudo chown -f -R $USER ~/.kube
 microk8s enable metrics-server dns ingress dashboard       // enable addons
 sudo apt-get install iptables-persistent
