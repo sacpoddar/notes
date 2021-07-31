@@ -706,6 +706,7 @@ ES6 New features
     - export statement
         - to export live bindings to members like functions, objects, Classes, constants etc.
         - You can export members one by one. What’s not exported won’t be available directly outside the module
+        - If a module defines a default export, you can import that default export by omitting the curly braces
         
         // app.js
         export const myNumbers = [1, 2, 3, 4];
@@ -734,10 +735,10 @@ ES6 New features
         // test.js
         import { myLogger, Alligator } from './app.js';
         
-        import myLogger as Logger from './app.js';      // Importing with alias
+        import myLogger as Logger from './app.js';      // Importing with alias. No curly braces required
         import * as Utils from './app.js';              // Importing all exported members
             Utils.myLogger();                           // In this case use . notation to access members
-        import Logger from './app.js';                  // Importing a module with a default member
+        import Logger from './app.js';              // Importing a module with a default member. No curly braces reqd.
         import Logger, { Alligator, myNumbers } from 'app.js';  // import non-default members on top of the default one
 
 

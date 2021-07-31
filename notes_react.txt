@@ -1,10 +1,11 @@
 React Notes
 ===========
 
+cd reactshop 
 npm install -g create-react-app
-npx create-react-app myapp
+npx create-react-app frontend
 
-cd myapp
+cd frontend
 npm start		// Starts the development server.
 npm run build	// Bundles the app into static files for production.
 npm test		// Starts the test runner.
@@ -13,10 +14,20 @@ VS Code plugins
 --------------
 ES7 React/Redux/GraphQL/React-Native snippets
 Auto Rename Tag
+JavaScript (ES6) Code snippets
 Prettier - Code formatter
+    - Format On Save    -Enable setting
+    - Prettier: Jsx Single Quote
+    - Prettier: Semi       - uncheck
+    - Prettier: Single Quote
+    - Prettier: Tab Width   2
 
+VsCode Explorer fix
+"workbench.tree.indent": 12
+    
 kb shortcuts
 rafce - ReactArrowFunctionComponentExport
+rcc - React Class Component
 
 https://react-bootstrap.github.io/
 https://material-ui.com/
@@ -32,16 +43,114 @@ npm install react-bootstrap
 
 - Convert commonjs - require() syntax to 
     import style syntax which are ECMAScript modules (available in Nodejs 14.4+) 
+    
+const express = require('express')      // commonjs modules syntax
+import { Express } from 'express'       // ES6 modules (available in Node 14.4+)
 
-- Package.json “proxy”: “http://localhost:5000”
+module.exports = products       // commonjs export
+export default products         // ES6 export
+
+- frontend/package.json 
+    "proxy": "http://localhost:5000",
+
+Frontend
+=========
+npm i react-router-dom react-router-bootstrap
 npm i axios
-npm i -D nodemon concurrently 
-npm i dotenv
 npm i mongoose 
 npm i colors 
 npm i bcryptjs 
 npm i express-async-handler 
 npm i redux react-redux redux-thunk redux-devtools-extension 
-- Redux Dev tools chrome extension
+- "React Dev tools" 
+- "Redux Dev tools" chrome extension
+
+Backend
+===========
+GET     /api/products
+POST    /api/products
+PUT     /api/products/25
+DELETE  /api/products/25
+
+cd reactshop
+npm init
+    - entry point: server.js
+npm i express
+// node backend/server
+npm start
+
+- useState() hook
+    - We call it inside a function component to add some local state to it. 
+    - React will preserve this state between re-renders. 
+    - useState returns a pair: the current state value and a function that lets you update it. 
+    - You can call this function from an event handler or somewhere else. 
+    - It’s similar to this.setState in a class, except it doesn’t merge the old and new state together.
+    e.g const [products, setProduct] = useState([])
+- useEffect() hook
+    - By using this Hook, you tell React that your component needs to do something after render. 
+    - React will remember the function you passed (we’ll refer to it as our “effect”), and call it later 
+    after performing the DOM updates.
+    - Data fetching, setting up a subscription, and manually changing the DOM in React components are all 
+    examples of side effects or just effects
+
+// reactshop/package.json
+npm i -D nodemon concurrently       // dev dependencies (only needed for development)
+nodemon - automatically restars the node application when file changes in the directory are detected
+    - nodemon is a replacement wrapper for node
+
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  }
+  
+npm i dotenv        // lets you access properties using e.g. process.env.PORT
+cat .env            // add .env in .gitignore
+NODE_ENV = development
+PORT = 5000
+
+- To use ES modules
+    in package.json add following
+    "type": "module",
+    
+MongoDB Compass - GUI and Query tool for MongoDB
+Add My Own Data
+    DB: reactshop
+    Collection: products
+// .env     - add following    
+MONGO_URI = mongodb+srv://<dbusername>:<password>@<cluster-name>/<database>?retryWrites=true&w=majority
+npm i mongoose
+npm i bcryptjs
+
+npm run data:import     // import prod data into mongodb
+
+npm i express-async-handler
+- Simple middleware for handling exceptions inside of async express routes and passing them to your express error handlers.
 
 
+Redux
+------
+- Redux is a pattern and library for managing and updating application state, using events called "actions". I
+- Redux helps you manage "global" state - state that is needed across many parts of your application.
+- The patterns and tools provided by Redux make it easier to understand when, where, why, and how the state in your 
+    application is being updated, and how your application logic will behave when those changes occur.
+- Redux helps you deal with shared state management,
+- Redux is more useful when:
+    You have large amounts of application state that are needed in many places in the app
+    The app state is updated frequently over time
+    The logic to update that state may be complex
+    The app has a medium or large-sized codebase, and might be worked on by many people
+- application parts
+    - state - data in current state that drives our app
+    - view -  UI based on the current state
+    - actions - events that occur in the app based on user input, and trigger updates in the state
+- Challenge?
+    - multiple components that need to share and use the same state, especially if those components are located in
+     different parts of the application
+- Sol
+    - extract the shared state from the components, and put it into a centralized location outside the component tree. 
+     With this, any component can access the state or trigger actions, no matter where they are in the tree!
+- basic idea behind Redux: a single centralized place to contain the global state in your application, 
+    and specific patterns to follow when updating that state to make the code predictable.
+- 
