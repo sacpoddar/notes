@@ -1,0 +1,7 @@
+AWS Notes
+=========
+
+aws configure       // configure cli. Enter Access Key ID and Secret Access Key
+aws iam list-users  // test if cli is working
+
+

@@ -14,6 +14,7 @@ VS Code plugins
 --------------
 ES7 React/Redux/GraphQL/React-Native snippets
 Auto Rename Tag
+Bracket Pair Colorizer
 JavaScript (ES6) Code snippets
 Prettier - Code formatter
     - Format On Save    -Enable setting
@@ -29,12 +30,18 @@ kb shortcuts
 rafce - ReactArrowFunctionComponentExport
 rcc - React Class Component
 
+https://reactrouter.com/web/api/Link
 https://react-bootstrap.github.io/
+https://react-bootstrap.github.io/components/
+https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
+https://fonts.google.com/icons
+https://getbootstrap.com/docs/4.0/utilities/spacing/#notation
+https://getbootstrap.com/docs/5.1/utilities/text/
 https://material-ui.com/
 https://bootswatch.com/
 https://cdnjs.com/libraries/font-awesome
 https://github.com/bradtraversy/proshop_mern
-
+https://materializecss.com/grid.html
 // npm install react-bootstrap bootstrap
 npm install react-bootstrap
 
@@ -128,9 +135,27 @@ npm run data:import     // import prod data into mongodb
 npm i express-async-handler
 - Simple middleware for handling exceptions inside of async express routes and passing them to your express error handlers.
 
+- What does asyncHandler do ?
+    - Saves you writing your own try/catch for async/await and passes error on to next. e.g.
+    
+    import asyncHandler from 'express-async-handler'
+    express.get('/', asyncHandler(async (req, res, next) => {
+        const bar = await foo.findAll();
+        res.send(bar)
+    }))
+    
+    - Without asyncHandler you'd need:
+    express.get('/',(req, res, next) => {
+        foo.findAll()
+        .then ( bar => {
+           res.send(bar)
+         } )
+        .catch(next); // error passed on to the error handling route
+    })
 
 Redux
 ------
+- https://redux.js.org/tutorials/essentials/part-1-overview-concepts
 - Redux is a pattern and library for managing and updating application state, using events called "actions". I
 - Redux helps you manage "global" state - state that is needed across many parts of your application.
 - The patterns and tools provided by Redux make it easier to understand when, where, why, and how the state in your 
@@ -153,4 +178,81 @@ Redux
      With this, any component can access the state or trigger actions, no matter where they are in the tree!
 - basic idea behind Redux: a single centralized place to contain the global state in your application, 
     and specific patterns to follow when updating that state to make the code predictable.
-- 
+
+Actions:
+- An action is a plain JavaScript object that has a type field and payload.
+- You can think of an action as an event that describes something that happened in the application.
+
+Reducers:
+- A reducer is a function that receives the current state and an action object, decides how to update the 
+state if necessary, and returns the new state: (state, action) => newState. 
+- You can think of a reducer as an event listener which handles events based on the received action (event) type.
+
+- Reducers must always follow some specific rules:
+    - They should only calculate the new state value based on the state and action arguments
+    - They are not allowed to modify the existing state. Instead, they must make immutable updates, by copying 
+    the existing state and making changes to the copied values.
+    - They must not do any asynchronous logic, calculate random values, or cause other "side effects"
+- logic inside reducer functions typically follows the same series of steps:
+    - Check to see if the reducer cares about this action
+        - If so, make a copy of the state, update the copy with new values, and return it
+    - Otherwise, return the existing state unchanged
+
+Store:
+- The current Redux application state lives in an object called the store
+- store is created by passing in a reducer, and has a method called getState that returns the current state value
+
+Dispatch:
+- The Redux store has a method called dispatch. 
+- The only way to update the state is to call store.dispatch() and pass in an action object. 
+- The store will run its reducer function and save the new state value inside, and we can call getState() to 
+ retrieve the updated value:
+- You can think of dispatching actions as "triggering an event" in the application. Something happened, and we want
+ the store to know about it. Reducers act like event listeners, and when they hear an action they are interested 
+ in, they update the state in response.
+
+Selectors:
+- Selectors are functions that know how to extract specific pieces of information from a store state value.
+
+Steps
+------
+Initial setup:
+    - A Redux store is created using a root reducer function
+    - The store calls the root reducer once, and saves the return value as its initial state
+    - When the UI is first rendered, UI components access the current state of the Redux store, and use that data to 
+    decide what to render. They also subscribe to any future store updates so they can know if the state has changed.
+Updates:
+    - Something happens in the app, such as a user clicking a button
+    - The app code dispatches an action to the Redux store, like dispatch({type: 'counter/increment'})
+    - The store runs the reducer function again with the previous state and the current action, and saves the return 
+    value as the new state
+    - The store notifies all parts of the UI that are subscribed that the store has been updated
+    - Each UI component that needs data from the store checks to see if the parts of the state they need have changed.
+    - Each component that sees its data has changed forces a re-render with the new data, so it can update what's 
+    shown on the screen
+        
+
+1. create constants
+2. create reducer
+3. add reducer to store.js
+4. create action
+5. update Screen e.g. HomeScreen
+
+store.js
+    const reducer = combineReducers({
+        cart: cartReducer, })
+    const store = createStore(
+      reducer,
+      initialState,
+      composeWithDevTools(applyMiddleware(...middleware))
+    )
+
+CartScreen.js      -->      cartActions.js      -->       cartReducer.js
+removeFromCartHandler():    removeFromCart(id):             cartReducer():
+  dispatch(                   dispatch({                      case CART_REMOVE_ITEM:
+   removeFromCart(id))          type: CART_REMOVE_ITEM,       return {
+                                payload: id })                  ...state,
+                              localStorage.setItem()            cartItems: state.cartItems.filter() }
+                                               
+- npm i jsonwebtoken      
+
