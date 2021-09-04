@@ -172,13 +172,13 @@ AOP can be done-
 Programmatically
 --------------
 Advices
-Before advice – Run before the method execution - Impl MethodBeforeAdvice 
+Before advice : Run before the method execution - Impl MethodBeforeAdvice 
 		- void before(Method method, Object[] args, Object target) throws Throwable;
-After returning advice – Run after the method returns a result - Impl AfterReturningAdvice
+After returning advice : Run after the method returns a result - Impl AfterReturningAdvice
 		- void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable;
-After throwing advice – Run after the method throws an exception - impl ThrowsAdvice. Tag interface, but must implement
+After throwing advice : Run after the method throws an exception - impl ThrowsAdvice. Tag interface, but must implement
 		- void afterThrowing([Method, args, target], ThrowableSubclass);
-Around advice – Run around the method execution, combine all three advices above. - Impl MethodInterceptor
+Around advice : Run around the method execution, combine all three advices above. - Impl MethodInterceptor
 
 Advisor = Advice + PointCut
 
@@ -330,7 +330,7 @@ In DAO
 
 Spring MVC
 ===============
-1. DispatcherServlet - web.xml - “Front Controller” design pattern
+1. DispatcherServlet - web.xml - "Front Controller" design pattern
 
 spring xml
 2. HandlerMapping - BeanNameUrlHandlerMapping, ControllerBeanNameHandlerMapping , 
