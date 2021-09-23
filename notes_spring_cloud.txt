@@ -1,0 +1,156 @@
+Microservices with Spring
+=====================
+
+https://github.com/in28minutes/spring-microservices
+
+https://start.spring.io/
+- Spring web
+- Spring Boot DevTools 
+- Spring Data JPA
+- H2 Database
+
+HATEOAS ( Hypermedia as the Engine of Application State )
+========
+- is a constraint of the REST application architecture
+- With HATEOAS, REST response contains some possible follow-up links generated dynamically based on current state 
+    of resource
+- e.g.
+    GET /accounts/12345         // if the balance is +ve you will get deposits, withdrawals, transfers links
+    {
+        "account": {
+            "account_number": 12345,
+            "balance": {
+                "currency": "usd",
+                "value": 100.00
+            },
+            "links": {
+                "deposits": "/accounts/12345/deposits",
+                "withdrawals": "/accounts/12345/withdrawals",
+                "transfers": "/accounts/12345/transfers",
+            }
+        }
+    }
+    GET /accounts/12345         // if the balance is 0, you will get only deposits link
+    {
+        "account": {
+            "account_number": 12345,
+            "balance": {
+                "currency": "usd",
+                "value": 0.00
+            },
+            "links": {
+                "deposits": "/accounts/12345/deposits"
+            }
+        }
+    }
+    
+Actuator
+========
+- http://localhost:8080/actuator
+- gradle dependency
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+- Supports built in (or custom) endpoints that let you monitor and manage your application - such as 
+    application health, metrics, sessions, etc
+
+
+Swagger/springdoc-openapi
+========
+- http://localhost:8080/swagger-ui.html
+- gradle dependency
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
+- Adding dependency will automatically deploy swagger-ui to a spring-boot application
+- Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html
+    OpenAPI description will be available at http://server:port/context-path/v3/api-docs
+ 
+
+HAL Explorer
+============
+- http://localhost:8080/        // redirects to /explorer/index.html#uri=/
+- gradle dependency
+    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+- With HAL Explorer you can browse and explore HAL and HAL-FORMS based RESTful Hypermedia APIs.
+- HAL ( Hypertext Application Language )
+    - is a simple format that gives a consistent and easy way to hyperlink between resources in your API.
+    - Adopting HAL will make your API explorable, and its documentation easily discoverable from within the API itself.
+    - In short, it will make your API easier to work with and therefore more attractive to client developers.
+    - HAL provides a set of conventions for expressing hyperlinks in either JSON or XML.
+
+
+Spring Cloud
+============
+
+Spring Cloud Umbrella Projects
+------------------------------
+Centralized Configuration Management (Spring Cloud Config Server)
+Location Transparency - Naming Server (Eureka)
+Load Distribution (Spring Cloud Load Balancer replaces Ribbon)
+Visibility and Monitoring (Zipkin)
+API Gateway (Spring Cloud Gateway replaces Zuul )
+Fault Tolerance, Circuit Breaker Pattern (Resilience4j replaces Hystrix )
+
+
+Sleuth
+========
+- gradle dependency
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
+- Distributed tracing via logs with Spring Cloud Sleuth.
+
+
+Spring Boot DevTools
+Spring Web
+Spring Boot Actuator
+Config Client
+Sleuth
+Zipkin Client
+H2 Database
+Spring Data JPA
+Spring for RabbitMQ
+Eureka Discovery Client
+Resilience4J 
+
+
+Spring Boot DevTools
+    - Provides fast application restarts, LiveReload, and configurations for enhanced development experience.
+Spring Web
+    - Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container.
+Spring Boot Actuator
+    - Supports built in (or custom) endpoints that let you monitor and manage your application - such as application 
+    health, metrics, sessions, etc.
+Config Client
+    - Client that connects to a Spring Cloud Config Server to fetch the application's configuration.
+    - 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+Sleuth
+    - Distributed tracing via logs with Spring Cloud Sleuth.
+Zipkin Client
+    - Distributed tracing with an existing Zipkin installation and Spring Cloud Sleuth Zipkin.
+H2 Database
+    - Provides a fast in-memory database that supports JDBC API and R2DBC access, with a small (2mb) footprint. 
+    Supports embedded and server modes as well as a browser based console application.
+Spring Data JPA
+    - Persist data in SQL stores with Java Persistence API using Spring Data and Hibernate.
+Spring for RabbitMQ
+    - Gives your applications a common platform to send and receive messages, and your messages a safe place to 
+    live until received.
+Eureka Discovery Client
+    - A REST based service for locating services for the purpose of load balancing and failover of middle-tier servers.
+Resilience4J
+    - Spring Cloud Circuit breaker with Resilience4j as the underlying implementation.
+Gateway
+    - Provides a simple, yet effective way to route to APIs and provide cross cutting concerns to them such as 
+    security, monitoring/metrics, and resiliency.
+
+
+
+docker run -d -p 9411:9411 openzipkin/zipkin    // Run zipkin server
+http://localhost:9411                           // browse ui to find traces
+
+Order of application
+--------------------
+1. Run zipkin server
+2. naming-server
+3. currency-exchange-service
+4. currency-conversion-service
+5. api-gateway
+
+
