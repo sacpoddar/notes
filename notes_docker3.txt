@@ -44,6 +44,8 @@ kubectl logs -f ingress-nginx-controller-xxx -n ingress-nginx	// get logs for in
 kubectl delete --all pods -n ingress-nginx						// delete all pods under namespace
 kubectl delete ing <ingress-name>								// delete ingress
 kubectl get secrets
+kubectl scale -n default replicaset <replicaset-name> --replicas=<desired-replica-count>		// scale up/down
+
 ibmcloud ks cluster get -c <cluster> | grep Ingress
 winpty kubectl exec -it <pod-name> sh
 ibmcloud ks cluster ls							// List all clusters in your IBM Cloud account

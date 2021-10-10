@@ -1,6 +1,8 @@
 AWS Notes
 =========
 
+resource hub    https://pages.awscloud.com/GLOBAL_TRAINCERT_takethechallenge_resourcehub.html#GetStarted
+
 aws configure       // configure cli. Enter Access Key ID and Secret Access Key
 aws iam list-users  // test if cli is working
 

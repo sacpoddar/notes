@@ -19,6 +19,13 @@ screen -D -R <screen_name>	// Create a screen that keeps running in background.
 							// Ctrl+a Ctrl+d	- to detach
 							// Ctrl+d 			- termiate screen
 							// screen -ls 		- list all screen for current user
+curl -kL https://host:port/app	// k- --insecure Allow insecure conn when using SSL, 
+								// L- --location Follow redirects
+watch <cmd>					// watch command. By default executes command every 2 seconds
+							// -d 	highlights the differences between successive updates
+							// -n	interval in seconds
+watch -n 1 wget <url>		// execute wget every second					
+							
 // run command as different user
 sudo -u db2inst1 /home/db2inst1/sqllib/bin/db2 create database sac1
 
