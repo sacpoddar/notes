@@ -28,6 +28,18 @@ python -V		// version
 pip list		// list installed packages
 
 
+python3 -m venv venv		- Create a python virtual env in dir named venv
+source ./venv/bin/activate
+AREPL for python 			// entension
+kite
+autodocstring
+
+vscode
+=========
+cat .env
+PYTHONPATH=${PYTHONPATH};./common_utils/src/main;./my_project/src/main
+
+
 - Python uses indentation to indicate a block of code.
 - Python will give you an error if you skip the indentation:
 	if 5 > 2:
@@ -179,15 +191,54 @@ List
 
 	list1 = ["apple", "banana", "cherry", "orange"]
 	list2 = [1, 5, 7, 9, 3]
-	print( len(list1) )								# 4  - Get list length using len() function
-	list4 = list(("apple", "banana", "cherry"))		# Using the list() constructor to make a List
+	print( len(list1) )                                # 4  - Get list length using len() function
+	list4 = list(("apple", "banana", "cherry"))        # Using the list() constructor to make a List
 	
-	print( list1[0] )	# apple
-	print( list1[-1] )	# orange. Negative indexing. -1 refers to the last item, -2 refers to the second last item etc.
-	print( list1[1:3] ) # ['banana', 'cherry'] 	- Range of Indexes. 
-						# Return value will be a new list with the specified items. 
-                        # start-index (included) and end-index (excluded).
-	print( list1[1:] ) 	# ['banana', 'cherry', 'orange']		start-index till end
-	print( list1[:3] )	# ['apple', 'banana', 'cherry']			till end-index
-	if "apple" in list1:			# Check if a item exists
-		print("apple exist")
+	print( list1[0] )    # apple
+	print( list1[-1] )    # orange. Negative indexing. -1 refers to the last item, -2 refers to the second last item etc.
+	print( list1[1:3] ) # ['banana', 'cherry']     - Range of Indexes. 
+	                    # Return value will be a new list with the specified items. 
+	                    # start-index (included) and end-index (excluded).
+	print( list1[1:] )     # ['banana', 'cherry', 'orange']        start-index till end
+	print( list1[:3] )    # ['apple', 'banana', 'cherry']            till end-index
+	if "apple" in list1:            # Check if a item exists
+	    print("apple exist")
+	        
+	list1 = ["apple", "banana", "cherry", "orange"]
+	list1[1] = 'banana2'     # replace existing value
+	list1.insert(2, 'banana2')  # insert. subsequent values will shift right
+	list1.append("kiwi")        # append to the end of the list
+	list2 = ["mango", "potato"]
+	list1.extend(list2)         # extend list1 to include list2. list2 can be any iterable object e.g. tuples, sets, dict
+	list1.remove("banana2")     # Remove first occurrence of value
+	list1.pop()                 # Remove the last item
+	list1.pop(1)                # Remove the item at index
+	# list1.clear()               # clear list values
+	# del list1                 # delete list
+	print(list1)
+	
+	for x in list1:             # iterate list
+	    print(x)
+	
+	# list comprehension - a shorter syntax to create a new list based on an existing list and condition
+	list2 = [x for x in list1 if x != 'apple' ]
+
+- Python does not support method overloading. Not required as params can have default values
+- Python does not support having same name for variable and method- it cannot differentiate between the two
+
+- __init__() vs __call__() vs __del__()
+
+Regex
+======
+import re
+
+pattern = r'(\bfox\b)'		# raw string. all escape codes will be ignore. Alternative to pattern = '(\\bfox\\b)' 
+inputString = 'quick brown fox jumps over the lazy dog'
+replaceText= 'monkey'
+
+match = re.search(pattern, inputString, flags=re.IGNORECASE)    # search for pattern
+if bool(match):
+    print(match.group(1))   									# print matching string
+
+substr = re.sub(pattern, replaceText, inputString, flags=re.IGNORECASE)  # find and replace
+print(substr)
