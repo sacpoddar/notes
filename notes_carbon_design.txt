@@ -180,3 +180,14 @@ Add routing
 	<ibm-header [route]="['/']" name="Carbon Tutorial Angular">
 		<ibm-header-navigation ariaLabel="Carbon Tutorial Angular">
 			<ibm-header-item [route]="['/repos']">Repositories</ibm-header-item>
+			
+
+React
+=======
+https://www.carbondesignsystem.com/developing/react-tutorial/overview/
+https://www.carbondesignsystem.com/components/overview/
+https://react.carbondesignsystem.com/?path=/docs/getting-started--using-the-storybook
+
+spacing token table https://www.carbondesignsystem.com/guidelines/spacing/overview/#spacing-scale
+color https://www.carbondesignsystem.com/guidelines/color/usage/
+Typography tokens https://www.carbondesignsystem.com/guidelines/typography/productive/

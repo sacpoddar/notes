@@ -17,7 +17,8 @@ Auto Rename Tag
 Bracket Pair Colorizer
 JavaScript (ES6) Code snippets
 Prettier - Code formatter
-    - Format On Save    -Enable setting
+    - Editor: Format On Save    -Enable setting
+	- Editor: Format On Save Mode - modifications
     - Prettier: Jsx Single Quote
     - Prettier: Semi       - uncheck
     - Prettier: Single Quote

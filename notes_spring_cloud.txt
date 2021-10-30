@@ -153,4 +153,7 @@ Order of application
 4. currency-conversion-service
 5. api-gateway
 
+./gradlew bootBuildImage            // To build docker image
+https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization
+
 
