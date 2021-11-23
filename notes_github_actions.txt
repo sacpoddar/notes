@@ -1,0 +1,134 @@
+GitHub Actions
+==============
+
+GitHub Actions: Hello World 
+===========================
+https://lab.github.com/githubtraining/github-actions:-hello-world
+
+- GitHub Actions are a flexible way to automate nearly every aspect of your team's software workflow. 
+  Here are just a few of the ways teams are using GitHub Actions:
+    - Automated testing (CI)
+    - Continuous delivery and deployment
+    - Responding to workflow triggers using issues, @ mentions, labels, and more
+    - Triggering code reviews
+    - Managing branches
+    - Triaging issues and pull requests
+
+Actions and Workflows
+----------------
+  There are two components to using GitHub Actions
+    - the action itself
+    - a workflow that uses action(s)
+  A workflow can contain many actions. Each action has its own purpose.
+
+Types of Actions
+----------------
+- Actions come in two types: container actions and JavaScript actions.
+  - Docker container actions allow the environment to be packaged with the GitHub Actions code and can only execute in the GitHub-Hosted Linux environment.
+  - JavaScript actions decouple the GitHub Actions code from the environment allowing faster execution but accepting greater dependency management responsibility.
+
+Step 1: Add a Dockerfile
+---------------
+- action-a/Dockerfile
+
+FROM debian:9.5-slim
+
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+Step 2: Add an entrypoint script
+-----------------
+- action-a/entrypoint.sh
+#!/bin/sh -l
+
+sh -c "echo Hello world my name is $INPUT_MY_NAME"
+
+Step 3: Add an action metadata file
+------------------
+- action-a/action.yml
+
+name: "Hello Actions"
+description: "Greet someone"
+author: "octocat@github.com"
+
+inputs:
+  MY_NAME:
+    description: "Who to greet"
+    required: true
+    default: "World"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+branding:
+  icon: "mic"
+  color: "purple"
+
+Step 4: Start your workflow file
+------------------
+- .github/workflows/main.yml
+
+name: A workflow for my Hello World file
+on: push
+
+- Workflows piece together jobs, and jobs piece together steps. We'll now create a job that runs an action. 
+  Actions can be used from within the same repository, from any other public repository, or from a published Docker container image. 
+  We'll use an action that we'll define in this repository.
+
+Step 5: Run an action from your workflow file
+-------------------------
+- edit .github/workflows/main.yml
+
+name: A workflow for my Hello World file
+on: push
+jobs:
+  build:
+    name: Hello world action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./action-a
+        with:
+          MY_NAME: "Mona"
+
+- jobs: is the base component of a workflow run
+- build: is the identifier we're attaching to this job
+- name: is the name of the job, this is displayed on GitHub when the workflow is running
+- runs-on: defines the type of machine to run the job on. The machine can be either a GitHub-hosted runner or a self-hosted runner.
+- steps: the linear sequence of operations that make up a job
+- uses: actions/checkout@v1 uses a community action called checkout to allow the workflow to access the contents of the repository
+- uses: ./action-a provides the relative path to the action we created in the action-a directory of the repository
+- with: is used to specify the input variables that will be available to your action in the runtime environment. In this case, the input variable is MY_NAME, and it is currently initialized to "Mona".
+
+- repository now contains 
+  an action (defined in the /action-a/ folder) and 
+  a workflow (defined in the ./github/workflows/main.yml file).
+- This action will run any time a new commit is created or pushed to the remote repository
+- status of your action is shown in the pull request (look for All checks have passed below), or you can click the "Actions" tab in your repository. 
+
+Step 6: Trigger the workflow
+---------------
+You should see "Hello world my name is Mona" printed at the bottom to stdout
+
+Step 7: Incorporate the workflow
+--------------------
+- merge this pull request so the action will be a part of the main branch.
+- Anyone that uses this repository, and any future code can benefit from this workflow and your new action!
+- Merge your workflow into the main branch
+    Merge this pull request
+    Delete your branch
+
+Next
+------
+Review the GitHub Actions documentation on the GitHub Developer site. https://docs.github.com/en/actions/learn-github-actions
+Use existing actions from the GitHub Marketplace.   https://github.com/marketplace?type=actions
+Use existing actions from GitHub's official actions community.  https://github.com/actions
+Use actions created by others in awesome-actions. https://github.com/sdras/awesome-actions
+
+
+Build end-to-end CI/CD capabilities directly in GitHub
+================================
+https://lab.github.com/MSUSDEV/build-end-to-end-cicd-capabilities-directly-in-github
+
