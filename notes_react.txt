@@ -4,6 +4,8 @@ React Notes
 cd reactshop 
 npm install -g create-react-app
 npx create-react-app frontend
+npx create-react-app my-app --template typescript   // with TS support
+yarn add @reduxjs/toolkit react-redux           // add redux toolkit
 
 cd frontend
 npm start		// Starts the development server.
