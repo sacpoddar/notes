@@ -1,0 +1,21 @@
+Carbon Design - React
+=====================
+
+https://www.carbondesignsystem.com/developing/react-tutorial/step-2
+https://react.carbondesignsystem.com/?path=/story/getting-started--welcome
+IBM Carbon Charts Builder https://ibm.github.io/carbon-charts-builder/
+
+Type tokens https://www.carbondesignsystem.com/guidelines/typography/productive/
+Color tokens https://www.carbondesignsystem.com/guidelines/color/usage/
+Space tokens https://www.carbondesignsystem.com/guidelines/spacing/overview/
+
+
+npx create-react-app my-app --template typescript
+yarn		// install the React app’s dependencies
+yarn start	// start app
+yarn add carbon-components@10.25.0 carbon-components-react@7.25.0 @carbon/icons-react@10.22.0 carbon-icons@7.0.7
+	// carbon-components - component styles
+	// carbon-components-react - React components
+	// @carbon/icons-react - React icons
+yarn add sass@1.29.0
+

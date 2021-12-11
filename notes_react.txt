@@ -6,6 +6,10 @@ npm install -g create-react-app
 npx create-react-app frontend
 npx create-react-app my-app --template typescript   // with TS support
 yarn add @reduxjs/toolkit react-redux           // add redux toolkit
+yarn start
+yarn build
+yarn test
+yarn eject
 
 cd frontend
 npm start		// Starts the development server.
@@ -947,3 +951,26 @@ removeFromCartHandler():    removeFromCart(id):             cartReducer():
 - npm i jsonwebtoken      
 
 https://skryvets.com/blog/2018/09/20/an-elegant-solution-of-deploying-react-app-into-a-subdirectory/
+
+- react resting https://docs.cypress.io/examples/examples/tutorials#Best-Practices
+- invisionapp.com
+- sketch
+- https://www.velotio.com/engineering-blog/how-to-implement-server-sent-events-using-python-flask-and-react
+
+npm error
+==========
+- npm ERR! [FAILED] Error: unable to get local issuer certificate
+- Reason: may occur because of corporate proxy or zscaler
+- Fix:
+	npm -g config set strict-ssl false
+	export NODE_TLS_REJECT_UNAUTHORIZED=0
+		set NODE_TLS_REJECT_UNAUTHORIZED=0		// for Win
+	npm i -g abc-package@1.0 --unsafe-perm true
+- In Dockerfile
+RUN npm -g config set strict-ssl false
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+RUN npm install --unsafe-perm true
+
+https://code.visualstudio.com/docs/nodejs/reactjs-tutorial
+npx create-react-app my-app --template typescript		// create a TypeScript version of the create-react-app
+

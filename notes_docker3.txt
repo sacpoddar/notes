@@ -55,6 +55,15 @@ kubectl cluster-info							// cluster info
 ibmcloud ks cluster master refresh -c <cluster-name/cluster-id>		// To fix if master may not be in sync with your permissions
 ibmcloud ks cluster config -c <cluster-name/cluster-id> --admin			// login and pull new certs
 
+ibmcloud update
+ibmcloud plugin update cloud-functions
+ibmcloud plugin update dev
+ibmcloud plugin update container-service
+ibmcloud plugin update container-registry
+
+ibmcloud.exe cr login
+ibmcloud.exe config --trace true
+
 token=$(kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
 kubectl -n kube-system describe secret $token
 
