@@ -1,0 +1,15 @@
+MySQL
+=====
+
+mysql -u root -h localhost [db_name] -p
+SHOW DATABASES;         // list all DB
+SELECT DATABASE();      // Get current DB in use
+CREATE DATABASE db_name;
+
+mysqldump -u username -p database_name > data-dump.sql      // backup
+mysql -u username -p new_database < data-dump.sql           // restore
+
+
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'user1'@'localhost' WITH GRANT OPTION;
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'user1'@'localhost' WITH GRANT OPTION;
