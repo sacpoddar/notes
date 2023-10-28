@@ -1,0 +1,609 @@
+MongoDB Developer Fundamentals (DF100)
+============================
+
+DF100: MongoDB Developer Fundamentals   https://training.mongodb.com/courses/df100-mongodb-developer-fundamentals-1-day
+DF200: Optimizing Storage and Retrieval https://training.mongodb.com/courses/df200-optimizing-storage-and-retrieval-1-day
+DF300: Design Skills and Advanced Features  https://training.mongodb.com/courses/df300-design-skills-and-advanced-features-1-day
+DF400: Production-Ready Development     https://training.mongodb.com/courses/df400-production-ready-development-1-day
+
+curl ifconfig.me    // get current ip address
+
+- Two fundamental RDBMS features are hard to do efficiently in a distributed system
+    Joins - These are slow in a distributed system due to network hops
+    Transactions - For similar reasons but also reliability is also an issue
+- In document DB
+    Data is co-located in-memory, on-disk, and logically on the same hardware
+
+- A good distributed system
+  - Only update one record in a table at a time ( equates to document in a collection in MongoDB)
+  - Why? - Don’t need to communicate with other servers
+- Typical RDBMS application schema- “One record” may consist of 6 tables - 9 rows which would cause a problem in a distributed system.
+
+- Terminology
+   Database - Database
+   Table - Collection
+   Row - Document
+   Column - Field
+   Index - Index
+- combination of a Database and Collection is refered as Namespace
+- In MongoDB data is stored in BSON format
+
+Uses
+- query planner - select what indexes might optimize query performance.
+    Indexes are used to limit the data that needs to be scanned
+- aggregation pipeline - to allow complex in-database computation and aggregation to provide summarised data
+
+Availability and Scalability
+- High Availability via Replica Sets
+    Multiple copies of all data
+    Different hosts / locations
+    Continuous replication
+- Scale via Shards
+    Partition data over multiple Replica Sets
+    Provides unlimited hardware scaling
+- Compression of data
+
+- mongosh - mongo shell
+    command like shell to directly interact with DB. CRUD
+
+- Mongo DB atlas is a mongo db as as service
+
+When to use MongoDB
+----------------
+  When you need high-speed access to complex objects 
+    Atomic partial updates
+    Fast retrieval
+    Secondary indexes
+    Aggregation capabilities
+  When you want to store larger data structures together
+    Large Arrays
+    Text Fields
+    Binary Data
+  When you value rapid development 
+    Interaction by Objects
+    Rich functionality
+  Where you need to store structures of varying shapes.
+    Application-defined schemas 
+    Heterogeneous schemas
+  When we have large data volumes. 
+    Data volumes growing
+    Growth potentially unlimited. 
+    No big up-front payment
+  When we want distributed data.
+    Worldwide low latency.
+    Legal obligations for locations. 
+    Real-time distribution.
+
+MongoDB Atlas Platform
+-------------
+- MongoDB Atlas is MongoDB as a Service.
+  - Highly available, scalable clusters in AWS/GCP/Azure
+  - Global availability and scaling 
+  - Managed Database infrastructure
+  - An intuitive and flexible data model
+  - MongoDB Query Language (MQL) for building nearly any workload
+  - Transactional guarantees at a global scale
+  - Unique data distribution capabilities
+- Atlas Search gives you full text search powered by Lucene on your Atlas hosted databases
+- Atlas data lake allows you to store data cheaply in Amazon S3 in JSON, CSV or Parquet format 
+  and query them like a MongoDB database.    
+    - This include auto migrating data from Atlas to S3 as it gets older
+    - And federated queries over Atlas and Data Lake
+- MongoDB Charts: provides Rich, document-centric, visualization functionality
+- MongoDB Realm: 
+    - Data management at the edge and edge-to-cloud synchronization 
+    - Backend as a service - serverless code hosting, authentication of end users scheduled
+and event drive triggers.
+
+- With an RDBMS
+    Data is stored in an efficient binary form on the disk.
+    You can index and query any field or set of fields.
+    You can perform atomic updates to one or more records.
+    You can update parts of records without retrieving them first. 
+    You can compute aggregates and summaries on the server. 
+    Schemas matter and are rigidly enforced by the server.
+    All fields have a defined data type (String, Integer, Date, etc.). 
+    You join data together for querying and retrieval.
+    You can query with SQL.
+
+- With MongoDB
+    Data is stored in an efficient binary form on the disk.
+    You can index and query any field or set of fields.
+    You can perform atomic updates to one or more records.
+    You can update parts of records without retrieving them first. 
+    You can compute aggregates and summaries on the server. 
+    Schemas matter and can be rigidly enforced by the server.
+    All values have a defined data type (String, Integer, Date, etc.). 
+    You can join data together for querying and retrieval.
+    You can query with SQL using the BI connector add-on.
+
+What is different in MongoDB
+- You can Query with SQL but normally don't
+    Interaction is from code using Object-based APIs 
+    Rather than constructing SQL Strings
+    SQL is used only to enable third-party BI tools.
+- Documents/Objects are first-order data types
+    Data modeling/Schema design is done differently 
+    Dynamic schemas can be used if desired
+
+- The primary key field is always called _id
+
+Atlas security
+  - users need to be created first
+  - uses TLS
+  - Data is on encrypted disks
+  - We need to add IPs to the Access List (Security > Network Access)
+    curl ifconfig.me    // get current ip
+
+- mongosh commands
+show dbs        // show all databases
+db              // show current DB
+use <db-name>   // create a new DB or switch to existing db
+show collections        // show all collections
+db.employees.find({})   // find all docs in collection
+var employee = {
+    "name" : "sac1",
+    "title" : "employee"
+}
+db.employees.insertOne(employee)        // insert one doc. Also creates collection if not exist
+db.employees.find({"name": "sac1"})     // find docs based on filter
+
+- mongosh is JavaScript and NodeJS REPL
+- We can run JavaScript code snippets in mongosh
+- db- this is a database object and is used at the beginning of most commands to run against a db
+
+MongoDB Compass includes
+  - Aggregation Builder 
+  - Mongosh
+  - Visual explain Plans
+
+https://www.mongodb.com/docs/manual/core/schema-validation/
+https://www.mongodb.com/blog/post/building-with-patterns-the-document-versioning-pattern
+https://www.mongodb.com/blog/post/building-with-patterns-the-schema-versioning-pattern
+
+
+Storage and Retrieval
+======================
+
+- Go to Cluster0 > ... menu > Load sample data
+use sample_training
+db.grades.countDocuments({})    // count docs
+
+Basic Database CRUD Interactions
+----------------
+Create    insertOne(doc)                insertMany([doc,doc,doc])
+Read      findOne(query, projection)    find(query, projection)
+Update    updateOne(query,change)       updateMany(query,change)
+Delete    deleteOne(query)              deleteMany(query)
+
+Create a doc - insertOne()
+----------------
+  db.customers.insertOne({ 
+      _id : "bob@gmail.com", 
+      name: "Robert Smith", orders: [], spend: 0, 
+      lastpurchase: null 
+  })
+  db.customers.insertOne({
+      name: "Andi Smith", orders: [], spend: 0, 
+      lastpurchase: null 
+  })
+
+- Documents are essentially Objects
+- A document must be <16MB
+- _id field must be unique, it will be added if not supplied.
+    Default- GUID of type ObjectId. 12 bytes long
+- { "acknowledged”: true, ... } means it has succeeded in writing the data to one member of the replica set
+
+Add Multiple Documents - insertMany()
+----------------------
+    Accepts an array of documents. 
+    Single network call normally. 
+    Reduces network time.
+    Returns an object with info- success/failure of each and any primary keys assigned
+    Limit of 48MB or 100,000 documents data in a single call to the server, but a larger batch
+      is broken up behind the scenes by the drive
+
+    // 1000 Network Calls
+    let st = ISODate()
+    for(let d=0;d<1000;d++) {
+      db.orders.insertOne({ product: "socks", quantity: d})
+    }
+    print(`${ISODate()-st} milliseconds`)
+    
+    // 1 Network call, same data
+    let st = ISODate()
+    let docs = []
+    for(let d=0;d<1000;d++) {
+        docs.push({ product: "socks", quantity: d})
+    }
+    db.orders.insertMany(docs)
+    print(`${ISODate()-st} milliseconds`)
+
+- Order of operations in insertMany()
+  - insertMany() can be ordered or unordered
+  - Ordered (default) stops on first error.     // assumes i/p data is ordered
+  - Unordered reports errors but continues; can be reordered by the server to make the operation faster
+
+  let friends = [{ _id: "joe" }, { _id: "bob" }, { _id: "joe" }, { _id: "jen" }];
+  db.collection1.insertMany(friends)
+    { "errmsg" : "E11000 duplicate key error ...", "nInserted" : 2 }
+  db.collection2.insertMany(friends, {ordered:false})
+    { "errmsg" : "E11000 duplicate key error ...", "nInserted" : 3 }
+
+Find and Retrieve documents
+-----------------
+  - findOne() retrieves a single document
+  - Accepts a document as a filter to “query-by-example.”
+  - Empty object (or no object) matches everything.
+  - We return the first document we find where all the members match. 
+    If there are multiple matches there is no way to predict which is 'first' in this case.
+  - Note: order of the fields in the query does not matter here - comma means AND
+
+  db.customers.insertOne({ _id : "tim@gmail.com",
+    name: "Timothy", orders: [], spend: 0, lastpurchase: null
+  })
+  db.customers.findOne({ _id : "tim@gmail.com" })   
+  db.customers.findOne({spend: 0 })                   
+  db.customers.findOne({spend: 0, name: "Timothy" })  // AND of both fields
+  db.customers.findOne({name: "timothy"  })           // no match
+  db.customers.findOne({spend: "0" })                 // no match
+  db.customers.findOne({})                            // matches everything. But return first doc
+
+https://www.mongodb.com/blog/post/building-with-patterns-the-subset-pattern
+https://www.mongodb.com/blog/post/building-with-patterns-a-summary
+
+Projection: choosing the fields to return
+----------------------------
+  - Find operations can include a projection parameter
+  - Projections only return a subset of each document.
+  - Projections include/exclude a set of fields.
+  - In projecton, specify 1 for all objects which need to be returned
+  - In projecton, specify 0 for all objects which need to be excluded
+  - _id is always returned by default. To exclude _id, explicitly specify it in projection
+  - We cannot mix and match 0 and 1 - as what should it do with any other fields?
+    only exception to this is, when you want to exclude _id from projection
+
+  db.customers.insertOne({ _id : "ann@gmail.com",
+    name: "Ann", orders: [], spend: 0,
+    lastpurchase: null })
+  db.customers.findOne({ name: "Ann" })                 // by default it return all fields
+    { "_id" : "ann@gmail.com",
+      "name" : "Ann",
+      "orders" : [], spend: 0, lastpurchase: null }
+  db.customers.findOne({ name:"Ann" },{name:1, spend:1})      // only include name, spend
+    { "_id" : "ann@gmail.com", "name" : "Ann", "spend" : 0 }
+  db.customers.findOne({ name:"Ann" },{name:0, orders:0})     // only exclude name, orders
+    { "_id" : "ann@gmail.com", "spend" : 0, "lastpurchase" : null }
+  db.customers.findOne({ name:"Ann" },{name:0, orders:1})     // cannot mix 0 and 1
+    MongoServerError: Cannot do inclusion on field orders in exclusion projection   // ERROR
+  db.customers.findOne({ name:"Ann" },{_id: 0, name:1})       // exclude _id
+    { "name" : "Ann" }
+
+Fetch multiple documents using find()
+--------------------
+  - find() returns a cursor object rather than a single document
+  - We fetch documents from the cursor to get all matches
+  - mongosh fetches and displays 20 documents from the cursor object.
+  - You can add .pretty() to print it in readable format
+
+  MongoDB> for(let x=0;x<200;x++) { db.taxis.insertOne({ plate: x }) }
+  MongoDB> db.taxis.find({})
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9116"), "plate" : 0 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9117"), "plate" : 1 } 
+    ...
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9129"), "plate" : 19 } Type "it" for more
+  MongoDB> it             // fetch and print next 20 records
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce912a"), "plate" : 20 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce912b"), "plate" : 21 } 
+    ...
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce913d"), "plate" : 39 }
+  MongoDB> db.taxis.find({ plate: 5 })
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce911b"), "plate" : 5 }
+
+Using Cursors
+-------------
+Here, we store the result of find to a variable.
+We then manually iterate over the cursor.
+The query is not actually run until we fetch results from the cursor.
+
+  MongoDB> let mycursor = db.taxis.find({})
+  MongoDB> while (mycursor.hasNext()) { 
+            let doc = mycursor.next();
+            printjson(doc) }
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9117"), "plate" : 1 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9118"), "plate" : 2 }
+    ...
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce91dd"), "plate" : 199 }
+
+  MongoDB> let mycursor = db.taxis.find({}) // No Output 
+  MongoDB> mycursor.forEach( doc => { printjson(doc) })
+  
+  //This does nothing - does not even contact the server!
+  MongoDB> for(let x=0;x<100;x++) { 
+            let c = db.taxis.find({}) }
+
+- To pull the results from a cursor in a shell for testing speed
+  db.collection.find(query).itcount()
+
+Cursor modifiers
+----------------
+- Cursors can include additional instructions like limit, skip, etc.
+- Skip and limit return us cursors.
+- skip tell cursor to skip first N results
+- limit tells Cursor to stop query when it find enough results
+- skip is always performed before limit
+- Skip has a cost on the server - skipping a large number of documents is not advisable.
+
+  MongoDB> for(let x=0;x<200;x++) {
+            db.taxis.insertOne({plate:x}) }
+  MongoDB> db.taxis.find({}).limit(5)
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9116"), "plate" : 0 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9117"), "plate" : 1 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9118"), "plate" : 2 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9119"), "plate" : 3 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce911a"), "plate" : 4 }
+  MongoDB> db.taxis.find({}).skip(2)
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9118"), "plate" : 2 } 
+    ... REMOVED for clarity ...
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce912b"), "plate" : 21 } 
+    Type "it" for more
+  MongoDB> db.taxis.find({}).skip(8).limit(2)
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce911e"), "plate" : 8 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce911f"), "plate" : 9 }
+
+Cursors work in batches
+---------------
+- Cursors fetch results from the server in batches.
+- Default batch size in shell is 101 documents during the initial call to find() with a limit of 16MB.
+- If we fetch more than the first 100 document from a cursor it fetches in 16MB batches in the shell 
+  or up to 48MB in some drivers.
+- Rather than make a call to the server every time we get the next document from a cursor, 
+  the server fetches the result in batches and stores them at the client or shell end until we want them
+- We can change the batch size on the cursor if we need to but it's still limited to 16M.
+- Fetching additional data from a cursor uses a function called getmore() behind the scenes, 
+  it fetches 16MB at a time.
+
+Exercise
+-------
+Add four documents to a collection called diaries using the commands shown here.
+Q1: Write a find() operation to output only diary entries from dug.
+Q2: Modify it to output the line below using skip, limit and a projection.
+  { name: "dug", txt: "saw a squirrel" }
+
+  MongoDB> db.diaries.drop()
+  MongoDB> db.diaries.insertMany([
+    {
+      name: "dug", day: ISODate("2014-11-04"),
+      txt: "went for a walk" },
+    {
+      name: "dug", day: ISODate("2014-11-06"),
+      txt: "saw a squirrel" },
+    {
+      name: "ray", day: ISODate("2014-11-06"),
+      txt: "met dug in the park" },
+    {
+      name: "dug", day: ISODate("2014-11-09"), 
+      txt: "got a treat"
+    } ])
+
+Q1 Ans:
+  db.diaries.find({name:"dug"})
+Q2 Ans: 
+  db.diaries.find({name:"dug"},{_id:0,day:0}).skip(1).limit(1)
+
+Querying values in nested documents
+------------------
+- Fields can contain documents
+- Use dot notation to specify a field in a nested document: “address.city”
+- In mongosh put the field names in quotes.
+
+  db.people.insertOne({ "name": "John Doe",
+        "email": "john.doe@mongodb.com", 
+        "address": {
+          "country": "USA", 
+          "city": "New York",
+          "zipcode": "10005" }
+      })
+  db.people.findOne({})
+  db.people.findOne({"address.city" : "New York"})
+  db.people.findOne({ "name": "John Doe",
+    "address.city" : "New York" })
+    
+  MongoDB> db.people.findOne({address.city : "New York"})        //Error - Shell think address is a variable
+
+  // comparing Address as a whole to an object - which will only work if the object is an exact match
+  MongoDB> db.people.findOne({address : { city: "New York"}})
+
+Query by ranges of values
+----------------
+Comparison operators
+- $lt, $gt 
+- $lte, $gte
+- $in, $nin
+- $eq
+
+  MongoDB> for(x=0;x<200;x++) { db.taxis.insertOne({plate:x})}
+  MongoDB> db.taxis.find({plate : { $gt : 25 }})      // >25
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9130"), "plate" : 26 } 
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9131"), "plate" : 27 }
+    ...
+    { "_id" : ObjectId("609b9aaccf0c3aa225ce9143"), "plate" : 45 } Type "it" for more
+  MongoDB> db.taxis.find({plate: { $gte: 25 }})       // >=25
+  MongoDB> db.taxis.find({plate: { $lt: 25 }})        // <25
+  MongoDB> db.taxis.find({plate: { $gt: 25 , $lt:30 }})   // >25<30 
+  MongoDB> db.taxis.find({plate: { $ne: 3 }})         // Not 3
+  MongoDB> db.taxis.find({plate: { $in: [1,3,6] }})   //Is 1,3 or 6 
+  MongoDB> db.taxis.find({plate: { $nin: [2,4,7] }})  //Not 2,4 or 7 
+  MongoDB> db.taxis.find({plate: { $eq: 6 }})         // Same as {plate:6}
+
+- Actually { a: 5 } is shorthand for { a : { $eq : 5} } the equality operator.
+- If we do { a: { $gt:5}, a: {$lt: 8} }
+  this is actually just entering { a:{$lt:8} }
+  Correct version is { a: { $gt:5, $lt:8 }}
+
+Boolean Logic Operators
+-----------------------
+- $and
+- $or
+- $nor
+- $not
+
+- Take an array as value and can have more than two clauses
+- These are normally used with complex clauses
+
+  MongoDB> db.pets.insertMany([
+    { species: "cat", color: "brown"}, 
+    { species: "cat", color: "black"}, 
+    { species: "dog", color: "black"}, 
+    { species: "dog", color: "brown"},
+    ])
+  MongoDB> db.pets.find({
+    $or: [ {species:"cat",color:"black"},
+    {species:"dog",color:"brown"} ]
+    })
+
+  { "_id" : ObjectId("..."), "species" : "cat", "color" : "black" } 
+  { "_id" : ObjectId("..."), "species" : "dog", "color" : "brown" }
+
+  //Black pets that are not less than cats (alphabetically)
+  MongoDB> db.pets.find({ species: {
+  $not: {$lte: "cat" } },
+  color: "black" })
+
+Exercise:
+1. In the MongoDB shell, change to using the database sample_training
+2. In the grades collection, see how many documents have student_id less than or equal to 65
+3. In the inspections collection, see how many documents have result as "Pass" or "Fail" -two ways 
+
+Ans:
+MongoDB> use sample_training
+MongoDB> db.grades.find({ student_id: {$lte:65} }).count()
+MongoDB> db.inspections.find({ $or:[{result:"Pass"}, {result:"Fail"}] }).count()
+MongoDB> db.inspections.find({ result:{ $in:["Pass","Fail"] } }).count()
+
+
+Querying Values in Arrays
+---------------------
+- When querying an array with standard find syntax, you either match one element of the array or the 
+  whole array (including the order)
+
+  MongoDB> db.fun.insertOne({ "name": "John",
+              hobbies: ["cars","robots","gardens"] })
+
+  //Find by ANY member of the array
+  MongoDB> db.fun.find({ hobbies: "gardens" }) 
+      {"_id":ObjectId("..."),"name":"John","hobbies": ["cars","robots","gardens"]}
+  
+  //Find by matching the array itself
+  MongoDB> db.fun.find({hobbies: ["cars","robots","gardens"]}) 
+      {"_id":ObjectId("..."),"name":"John","hobbies": ["cars","robots","gardens"]}
+  
+  //Not found - order doesn't match
+  MongoDB> db.fun.find({ hobbies: ["robots","cars","gardens"] })
+  
+  //Not found - missing element
+  MongoDB> db.fun.find({ hobbies: ["cars","robots"] })
+
+Array specific query operators
+-------------------------
+- $all
+- $size
+- $elemMatch
+
+- for querying against arrays
+- $all takes a list of values and matches where the array contains all of those values. order doesn't matter
+- $size matches if the array length is exactly the size specified. You cannot use it with $gt or $lt 
+
+MongoDB> db.fun.insertOne({ "name": "John",
+      hobbies: ["cars","robots","gardens"]})
+
+MongoDB> db.fun.find( {hobbies: { $all: ["robots","cars"] } })
+    { "_id" : ObjectId("..."), "name" : "John", "hobbies" : [ "cars", "robots", "gardens" ] }
+
+MongoDB> db.fun.find({
+      hobbies: { $all: ["robots", "cars", "bikes"] }
+    }) //No result as bikes is not in the array
+
+MongoDB> db.fun.find({ hobbies : { $size : 3}})
+    { "_id" : ObjectId("..."), "name" : "John", "hobbies" : [ "cars", "robots", "gardens" ] }
+
+MongoDB> db.fun.find({ hobbies : { $size : 4 } })
+
+
+- array query
+  { age: { $gt : 18 , $lt: 30 } }
+  Will match age between 18 and 30 - But what if age is an array?
+  e.g. {age:[40,10,5] }
+
+- $elemMatch - “has an element that matches the query”
+  e.g.    { age : {$elemMatch: { $gt : 18 , $lt: 30 } }}
+  In this case, the query is: { $gt : 18 , $lt: 30 }
+ 
+Exercise:
+In sample_restaurants.restaurants, there are hygiene ratings and dates of inspection details.
+Executing this query to find restaurants that have had a hygiene rating of C after 2013 finds 2,675 restaurants:
+  db.restaurants.find({ 
+    "grades.grade":"C",
+    "grades.date":{$gt:ISODate("2013-12-31")} })
+This is incorrect as finds one that hasn't had a C since 2014. What would be the correct query?
+Ans:
+  use sample_restaurants
+  db.restaurants.findOne()
+    {
+      id : 1
+      name : "abc's restaurant"
+      grades : [
+        {
+          date: 2014-06-10T00:00:00.000Z,
+          grade: 'A',
+          score: 5
+        }
+      ]
+    }
+  db.restaurants.find({ grades: {
+      $elemMatch : {
+          grade:"C",
+          date:{$gt:ISODate("2013-12-31")}
+      }}
+    })
+
+Sorting Results
+---------------
+- Use sort() cursor modifier to retrieve results in a specific order
+
+//Unsorted
+MongoDB> db.scores.find({},{_id:0})
+  { "ride" : 5, "swim" : 11, "run" : 11 } 
+  { "ride" : 0, "swim" : 17, "run" : 12 } 
+  { "ride" : 17, "swim" : 2, "run" : 2 }
+
+//Sorted by ride increasing
+MongoDB> db.scores.find({},{_id:0}).sort({ride:1}) 
+  { "ride" : 0, "swim" : 38, "run" : 10 }
+  { "ride" : 1, "swim" : 37, "run" : 37 }
+  { "ride" : 1, "swim" : 30, "run" : 20 }
+//Sorted by swim increasing then ride decreasing
+MongoDB> db.scores.find({},{_id:0}).sort({swim:1, ride:-1}) 
+  { "ride" : 31, "swim" : 0, "run" : 14 }
+  { "ride" : 11, "swim" : 0, "run" : 14 }
+  { "ride" : 30, "swim" : 1, "run" : 34 }
+  { "ride" : 21, "swim" : 1, "run" : 3 }
+
+Exercise: Combined Query
+Use the sample_training.companies collection to find the largest company (by number of employees) that has fewer than 200 employees.
+Write a query that prints out only the company name and number of employees.
+1. Use find() with a query and a projection
+2. Apply some of the cursor operators: sort(), skip() and limit()
+
+Ans:
+  use sample_training
+  db.companies.findOne()
+  db.companies.find({ number_of_employees : { $lt : 200}}, {_id : 0, name: 1, number_of_employees: 1})
+              .sort({number_of_employees : -1}).limit(1)
+    {
+      name: 'uShip',
+      number_of_employees: 190
+    }
+
+  Expressive Queries
+------------------
