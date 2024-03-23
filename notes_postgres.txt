@@ -20,6 +20,13 @@ sudo service postgresql start/stop/restart
 	select count(*) from pg_stat_activity;
 - SHOW max_connections;
 
+MacOS
+======
+brew install postgresql@16
+brew services start postgresql@16
+// include in PATH
+echo 'export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"' >> /Users/sachin/.bash_profile
+
 Common statements
 =================
 create schema bookstore;
