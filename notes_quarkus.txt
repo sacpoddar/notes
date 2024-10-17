@@ -1,0 +1,120 @@
+Quarkus Notes
+=============
+
+- To generate your application with all required extension
+    https://code.quarkus.io/
+- Writing REST Services with Quarkus REST
+    https://quarkus.io/guides/rest
+- Using transactions
+    https://quarkus.io/guides/transaction
+- Hibernate ORM with Panache
+    https://quarkus.io/guides/hibernate-orm-panache
+- Getting started with Mutiny
+    https://smallrye.io/smallrye-mutiny/2.6.2/tutorials/getting-mutiny/
+
+Execution model, blocking, non-blocking
+-------------------------
+- Quarkus REST is implemented using two main thread types:
+    - Event-loop threads: which are responsible, among other things, for reading bytes from the HTTP request and writing
+        bytes back to the HTTP response
+    - Worker threads: they are pooled and can be used to offload long-running operations
+- The event-loop threads (also called IO threads) are responsible for actually performing all the IO operations in an
+    asynchronous way, and to trigger any listener interested in the completion of those IO operations.
+- By default, the thread Quarkus REST will run endpoint methods on depends on the signature of the method. 
+    If a method returns one of the following types then it is considered non-blocking, and will be run on the 
+    IO thread by default:
+        io.smallrye.mutiny.Uni
+        io.smallrye.mutiny.Multi
+        java.util.concurrent.CompletionStage
+        org.reactivestreams.Publisher
+        Kotlin suspended methods
+- If you are writing reactive code, your method will generally return one of these types and will be executed on the 
+    IO thread. 
+- If you are writing blocking code, your methods will usually return the result directly, and these will be run on a 
+    worker thread.
+- You can override this behaviour using the @Blocking and @NonBlocking annotations. 
+    This can be applied at the method, class or jakarta.ws.rs.core.Application level.
+- If a method or class is annotated with jakarta.transaction.Transactional then it will also be treated as a 
+    blocking method. This is because JTA is a blocking technology, and is generally used with other blocking 
+    technology such as Hibernate and JDBC. An explicit @Blocking or @NonBlocking on the class will override 
+    this behaviour.
+
+Uni
+==================
+- A Uni is a stream emitting either a single item or a failure.
+    - Note that the item can be null
+- If you don’t have a final subscriber, nothing is going to happen
+- a Uni<Void> always emits null as item event or a failure if the represented operation fails
+- Unis are lazy by nature. To trigger the computation, you must subscribe.
+- You can consider the item event as a completion signal indicating the success of the operation.
+- Uni<T> provides many operators that create, transform, and orchestrate Uni sequences
+
+Observing Events
+==================
+Uni and Multi emit events. Your code is going to observe and process these events.
+- List of all events
+
+Event	        Uni / Multi	    Direction	            Note
+--------------------------------------------------------------
+item	        Uni + Multi	    upstream -> downstream	The upstream sent an item.
+failure	        Uni + Multi	    upstream -> downstream	The upstream failed.
+completion	    Multi	        upstream -> downstream	The upstream completed.
+subscribe	    Uni and Multi	downstream -> upstream	A downstream subscriber is interested in the data.
+subscription	Uni and Multi	upstream -> downstream	Event happening after a subscribe event to indicate that the upstream acknowledged the subscription.
+cancellation	Uni and Multi	downstream -> upstream	A downstream subscriber does not want any more events.
+overflow	    Multi	        upstream -> downstream	The upstream has emitted more than the downstream can handle.
+request	        Multi	        downstream -> upstream	The downstream indicates its capacity to handle n items.
+
+- you need to look at these various events to understand better what’s going on or implement specific side effects
+- For each kind of event, there is an associated group providing the methods to handle that specific event: 
+    onItem(), onFailure(), onCompletion() and so on.
+- These groups provide two methods to peek at the various events without impacting its distribution: invoke() and call()
+    - It does not transform the received event; it notifies you that something happened and let you react.
+    - Once this reaction completes, the event is propagated downstream or upstream depending on the direction of the event.
+
+- invoke(callback)
+    - invoke method is synchronous and the passed callback does not return anything
+    - Mutiny invokes the callback and propagates the event downstream when the callback returns. 
+        It blocks the dispatching.
+            Multi       Callback    Downstream
+            item1   ->  item1    -> item1
+            item2   ->  item2    -> item2
+    - Use invoke for implementing synchronous side-effects or logging events
+
+- call(callback)
+    - call method is asynchronous, and the callback returns a Uni<T> object
+    - Mutiny does not dispatch the original event downstream until the Uni returned by the callback emits an item
+    - call is often used when you need to implement asynchronous side-effects, such as closing resources.
+        multi.onCompletion().call(() -> resource.close());
+    - Under the hood, Mutiny gets the Uni (by invoking the callback) and subscribes to it. 
+        It observes the item or failure event from that Uni. 
+        It discards the item value as only the emission matters in this case.
+    - Use call for implementing asynchronous side-effects, such as I/O operations, closing resources, flushing data, delay items, etc.
+
+                  invoke()	                          call()
+Nature	        | synchronous	                    | asynchronous
+Return type	    | void	                            | Uni<T>
+Main use cases	| logging, synchronous side-effects	| I/O operations, closing resources, flushing data
+
+
+Transforming items
+=================
+- To achieve this, you use onItem().transform(Function<T, U>)
+- transform method is synchronous
+    Multi           Transformer     Subscriber
+    item1   ->      item1*      ->  item1*
+    item2   ->      item2*      ->  item2*
+
+    e.g.
+    someUni.onItem().transform(i -> i.toUpperCase())
+
+- If the transformation throws an exception, that exception is caught and passed to the downstream subscriber as a failure event.
+- It also means that the subscriber won’t get further item after that failure.
+- Chaining multiple transformations
+  Uni<String> u = someUni
+        .onItem().transform(i -> i.toUpperCase())
+        .onItem().transform(i -> i + "!");
+
+Transforming items asynchronously
+==================
+

@@ -25,7 +25,11 @@ watch <cmd>					// watch command. By default executes command every 2 seconds
 							// -d 	highlights the differences between successive updates
 							// -n	interval in seconds
 watch -n 1 wget <url>		// execute wget every second					
-							
+sudo lsof -i -P | grep LISTEN | grep :<port>	// which process uses given port
+
+brew services list
+brew services start mongodb-community
+
 // run command as different user
 sudo -u db2inst1 /home/db2inst1/sqllib/bin/db2 create database sac1
 
