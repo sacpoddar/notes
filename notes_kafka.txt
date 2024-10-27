@@ -25,3 +25,121 @@ Topics, partitions and offsets
 - Order is guaranteed only within a partition (not across partitions)
 - Data is assigned randomly to a partition unless a key is provided
 - You can have as many partitions per topic as you want
+
+Producers
+- Producers write data to topics (which are made of partitions)
+- Producers know to which partition to write to (and which Kafka broker has it)
+- In case of Kafka broker failures, Producers will automatically recover
+
+Kafka Message Serializer
+- Kafka only accepts bytes as an input from producers and sends bytes out as an output to consumers
+- Message Serialization means transforming objects / data into bytes
+- They are used on the value and the key
+- Common Serializers
+    - String (incl. JSON)
+    - Int, Float
+    - Avro
+    - Protobuf
+
+Key Object  ->      Key Serializer      ->  Key-binary
+123                 IntegerSerializer       0101
+Value Object  ->    Value Serializer    ->  Value-binary
+"hello"             StringSerializer       0101
+
+Kafka Message Key Hashing
+- A Kafka partitioner is a code logic that takes a record and determines to which partition to send it into
+    Record -> Producer partitioner logic -> Partition1
+
+Consumers
+- Consumers read data from a topic (identified by name) - pull model
+- Consumers automatically know which broker to read from
+- In case of broker failures, consumers know how to recover
+- Data is read in order from low to high offset within each partition
+
+Consumer Deserializer
+- Deserialize indicates how to transform bytes into objects / data
+- They are used on the value and the key of the message
+- Common Deserializers
+    - String (incl. JSON)
+    - Int, Float
+    - Avro
+    - Protobuf
+- The serialization / deserialization type must not change during a topic lifecycle (create a new topic instead)
+
+Consumer Groups
+- All the consumers in an application read data as a consumer groups
+- Each consumer within a group reads from exclusive partitions
+      Partition0     Partition1     Partition2      Partition3
+            |       /                  |                |
+            Consumer1               Consumer2       Consumer3
+                  consumer-group-application  
+- If you have more consumers than partitions, some consumers will be inactive
+- In Apache Kafka it is acceptable to have multiple consumer groups on the same topic
+        Topic1
+      Partition0    Partition1     Partition2      Partition3
+        |           |                   |                |
+        ||//       \|//               \\|/            \\\| 
+      Consumer1   Consumer2             Consumer1       Consumer2
+      consumer-group-application1       consumer-group-application2
+
+Consumer Offsets
+- Kafka stores the offsets at which a consumer group has been reading
+- The offsets committed are in Kafka topic named __consumer_offsets
+- When a consumer in a group has processed data received from Kafka, it should be periodically committing the offsets
+ (the Kafka broker will write to __consumer_offsets, not the group itself)
+- If a consumer dies, it will be able to read back from where it left off thanks to the committed consumer offset.
+
+Delivery semantics for consumers
+- By default, Java Consumers will automatically commit offsets (at least once)
+- There are 3 delivery semantics if you choose to commit manually
+- At least once (usually preferred)
+    - Offsets are committed after the message is processed
+    - If the processing goes wrong, the message will be read again
+    - This can result in duplicate processing of messages. Make sure your processing is idempotent (i.e. processing again the messages won't impact your systems)
+- At most once
+    - Offsets are committed as soon as messages are received
+    - If the processing goes wrong, some messages will be lost (they won't be read again)
+- Exactly once
+    - For Kafka => Kafka workflows: use the Transactional API (easy with Kafka Streams API)
+    - For Kafka => External System workflows: use an idempotent consumer
+
+Kafka Brokers
+- A Kafka cluster is composed of multiple brokers (servers)
+- Each broker is identified with its ID (integer)
+- Each broker contains certain topic partitions
+- After connecting to any broker (called a bootstrap broker), you will be connected to the entire cluster 
+    (Kafka clients have smart mechanics for that)
+- A good number to get started is 3 brokers, but some big clusters have over 100
+- Example of Topic-A with 3 partitions and Topic-B with 2 partitions
+    Note: data is distributed, and Broker 103 doesn't have any Topic B data
+    Broker101           Broker102           Broker103
+
+    TopicA              TopicA              TopicA
+    Partition0          Partition1          Partition2
+
+    TopicB              TopicB
+    Partition1          Partition0
+
+Kafka Broker Discovery
+- Every Kafka broker is also called a "bootstrap server"
+- That means that you only need to connect to one broker, and the Kafka clients will know how to be connected to the
+  entire cluster (smart clients)
+- Each broker knows about all brokers, topics and partitions (metadata)
+
+Topic replication factor
+- Topics should have a replication factor > 1 (usually between 2 and 3)
+- This way if a broker is down, another broker can serve the data
+- Example: Topic-A with 2 partitions and replication factor of 2
+    Broker101           Broker102           Broker103
+
+    TopicA              TopicA   ---Repl--- TopicA
+    Partition0          Partition1          Partition1
+          L_  
+            Repl______  TopicA
+                        Partition0
+ 
+Concept of Leader for a Partition
+- At any time only ONE broker can be a leader for a given partition
+- Producers can only send data to the broker that is leader of a partition
+- The other brokers will replicate the data
+- Therefore, each partition has one leader and multiple ISR (in-sync replica)

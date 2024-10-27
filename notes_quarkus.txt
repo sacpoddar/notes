@@ -99,7 +99,8 @@ Main use cases	| logging, synchronous side-effects	| I/O operations, closing res
 
 Transforming items
 =================
-- To achieve this, you use onItem().transform(Function<T, U>)
+- To transform items use transform() - a synchronous 1-to-1 function
+    e.g. onItem().transform(Function<T, U>)
 - transform method is synchronous
     Multi           Transformer     Subscriber
     item1   ->      item1*      ->  item1*
@@ -117,4 +118,7 @@ Transforming items
 
 Transforming items asynchronously
 ==================
-
+- Transforming an item into a Uni 
+    – any asynchronous processing such as calling a remote service, interacting with a database, etc
+- Transforming an item into a Multi 
+    – producing a multi-items stream based on the incoming item, filtering out items, etc
