@@ -143,3 +143,18 @@ Concept of Leader for a Partition
 - Producers can only send data to the broker that is leader of a partition
 - The other brokers will replicate the data
 - Therefore, each partition has one leader and multiple ISR (in-sync replica)
+
+Q: Can two consumer read messages from same partition?
+A: Within same consumer group - NO
+    Across different consumer group - YES
+
+    topic1     CG1  
+    ------     ---- 
+    p1 ------- con1 
+        |__X__ con2 
+
+    topic1     CG1      CG2
+    ------     ----     -----
+    p1 ------- con1 --- con3
+    p2 ------- con2 --- con4
+
