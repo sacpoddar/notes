@@ -11,7 +11,9 @@ Quarkus Notes
     https://quarkus.io/guides/hibernate-orm-panache
 - Getting started with Mutiny
     https://smallrye.io/smallrye-mutiny/2.6.2/tutorials/getting-mutiny/
-
+- Sample application
+    https://github.com/quarkusio/quarkus-super-heroes
+    
 Execution model, blocking, non-blocking
 -------------------------
 - Quarkus REST is implemented using two main thread types:

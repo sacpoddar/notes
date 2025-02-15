@@ -1,0 +1,152 @@
+SQL Notes
+===========
+
+Sample DB downlaod- https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver16&tabs=ssms
+Docker image- https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&tabs=cli&pivots=cs1-bash
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" \
+   -p 1433:1433 --name sql1 --hostname sql1 \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+
+
+GROUP BY functions ( aggregation )
+----------------
+- Aggregate functions
+count()
+SUM()
+avg()
+min()
+max()
+
+window functions ( aggregation + keep details )
+------------
+- Aggregate functions
+count()
+SUM()
+avg()
+min()
+max()
+- Rank functions
+row_number()
+rank()
+dense_rank()
+cume_dist()
+percent_rank()
+ntile()
+- Value functions
+lead()
+lag()
+first_value()
+
+Sales schema
+==========
+Products (productid, product, category, price)
+Orders (orderid, productid, customerid, salespersonid, orderdate, shipdate, orderstatus, shipaddress, billaddress, quantity, sales, creationtime)
+Customers (customerid, firstname, lastname, country, score)
+Employees (employeeid, firstname, lastname, deapartment, birthdate, gender, salary, managerid)
+
+
+
+-- Find the total sales across all orders
+SELECT SUM(sales) total_sales
+FROM Orders
+
+-- Find the total sales for each product
+SELECT productid, SUM(sales) total_sales
+FROM Orders
+GROUP BY productid
+
+-- Find the total sales for each product, additionally provide orderid, orderdate
+SELECT orderid, orderdate, productid,
+    SUM(sales) OVER(PARTITION BY productid) total_sales
+FROM Orders
+
+- Window syntax
+    WindowFn | OVER( Partition clause, Order clause, Frame clause )
+    e.g.  AVG(sales) OVER (PARTITION BY category ORDER BY orderdate ROWS UNBOUNDED PRECEDING)
+- Over clause - tells SQL that the function used is a window function. It defines a window or a subset of data 
+- PARTITION BY - divides the result set into partitions (windows) 
+    e.g.
+    SUM(sales) OVER()
+    SUM(sales) OVER(PARTITION BY productid)
+    SUM(sales) OVER(PARTITION BY productid, orderstatus)    // for each combination of productid, orderstatus
+
+-- Find the total sales across all orders
+    additionally provide orerid, orderdate
+SELECT
+orderid,
+orderdate,
+SUM(sales) OVER() TotalSales
+FROM Orders
+
+-- Find the total sales for each product
+    additionally provide orerid, orderdate
+SELECT
+orderid,
+orderdate,
+SUM(sales) OVER(PARTITION BY productid) SalesByProduct
+FROM Orders
+
+-- Find the total sales across all orders and 
+    Find the total sales for each product and 
+    Find the total sales for each product, orderstatus
+    additionally provide orerid, orderdate
+SELECT
+orderid,
+orderdate,
+orderstatus,
+sales,
+SUM(sales) OVER() TotalSales
+SUM(sales) OVER(PARTITION BY productid) SalesByProduct
+SUM(sales) OVER(PARTITION BY productid, orderstatus) SalesByProductAndStatus
+FROM Orders
+
+- For rank functions and value functions ORER BY clause is a must
+    e.g. RANK() OVER( PARTITION BY month ORDER BY sales DESC )
+
+-- Rank each order based on their sales from highest to lowest
+    additionally provide orderid, orderdate
+SELECT
+    orderid, orderdate,
+    sales,
+    RANK() OVER( ORDER BY sales DESC) sales_rank
+FROM Orders
+
+- Window Frame
+    Defines a subset of rows within each window 
+    e.g. ROWS UNBOUNDED PRECEDING
+
+    AGV(sales) OVER (PARTITION BY category ORDER BY orderdate)
+        ROWS BETWEEN CURRENT ROW AND UNBOUNDED PRECEDING
+        -----        -----------     ----------------------
+    Frame types     Frame boundry(L)         Frame boundry(H)
+    - ROWS          - CURRENT ROW               - CURRENT ROW
+    - RANGE         - N PRECEDING               - N FOLLOWING
+                    - UNBOUNDED PRECEDING       - UNBOUNDED FOLLOWING
+
+- Frame clause can only be used together with order by clause
+- Lower value must be before the higher value
+
+SUM(sales) OVER ( ORDER BY month ROWS BETWEEN CURRENT ROW AND 2 FOLLOWING )
+
+SUM(sales) OVER ( ORDER BY month ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING )
+
+SUM(sales) OVER ( ORDER BY month ROWS BETWEEN 1 PRECEDING AND CURRENT ROW )
+
+SUM(sales) OVER ( PARTITION BY orderstatus ORDER BY orderdate) totalsales
+
+SUM(sales) OVER ( PARTITION BY orderstatus ) totalsales
+
+- Window function can be used only in SELECT clause and ORDER BY clause
+- Nesting window function is not allowed
+- SQL execute window function after WHERE clause
+- Window function can be used together with GROUP BY in the same query, only if same columns are used    
+
+-- Rank customers based on their total sales
+SELECT 
+    customerid,
+    SUM(sales) totalsales,
+    RANK() OVER (ORDER BY SUM(sales) DESC) rankcutomers
+FROM Orders
+GROUP BY customerid

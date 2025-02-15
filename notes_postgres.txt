@@ -29,6 +29,9 @@ echo 'export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"' >> /Users/sachin/
 
 Common statements
 =================
+\l 			// list databases
+\dt 		// list tables
+
 create schema bookstore;
 
 create table customer (
