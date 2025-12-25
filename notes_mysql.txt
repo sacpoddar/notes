@@ -13,3 +13,9 @@ mysql -u username -p new_database < data-dump.sql           // restore
 CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'user1'@'localhost' WITH GRANT OPTION;
 GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'user1'@'localhost' WITH GRANT OPTION;
+
+SQL Lite
+==========
+sqlite3 <db_name>       // create database
+.read <sql_file.sql>    // import from SQL file
+.tables                 // list tables

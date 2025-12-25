@@ -81,6 +81,7 @@ Consumer Groups
         ||//       \|//               \\|/            \\\| 
       Consumer1   Consumer2             Consumer1       Consumer2
       consumer-group-application1       consumer-group-application2
+- By default, each application forms a single consumer-group
 
 Consumer Offsets
 - Kafka stores the offsets at which a consumer group has been reading
@@ -222,3 +223,66 @@ A: Within same consumer group - NO
     p1 ------- con1 --- con3
     p2 ------- con2 --- con4
 
+
+Q: if producer send 3 messages to a Kafka topic having 3 partitions. How it will get processed?
+A:
+1. If You Provide No Key (Default)
+  In modern Kafka versions (2.4+), the default behavior is Sticky Partitioning. 
+  How it works: To optimize performance, Kafka groups messages into "batches" and sends the entire batch to a single partition.
+  Result: It is highly likely that all 3 small messages will be sent to the same partition in one batch to reduce network overhead.
+  Older Versions: Prior to version 2.4, Kafka used a strict round-robin strategy for null keys, which would have resulted in exactly one message per partition
+2. If You Use a Message Key
+  If you provide a key with each message, Kafka uses a hashing algorithm (Murmur2) to determine the partition. 
+  Same Key: If all 3 messages have the same key, they will all go to the same partition to guarantee ordering.
+  Different Keys: If they have different keys, they might be distributed across different partitions. 
+   However, there is no guarantee they will land in separate partitions (e.g., two keys could hash to the same partition)
+3. If You Manually Specify Partitions
+  You can explicitly tell the producer which partition to use for each message (e.g., Message 1 to Partition 0, Message 2 to Partition 1, etc.). 
+  In this case, you can guarantee that each partition gets exactly one message
+    Summary Table
+    Scenario 	                Likely Distribution
+    No Key (Modern Kafka)	    All 3 in the same partition (due to batching/sticky partitioning).
+    No Key (Old Kafka <2.4)	    1 message per partition (round-robin).
+    Same Key for all	        All 3 in the same partition (guarantees order).
+    Manual Assignment	        1 message per partition (if programmed that way).
+
+
+Q: If we have three threads in a single container, will we call them three consumers ? will they read from three different partitions ?
+A: Depends on how you have implemented your application
+1. Are they called "three consumers"?
+  Yes, if each thread instantiates its own KafkaConsumer object. 
+  In Kafka terms, each independent KafkaConsumer instance that joins a consumer group is considered a separate consumer instance.
+  No, if there is only one KafkaConsumer instance that polls data and then hands it off to three worker threads for processing. In this case, you have one consumer and three workers.
+2. Will they read from three different partitions?
+  This depends on your threading model and the number of partitions available:
+  Thread-per-Consumer Model: If each of your 3 threads runs its own KafkaConsumer instance and they are all in the same Consumer Group:
+    - 3 Partitions: Kafka will assign exactly one partition to each thread.
+    - More than 3 Partitions: Some threads will be assigned multiple partitions (e.g., one thread might get two, another gets one).
+    - Fewer than 3 Partitions: Some threads will remain idle because Kafka never assigns more than one consumer in the same group to a single partition.
+  Single-Consumer, Multi-Worker Model: If you have one consumer instance and 3 worker threads:
+    - The single consumer will read from all 3 partitions itself and then distribute those messages to your threads.
+    - Caution: This model makes offset management much more complex because you must ensure you don't commit an offset for a message until all previous messages from that partition have been processed by your workers.
+    Summary Table
+    Model 	        Definition	                                            Partition Assignment
+    3 Consumers	    3 threads, each with its own KafkaConsumer instance.	Each thread gets 1 partition (if 3 partitions exist).
+    1 Consumer	    1 thread with a KafkaConsumer, 3 worker threads.	    1 consumer reads all 3 partitions; workers just process data.
+- For most standard applications, the thread-per-consumer model (e.g., using Spring Kafka's concurrency setting) is preferred because it handles partition rebalancing and offset management automatically for you
+
+
+Q: If we have three instance of containers of same application, will that called three consumers ?
+A: Yes, if you run three container instances of the same application and they share the same group.id, they are collectively called three consumer instances within a single Consumer Group.
+1. Partition Assignment
+    If your topic has 3 partitions and you have 3 container instances:
+    One-to-One Mapping: Kafka's group coordinator will assign exactly one partition to each container.
+    Parallel Processing: Each container will read and process messages from its assigned partition independently and in parallel with the others. 
+2. Scalability and Limits
+    The number of active consumers in a group is limited by the number of partitions:
+    More Containers than Partitions: If you scale to 4 containers for 3 partitions, the 4th container will remain idle. It will not receive any data because a single partition can only be assigned to one consumer in a group at a time.
+    Fewer Containers than Partitions: If you have 2 containers for 3 partitions, one container will be assigned two partitions, and the other will be assigned one.
+3. Fault Tolerance
+    If one container crashes:
+    Automatic Rebalancing: Kafka detects the failure and triggers a rebalance.
+    Takeover: The partition that was being handled by the failed container will be reassigned to one of the remaining two healthy containers so that processing continues.
+Key Configurations
+group.id: Must be identical across all three containers to ensure they work together as one logical unit.
+group.instance.id: In modern cloud/container environments (like Kubernetes), setting a static group.instance.id can prevent unnecessary rebalances during container restarts

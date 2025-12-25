@@ -1,5 +1,7 @@
 SQL Notes
 ===========
+https://github.com/smpetersgithub/AdvancedSQLPuzzles/tree/main/Advanced%20SQL%20Puzzles
+https://www.youtube.com/playlist?list=PLBTZqjSKn0IfuIqbMIqzS-waofsPHMS0E
 
 Sample DB downlaod- https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver16&tabs=ssms
 Docker image- https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&tabs=cli&pivots=cs1-bash
