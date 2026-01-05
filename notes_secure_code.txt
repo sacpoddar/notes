@@ -1,0 +1,139 @@
+Secure code
+============
+
+Missing Object Level Access Control
+--------------------------------
+Access control is generally setup at the code level to determine which objects a given user can and cannot access.
+Failure to setup object level access control can leave recoreds or other objects open to unauthorized access or modification.
+
+Access control is a critical aspect of application security that ensures users can only access resources they are authorized to. 
+Missing Object Level Access Control vulnerabilities occur when an application fails to enforce proper access controls at the object level,
+ allowing unauthorized users to access sensitive data or perform actions they should not be permitted to.
+
+Example:
+- An application allows users to access their own profiles but does not check if the user is authorized to access other users' profiles. 
+  As a result, a malicious user can manipulate the request to access and modify other users' data.
+  GET /user/profile?id=12345  (authorized access)
+
+- To prevent Missing Object Level Access Control vulnerabilities, developers should:
+  - Implement proper authorization checks at the object level to ensure users can only access resources they are permitted to.
+  - Use role-based access control (RBAC) or attribute-based access control (ABAC) to manage permissions effectively.
+  - Regularly review and update access control policies to adapt to changing requirements and threats.
+  - Conduct thorough testing, including penetration testing, to identify and remediate any access control weaknesses.
+
+
+Improper Authentication
+------------------------
+Improper Authentication vulnerabilities occur when an application fails to properly verify the identity of users or systems, allowing unauthorized access to sensitive resources or functionalities.
+
+Example:
+- An application uses weak password policies, allowing users to set easily guessable passwords. As a result, attackers can easily compromise user accounts through brute-force attacks or credential stuffing.
+- To prevent Improper Authentication vulnerabilities, developers should:
+  - Implement strong authentication mechanisms, such as multi-factor authentication (MFA), to enhance security.
+  - Enforce robust password policies, including minimum length, complexity requirements, and regular password changes.
+  - Use secure protocols (e.g., HTTPS) for transmitting authentication credentials to prevent interception.
+  - Regularly audit and monitor authentication logs to detect and respond to suspicious activities.
+  - Don't expose session IDs in URLs, as they can be easily manipulated to access other users' sessions.
+  - Don't use user IDs or predictable values as session IDs. Instead use a secure server-side session manager that generates secure random session IDs.
+
+
+Sensitive Data Exposure
+------------------------
+Sensitive Data Exposure vulnerabilities occur when an application fails to adequately protect sensitive information, such as personal data, financial information, or authentication credentials, leading to unauthorized access or disclosure.
+Example:
+- An application transmits sensitive data, such as credit card information, over an unencrypted HTTP connection. As a result, attackers can intercept the data during transmission and gain access to sensitive information.
+- To prevent Sensitive Data Exposure vulnerabilities, developers should:
+  - Use strong encryption protocols (e.g., TLS) to protect sensitive data during transmission.
+  - Implement robust encryption mechanisms (e.g., AES) to protect sensitive data at rest.
+  - Avoid storing sensitive data unless absolutely necessary, and minimize the amount of sensitive data collected.
+  - Implement access controls to restrict access to sensitive data only to authorized users.
+  - Regularly review and update data protection measures to adapt to evolving threats and compliance requirements.
+
+
+Lack of Resources & Rate Limiting
+--------------------------------
+Lack of Resources & Rate Limiting vulnerabilities occur when an application fails to implement proper resource management and rate limiting mechanisms, allowing attackers to exploit resource-intensive operations and potentially cause denial of service (DoS) attacks or degrade application performance.
+Example:
+- An application allows unlimited login attempts without any rate limiting. As a result, attackers can perform brute-force attacks to guess user passwords, potentially compromising user accounts.
+- To prevent Lack of Resources & Rate Limiting vulnerabilities, developers should:
+  - Implement rate limiting mechanisms to restrict the number of requests a user or IP address can make within a specified time frame.
+  - Use resource management techniques, such as connection pooling and caching, to optimize resource utilization and prevent resource exhaustion.
+  - Monitor application performance and resource usage to identify and mitigate potential bottlenecks.
+  - Implement proper error handling to gracefully handle resource-intensive operations and prevent application crashes. 
+
+Ensure following limits are set properly:
+- Execution timeouts
+- Maximum allocable memory
+- Number of processes permitted within a defined timeframe
+- Max number of file descriptors opened
+- Max number of requests allowed per client
+- number of records per page, which can be returned per request
+- Be sure to display a notification when these limits are met and include the time when the limit will be reset.
+
+Missing Function Level Access Control
+--------------------------------
+Function Level Access Control vulnerabilities occur when an application fails to enforce proper access controls at the function or method level, allowing unauthorized users to access sensitive functionalities or perform actions they should not be permitted to.
+Example:
+- An application exposes an administrative function that allows users to delete records. However, the application does not check if the user is authorized to access this function. As a result, a regular user can invoke the delete function and remove records without proper authorization.
+- To prevent Missing Function Level Access Control vulnerabilities, developers should:
+  - Implement proper authorization checks at the function or method level to ensure users can only access functionalities they are permitted to.
+  - Use role-based access control (RBAC) or attribute-based access control (ABAC) to manage permissions effectively.
+  - Regularly review and update access control policies to adapt to changing requirements and threats.
+  - Conduct thorough testing, including penetration testing, to identify and remediate any access control weaknesses.
+
+Mass Assignment
+------------------------
+Mass Assignment vulnerabilities occur when an application automatically binds user input to object properties without proper validation or filtering, allowing attackers to manipulate sensitive fields and potentially gain unauthorized access or perform unintended actions.
+Example:
+- An application allows users to update their profile information through a form. However, the application automatically binds all user input to the user object without validating or filtering the fields. As a result, an attacker can include additional fields in the form submission, such as "isAdmin," and set it to true, granting themselves administrative privileges.
+- To prevent Mass Assignment vulnerabilities, developers should:
+  - Implement input validation and filtering to ensure that only allowed fields can be updated by users.
+  - Use whitelisting techniques to specify which fields are permitted for mass assignment.
+  - Parse the request values rather than binding them directly to the object.
+  - Avoid using automatic binding mechanisms that bind all user input to object properties without validation. Use reduced Data Transfer Objects (DTOs) instead.
+  - Conduct thorough testing, including penetration testing, to identify and remediate any mass assignment weaknesses.
+
+
+Disabled Security Features
+------------------------
+Disabled Security Features vulnerabilities occur when an application has security features that are intentionally or unintentionally disabled, leaving the application exposed to potential threats and attacks.
+Example:
+- An application has a security feature that enforces strong password policies, but the feature is disabled in the production environment. As a result, users can set weak passwords, making it easier for attackers to compromise user accounts.
+- To prevent Disabled Security Features vulnerabilities, developers should:
+  - Ensure that all security features are enabled and properly configured in all environments, including development, staging, and production.
+  - Regularly review and audit application configurations to identify and remediate any disabled security features.
+  - Implement automated checks and monitoring to detect any changes to security feature configurations.
+  - Educate development and operations teams about the importance of maintaining security features and the risks associated with disabling them.
+
+SQL Injection
+------------------------
+SQL Injection vulnerabilities occur when an application fails to properly validate or sanitize user input before incorporating it into SQL queries, allowing attackers to manipulate the queries and potentially gain unauthorized access to the database or execute arbitrary SQL commands.
+Example:
+- An application constructs SQL queries by directly concatenating user input without proper validation or sanitization. As a result, an attacker can inject malicious SQL code into the input field, leading to unauthorized access to the database or data manipulation.
+- To prevent SQL Injection vulnerabilities, developers should:
+  - Use parameterized queries or prepared statements to separate user input from SQL code.
+  - Implement input validation and sanitization to ensure that user input conforms to expected formats and does not contain malicious code.
+  - Employ ORM (Object-Relational Mapping) frameworks that abstract SQL queries and provide built-in protection against SQL injection.
+  - Regularly review and update database access controls to restrict permissions and minimize the impact of potential SQL injection attacks.
+  - Conduct thorough testing, including penetration testing, to identify and remediate any SQL injection weaknesses.
+
+Improper Assets Management
+------------------------
+- To prevent Improper Asset Management function vulnerabilities, developers should:
+  - Ensure that Production data and datastores are kept separate from Development and Staging environments.
+  - Implement additional security controls such as firewalls, to prevent unintended access to sensitive or weakened environments.
+  - Fully document the endpoints and error states that exist within the API.
+  - Ensure that legacy API versions are validated by any safety checks implemented in the latest version
+
+Insufficient Logging and Monitoring
+--------------------------------
+Insufficient Logging and Monitoring vulnerabilities occur when an application fails to adequately log and monitor security-relevant events, making it difficult to detect and respond to potential security incidents.
+Example:
+- An application does not log failed login attempts or suspicious activities. As a result, when an attacker attempts to brute-force user passwords, there is no record of the attempts, making it challenging to identify and respond to the attack.
+- To prevent Insufficient Logging and Monitoring vulnerabilities, developers should:
+  - Implement comprehensive logging mechanisms to capture security-relevant events, such as login attempts, access to sensitive resources, and configuration changes.
+  - Ensure that logs are securely stored and protected from unauthorized access or tampering.
+  - Implement monitoring systems to analyze logs and detect suspicious activities or anomalies in real-time.
+  - Establish incident response procedures to respond to detected security incidents promptly.
+  - Regularly review and audit logs to identify potential security issues and improve logging practices.
+  
