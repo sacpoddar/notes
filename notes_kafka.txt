@@ -1,5 +1,15 @@
 Kafka Notes
 ============
+- Apache Kafka is an open-source, distributed event streaming platform that can handle high-volume data feed in real-time
+- Allows you to publish, subscribe, store, and process streams of records in real-time, 
+- used for building data pipelines, analytics, and event-driven applications.
+
+Core Concepts
+Topics: Categories for data streams (e.g., "user_clicks", "orders").
+Producers: Applications that send (publish) data to topics.
+Consumers: Applications that subscribe to and read data from topics.
+Brokers: Servers that store and manage the data partitions.
+Partitions: Topics are divided into partitions for parallel processing, increasing throughput and scalability. 
 
 Kafka Topics
 - Topics: a particular stream of data
