@@ -155,3 +155,13 @@ Machine learning algorithms
 ---------------------
 
 Common algorithms
+
+MCP
+===========
+- MCP a standardized protocol that language models uses to interact with other services e.g. data and applications on your computer or on the internet.
+- MCP is Just like USB-C is a standardized protocol for communication
+
+- MCP host is any application that wants to access data through an MCP. e.g. Claude Desktop and Cursor
+- MCP client is the extension to your application that maintains the protocol connection between the application and the MCP server
+- MCP server( or simply an MCP) is a package of programs that expose some resource either to retrieve data or to do something with that data that the MCP client can interact with.
+
