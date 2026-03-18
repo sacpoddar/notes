@@ -1,0 +1,157 @@
+Intro to AI/ML
+===============
+
+What is AI
+-----------
+- you can think of AI in two ways. There's strong AI and weak AI.
+- Strong AI is when a machine displays all the behavior you'd expect from a full-fledged person. 
+  These are artificial beings that have emotions, a sense of humor, and even have a sense of purpose.
+  Strong AI is still very much just science fiction.
+- Weak AI- AI that's confined to a very narrow task. 
+    e.g. Siri- matches a response to what's in her database
+
+Q1: Why did some of the earliest artificial intelligence systems focus on board games such as checkers and chess?
+A: It's easiest to make a computer system seem intelligent when it's working with set rules and patterns
+Q2: Luella seeks medical attention for chest pains. A nurse uses an artificial intelligence program to diagnose the 
+    cause. Why is this system likely not really intelligent?
+A: The program only matches her symptoms to steps in a system an expert created.
+Q3: You're a product manager who's in charge of building a weak AI expert system that will give tax advice. 
+    You're working with dozens of accountants who go through thousands of different taxpayer scenarios. 
+    When a customer asks a question, then the expert system will ask a follow-up question. 
+    It will do this until it makes a recommendation. What's one of the biggest challenges with this system?
+A: There will be too many tax combinations for the experts to cover with one system.
+
+Popular uses for AI
+-----------------
+Predictive AI 
+    - Analyses historic data and predicts things e.g. product recommedations, ads etc.
+    - The more data you have, the more accurately you can predict the future.
+    - predictive AI is about using a smaller amount of data to make accurate predictions. 
+    So, you might be able to guess what music a customer likes, and you can guess what items they'll buy.
+    But each system has one task. Your music prediction and your purchase prediction will be two different systems
+Generative AI 
+    - Generative AI is about training a system on huge amounts of data so it can perform many different tasks. 
+    It can predict your purchases, understand your music tastes, and even generate video.
+    - A generative AI system can typically do almost everything that a predictive system can do, 
+    but not the other way around.
+
+Machine learning
+-------------
+- machine learning uses data as its five senses.
+- Machine learning system could learn the same way we do- by analysing data
+- If the machine finds new patterns, it can adapt to the new information.
+- some researchers created systems that were designed to mimic the human brain.
+- machine learning system is still just identifying patterns. 
+- As the amount of data increases, this area has even shown more promise.
+
+Artificial neural networks
+------------------------
+- an AI system that mimics the structure of the human brain. 
+- it's currently one of the most popular approaches to machine learning.
+- Uses training data set to learn
+
+Q1: How does an artificial neural network learn?
+A: It looks at the data and makes guesses, then it compares those guesses to the correct answer.
+
+Common AI systems
+-------------------
+Searching for patterns in data
+- ML systems are designed to look for patterns in massive data sets
+- more data you feed into the system, the easier it will be for the machine to identify patterns
+- one of the largest challenges around machine learning is that humans don't really know how the machine 
+    identifies these patterns. It's like a black box of data and 
+
+Robotics
+- Robotics is about having machines work on physical tasks. 
+    e.g. lifting heavy objects in manufacturing, self-driving cars
+
+Natural language processing
+- Understanding human language- text and voice
+- Modern natural language processing uses machine learning and artificial neural networks
+
+The internet of things
+- IoT devices are objects with sensors that communicate with the outside world. 
+    They typically upload data through the internet.
+    e.g. smart watches, smart speakers
+- IoT devices and artificial intelligence are a powerful combination that allow companies to create systems 
+    that predict people's behavior.
+
+Generative systems
+- mixture of massive datasets and low cost computing helped create a bunch of new GenAI systems.
+
+Q1: What type of impact does artificial intelligence have on robotics?
+A: AI systems can create robots that can more easily learn new tasks.
+
+Q2: The healthcare and medical insurance industries caution against using machine learning to search for 
+    patterns in data, and they do not want machines making decisions about a person's health. Why?
+A: They may make decisions that humans cannot understand.
+
+Q3: What impact will the Internet of Things (IoT) have on artificial intelligence?
+A: These devices will be a great new source of “real world” data.
+
+Learn from Data
+-------------
+
+Labeled and unlabeled data
+- Supervised learning 
+    - Here, a data scientist acts like a tutor for the machine. 
+    - They show the machine the correct answers and then let the system train itself to get better at the game.
+- Unsupervised learning 
+    - Here you just have the machine make all the observations on its own. 
+    - The system might not know all the different names and labels, but it'll figure out their way to learn from the data.
+
+Massive datasets
+- You can start with supervised machine learning. 
+    - Here, you need to split your data into a training set and a test set. 
+    - The training data is a smaller chunk of data that the machine uses to learn. 
+    - The system will use machine learning algorithms. These algorithms rely on statistics. 
+    - These algorithms help the machine find relationships within the data.
+    - Then once the algorithm is accurate enough, you can use what the system learned on a larger test dataset.
+- machine learning algorithms use statistics to find patterns in your data.
+
+Data models
+- Its an abstraction of what the AI system learned from all that training and data.
+- Data models are mostly used for predictive AI.
+
+Q1: A new online camping goods store wants to find connections between products customers buy and other products they might buy. Why would the company use unsupervised learning?
+A: It does not yet have enough customers to make supervised learning meaningful.
+
+Q2: You're a preschool worker and you want to teach your class the letters in the alphabet. So you draw the letter “B” on the board. Then you ask the two-year-old students to find a block with that same letter. Some of the students correctly find the blocks with the letter “B”, but some of the students confuse the letter “B” with the letter “D.” So the incorrect students compare their block to the letter “B” on the board, recognize the error and then decide to get another block. What type of learning is this?
+A: supervised learning
+
+Identify patterns
+-----------------
+
+Classify data
+- Binary classification
+    - there are only two possible outcomes e.g. Is this email message spam?
+    - All binary classification uses supervised machine learning 
+
+Cluster data
+- when the machine uses unsupervised learning it create its own groups of data or data clusters
+-  The big difference between clustering and classifying is whether you're working with human-created categories or machine-created groups. 
+    - In general, if you're using supervised learning, you're classifying. 
+    - And if you're using unsupervised learning, then you're clustering.
+        - machine studies the data and then comes up with its own clusters.
+
+Reinforcement learning
+- Best music libraries don't just want you to buy things together. Many of them want you to discover something new. So for that, you have to use a different form of machine learning. This form of machine learning is called reinforcement learning.
+- These are machine learning algorithms that use rewards as a way to give the system incentive to find new patterns.
+- These systems can improve over time by setting a series of goals and rewards.
+- Q-Learning
+    - type of Reinforcement learning
+    - In Q-Learning, you want the machine to improve the quality of the outcome, which is represented by the letter Q
+    - In this case, you'd start with a Q of zero. Then you'd have the machine learn the actions that improve its conditions. The state of Q would go up each time you clicked a song.
+- Reinforcement learning systems work best when your organization wants to do more than just cluster items that are frequently bought together.
+- With reinforcement learning, your organization can build a system that thinks creatively about what your customer can discover.
+
+Q1: What is one of the greatest challenges with supervised learning binary classification?
+A: You need a lot of pre-classified or labeled data for the training set.
+
+Q2: Why might you want to use reinforcement learning instead of unsupervised learning?
+A: Reinforcement learning allows the machine to make predictions and create strategies instead of just clustering the data.
+
+Machine learning algorithms
+---------------------
+
+Common algorithms
